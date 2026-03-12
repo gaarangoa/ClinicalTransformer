@@ -1,0 +1,347 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>clinical_transformer.pt package &mdash; FMs 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FMs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Training Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_TRAIN_vnBERT_96M_v1.0.html">Training vnBERT 96M Foundation Model on Bulk RNA-seq Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Inference Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_nBERT_80M_v1.0.html">BulkRNA pancancer nBERT_80M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_modernBERT_109M_v1.0.html">BulkRNA pancancer modernBERT_109M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_rnBERT_96M_v1.0.html">BulkRNA pancancer rnBERT_96M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_vnBERT_96M_v1.0.html">BulkRNA pancancer vnBERT_96M_v1.0</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FMs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">clinical_transformer.pt package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/clinical_transformer.pt.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="clinical-transformer-pt-package">
+<h1>clinical_transformer.pt package<a class="headerlink" href="#clinical-transformer-pt-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="clinical_transformer.pt.datasets.html">clinical_transformer.pt.datasets package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.datasets.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.datasets.dataloader.html">clinical_transformer.pt.datasets.dataloader package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.dataloader.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular">clinical_transformer.pt.datasets.dataloader.tabular module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular_gpt">clinical_transformer.pt.datasets.dataloader.tabular_gpt module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked">clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.datasets.preprocessor.html">clinical_transformer.pt.datasets.preprocessor package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.preprocessor.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.sorted_samples">clinical_transformer.pt.datasets.preprocessor.sorted_samples module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.tabular">clinical_transformer.pt.datasets.preprocessor.tabular module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.tabular_gpt">clinical_transformer.pt.datasets.preprocessor.tabular_gpt module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.unittest_">clinical_transformer.pt.datasets.preprocessor.unittest_ module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.datasets.html#module-clinical_transformer.pt.datasets">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clinical_transformer.pt.losses.html">clinical_transformer.pt.losses package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.losses.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.losses.contrastive.html">clinical_transformer.pt.losses.contrastive package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.losses.contrastive.html#module-clinical_transformer.pt.losses.contrastive">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.losses.survival.html">clinical_transformer.pt.losses.survival package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.losses.survival.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.losses.survival.html#module-clinical_transformer.pt.losses.survival.cindex">clinical_transformer.pt.losses.survival.cindex module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.losses.survival.html#module-clinical_transformer.pt.losses.survival">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.losses.vae.html">clinical_transformer.pt.losses.vae package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.losses.vae.html#module-clinical_transformer.pt.losses.vae">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.losses.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.losses.html#module-clinical_transformer.pt.losses.masked_prediction">clinical_transformer.pt.losses.masked_prediction module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.losses.html#clinical_transformer.pt.losses.masked_prediction.MaskPredictionLoss"><code class="docutils literal notranslate"><span class="pre">MaskPredictionLoss</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.losses.html#clinical_transformer.pt.losses.masked_prediction.MaskPredictionLoss.forward"><code class="docutils literal notranslate"><span class="pre">MaskPredictionLoss.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.losses.html#module-clinical_transformer.pt.losses">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clinical_transformer.pt.models.html">clinical_transformer.pt.models package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.models.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.classifier">clinical_transformer.pt.models.classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier"><code class="docutils literal notranslate"><span class="pre">Classifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.compute_auc"><code class="docutils literal notranslate"><span class="pre">Classifier.compute_auc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">Classifier.configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.forward"><code class="docutils literal notranslate"><span class="pre">Classifier.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.training_step"><code class="docutils literal notranslate"><span class="pre">Classifier.training_step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.core">clinical_transformer.pt.models.core module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.core.BaseClinicalTransformer"><code class="docutils literal notranslate"><span class="pre">BaseClinicalTransformer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.core.BaseClinicalTransformer.forward"><code class="docutils literal notranslate"><span class="pre">BaseClinicalTransformer.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.masked_prediction">clinical_transformer.pt.models.masked_prediction module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL"><code class="docutils literal notranslate"><span class="pre">MaskedSSL</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">MaskedSSL.configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL.forward"><code class="docutils literal notranslate"><span class="pre">MaskedSSL.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL.training_step"><code class="docutils literal notranslate"><span class="pre">MaskedSSL.training_step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.regressor">clinical_transformer.pt.models.regressor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor"><code class="docutils literal notranslate"><span class="pre">Regressor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">Regressor.configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor.forward"><code class="docutils literal notranslate"><span class="pre">Regressor.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor.training_step"><code class="docutils literal notranslate"><span class="pre">Regressor.training_step()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.models.html#module-clinical_transformer.pt.models">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clinical_transformer.pt.tokenizer.html">clinical_transformer.pt.tokenizer package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.tokenizer.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.tokenizer.html#module-clinical_transformer.pt.tokenizer.FeatureTokenizer">clinical_transformer.pt.tokenizer.FeatureTokenizer module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.tokenizer.html#clinical_transformer.pt.tokenizer.FeatureTokenizer.FeatureTokenizer"><code class="docutils literal notranslate"><span class="pre">FeatureTokenizer</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.tokenizer.html#module-clinical_transformer.pt.tokenizer">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clinical_transformer.pt.training.html">clinical_transformer.pt.training package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.BERT.html">clinical_transformer.pt.training.BERT package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.BERT.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.BERT.html#clinical-transformer-pt-training-bert-nbert-module">clinical_transformer.pt.training.BERT.nBERT module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.BERT.html#clinical-transformer-pt-training-bert-nberthf-module">clinical_transformer.pt.training.BERT.nBERTHF module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.BERT.html#clinical-transformer-pt-training-bert-train-module">clinical_transformer.pt.training.BERT.train module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.BERT.html#module-clinical_transformer.pt.training.BERT.unittest">clinical_transformer.pt.training.BERT.unittest module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.BERT.html#module-clinical_transformer.pt.training.BERT">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.ClinicalTransformerMIL.html">clinical_transformer.pt.training.ClinicalTransformerMIL package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.ClinicalTransformerMIL.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.ClinicalTransformerMIL.html#module-clinical_transformer.pt.training.ClinicalTransformerMIL.dataset">clinical_transformer.pt.training.ClinicalTransformerMIL.dataset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.ClinicalTransformerMIL.html#clinical-transformer-pt-training-clinicaltransformermil-modeling-module">clinical_transformer.pt.training.ClinicalTransformerMIL.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.ClinicalTransformerMIL.html#clinical-transformer-pt-training-clinicaltransformermil-pipeline-module">clinical_transformer.pt.training.ClinicalTransformerMIL.pipeline module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.ClinicalTransformerMIL.html#module-clinical_transformer.pt.training.ClinicalTransformerMIL">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.GPT.html">clinical_transformer.pt.training.GPT package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.GPT.html#module-clinical_transformer.pt.training.GPT">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.TextMBERT.html">clinical_transformer.pt.training.TextMBERT package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.TextMBERT.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.TextMBERT.html#clinical-transformer-pt-training-textmbert-modeling-module">clinical_transformer.pt.training.TextMBERT.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.TextMBERT.html#module-clinical_transformer.pt.training.TextMBERT">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.pbrBERT.html">clinical_transformer.pt.training.pbrBERT package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.pbrBERT.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.pbrBERT.html#module-clinical_transformer.pt.training.pbrBERT.dataset">clinical_transformer.pt.training.pbrBERT.dataset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.pbrBERT.html#clinical-transformer-pt-training-pbrbert-modeling-module">clinical_transformer.pt.training.pbrBERT.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.pbrBERT.html#clinical-transformer-pt-training-pbrbert-tokenizer-module">clinical_transformer.pt.training.pbrBERT.tokenizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.pbrBERT.html#module-clinical_transformer.pt.training.pbrBERT">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.rnaBERT.html">clinical_transformer.pt.training.rnaBERT package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaBERT.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaBERT.html#module-clinical_transformer.pt.training.rnaBERT.dataset">clinical_transformer.pt.training.rnaBERT.dataset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaBERT.html#clinical-transformer-pt-training-rnabert-modeling-module">clinical_transformer.pt.training.rnaBERT.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaBERT.html#clinical-transformer-pt-training-rnabert-tokenizer-module">clinical_transformer.pt.training.rnaBERT.tokenizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaBERT.html#module-clinical_transformer.pt.training.rnaBERT">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.rnaVAE.html">clinical_transformer.pt.training.rnaVAE package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaVAE.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaVAE.html#module-clinical_transformer.pt.training.rnaVAE.dataset">clinical_transformer.pt.training.rnaVAE.dataset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaVAE.html#clinical-transformer-pt-training-rnavae-modeling-module">clinical_transformer.pt.training.rnaVAE.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaVAE.html#clinical-transformer-pt-training-rnavae-tokenizer-module">clinical_transformer.pt.training.rnaVAE.tokenizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.rnaVAE.html#module-clinical_transformer.pt.training.rnaVAE">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.vnBERT.html">clinical_transformer.pt.training.vnBERT package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.vnBERT.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.vnBERT.html#clinical-transformer-pt-training-vnbert-dataset-module">clinical_transformer.pt.training.vnBERT.dataset module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.vnBERT.html#clinical-transformer-pt-training-vnbert-modeling-module">clinical_transformer.pt.training.vnBERT.modeling module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.vnBERT.html#clinical-transformer-pt-training-vnbert-tokenizer-module">clinical_transformer.pt.training.vnBERT.tokenizer module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.vnBERT.html#clinical-transformer-pt-training-vnbert-tokenizer-tabular-module">clinical_transformer.pt.training.vnBERT.tokenizer_tabular module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.vnBERT.html#module-clinical_transformer.pt.training.vnBERT">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetune_from_masked_prediction">clinical_transformer.pt.training.finetune_from_masked_prediction module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetune_from_masked_prediction.load_pretrained_model"><code class="docutils literal notranslate"><span class="pre">load_pretrained_model()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetune_from_masked_prediction.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier">clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier"><code class="docutils literal notranslate"><span class="pre">Classifier</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.compute_auc"><code class="docutils literal notranslate"><span class="pre">Classifier.compute_auc()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">Classifier.configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.forward"><code class="docutils literal notranslate"><span class="pre">Classifier.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.training_step"><code class="docutils literal notranslate"><span class="pre">Classifier.training_step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor">clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor"><code class="docutils literal notranslate"><span class="pre">Regressor</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">Regressor.configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor.forward"><code class="docutils literal notranslate"><span class="pre">Regressor.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor.training_step"><code class="docutils literal notranslate"><span class="pre">Regressor.training_step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival">clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival"><code class="docutils literal notranslate"><span class="pre">Survival</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival.configure_optimizers"><code class="docutils literal notranslate"><span class="pre">Survival.configure_optimizers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival.forward"><code class="docutils literal notranslate"><span class="pre">Survival.forward()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival.training_step"><code class="docutils literal notranslate"><span class="pre">Survival.training_step()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.train_MaskedSSL">clinical_transformer.pt.training.train_MaskedSSL module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.train_MaskedSSL.pipeline"><code class="docutils literal notranslate"><span class="pre">pipeline()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.training.html#module-clinical_transformer.pt.training">Module contents</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.Config"><code class="docutils literal notranslate"><span class="pre">Config</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="clinical_transformer.pt.training.html#clinical_transformer.pt.training.Config.save"><code class="docutils literal notranslate"><span class="pre">Config.save()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="clinical_transformer.pt.utils.html">clinical_transformer.pt.utils package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.utils.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.utils.html#clinical-transformer-pt-utils-embeddings-module">clinical_transformer.pt.utils.embeddings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="clinical_transformer.pt.utils.html#module-clinical_transformer.pt.utils">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="module-clinical_transformer.pt">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-clinical_transformer.pt" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, ADS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

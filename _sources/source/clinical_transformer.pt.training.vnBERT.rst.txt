@@ -1,0 +1,45 @@
+clinical\_transformer.pt.training.vnBERT package
+================================================
+
+Submodules
+----------
+
+clinical\_transformer.pt.training.vnBERT.dataset module
+-------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.training.vnBERT.dataset
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+clinical\_transformer.pt.training.vnBERT.modeling module
+--------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.training.vnBERT.modeling
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+clinical\_transformer.pt.training.vnBERT.tokenizer module
+---------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.training.vnBERT.tokenizer
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+clinical\_transformer.pt.training.vnBERT.tokenizer\_tabular module
+------------------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.training.vnBERT.tokenizer_tabular
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: clinical_transformer.pt.training.vnBERT
+   :members:
+   :show-inheritance:
+   :undoc-members:

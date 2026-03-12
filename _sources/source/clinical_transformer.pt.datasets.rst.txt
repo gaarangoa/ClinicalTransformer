@@ -1,0 +1,19 @@
+clinical\_transformer.pt.datasets package
+=========================================
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   clinical_transformer.pt.datasets.dataloader
+   clinical_transformer.pt.datasets.preprocessor
+
+Module contents
+---------------
+
+.. automodule:: clinical_transformer.pt.datasets
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>clinical_transformer.pt.datasets.preprocessor package &mdash; FMs 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FMs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Training Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_TRAIN_vnBERT_96M_v1.0.html">Training vnBERT 96M Foundation Model on Bulk RNA-seq Data</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Inference Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_nBERT_80M_v1.0.html">BulkRNA pancancer nBERT_80M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_modernBERT_109M_v1.0.html">BulkRNA pancancer modernBERT_109M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_rnBERT_96M_v1.0.html">BulkRNA pancancer rnBERT_96M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/bulkRNA_pancancer_vnBERT_96M_v1.0.html">BulkRNA pancancer vnBERT_96M_v1.0</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FMs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">clinical_transformer.pt.datasets.preprocessor package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/source/clinical_transformer.pt.datasets.preprocessor.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="clinical-transformer-pt-datasets-preprocessor-package">
+<h1>clinical_transformer.pt.datasets.preprocessor package<a class="headerlink" href="#clinical-transformer-pt-datasets-preprocessor-package" title="Link to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-clinical_transformer.pt.datasets.preprocessor.sorted_samples">
+<span id="clinical-transformer-pt-datasets-preprocessor-sorted-samples-module"></span><h2>clinical_transformer.pt.datasets.preprocessor.sorted_samples module<a class="headerlink" href="#module-clinical_transformer.pt.datasets.preprocessor.sorted_samples" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">clinical_transformer.pt.datasets.preprocessor.sorted_samples.</span></span><span class="sig-name descname"><span class="pre">RNAExpressionGeneOrderer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/sorted_samples.html#RNAExpressionGeneOrderer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.feature_transformer">
+<span class="sig-name descname"><span class="pre">feature_transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/sorted_samples.html#RNAExpressionGeneOrderer.feature_transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.feature_transformer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/sorted_samples.html#RNAExpressionGeneOrderer.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.fit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/sorted_samples.html#RNAExpressionGeneOrderer.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.load" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/sorted_samples.html#RNAExpressionGeneOrderer.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-clinical_transformer.pt.datasets.preprocessor.tabular">
+<span id="clinical-transformer-pt-datasets-preprocessor-tabular-module"></span><h2>clinical_transformer.pt.datasets.preprocessor.tabular module<a class="headerlink" href="#module-clinical_transformer.pt.datasets.preprocessor.tabular" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">clinical_transformer.pt.datasets.preprocessor.tabular.</span></span><span class="sig-name descname"><span class="pre">Preprocessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
+<p>This preprocessor will take a dataset and transform the feature names to numbers (feature encoder)
+and their corresponding values to categories, these categories will be then transformed into numbers.</p>
+<p>Next, it will apply min-max scaling to all the data (numerical and transformed categorical) and return
+a new data version with encoded features.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.feature_transformer">
+<span class="sig-name descname"><span class="pre">feature_transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor.feature_transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.feature_transformer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.fit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.from_pretrained">
+<span class="sig-name descname"><span class="pre">from_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor.from_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.from_pretrained" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.load" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.transform_from_ad">
+<span class="sig-name descname"><span class="pre">transform_from_ad</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adata</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular.html#Preprocessor.transform_from_ad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.transform_from_ad" title="Link to this definition"></a></dt>
+<dd><p>Transform data from an AnnData object to the CT format.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>adata</strong> – AnnData object with samples in .obs and features in .var.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of [tokens, values, None, None] for each sample.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>newX</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-clinical_transformer.pt.datasets.preprocessor.tabular_gpt">
+<span id="clinical-transformer-pt-datasets-preprocessor-tabular-gpt-module"></span><h2>clinical_transformer.pt.datasets.preprocessor.tabular_gpt module<a class="headerlink" href="#module-clinical_transformer.pt.datasets.preprocessor.tabular_gpt" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">clinical_transformer.pt.datasets.preprocessor.tabular_gpt.</span></span><span class="sig-name descname"><span class="pre">PreprocessorGPT</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular_gpt.html#PreprocessorGPT"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TransformerMixin</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">BaseEstimator</span></code></p>
+<p>This preprocessor will take a dataset and transform the feature names to numbers (feature encoder)
+and their corresponding values to categories, these categories will be then transformed into numbers.</p>
+<p>Next, it will apply min-max scaling to all the data (numerical and transformed categorical) and return
+a new data version with encoded features.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.feature_transformer">
+<span class="sig-name descname"><span class="pre">feature_transformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tokens</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular_gpt.html#PreprocessorGPT.feature_transformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.feature_transformer" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular_gpt.html#PreprocessorGPT.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.fit" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.from_pretrained">
+<span class="sig-name descname"><span class="pre">from_pretrained</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular_gpt.html#PreprocessorGPT.from_pretrained"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.from_pretrained" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config_file</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular_gpt.html#PreprocessorGPT.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.load" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular_gpt.html#PreprocessorGPT.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.save" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/tabular_gpt.html#PreprocessorGPT.transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.transform" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-clinical_transformer.pt.datasets.preprocessor.unittest_">
+<span id="clinical-transformer-pt-datasets-preprocessor-unittest-module"></span><h2>clinical_transformer.pt.datasets.preprocessor.unittest_ module<a class="headerlink" href="#module-clinical_transformer.pt.datasets.preprocessor.unittest_" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.unittest_.MockAnnData">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">clinical_transformer.pt.datasets.preprocessor.unittest_.</span></span><span class="sig-name descname"><span class="pre">MockAnnData</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_names</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/unittest_.html#MockAnnData"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.unittest_.MockAnnData" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">clinical_transformer.pt.datasets.preprocessor.unittest_.</span></span><span class="sig-name descname"><span class="pre">TestPreprocessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/unittest_.html#TestPreprocessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/unittest_.html#TestPreprocessor.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor.setUp" title="Link to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor.test_transform_from_ad">
+<span class="sig-name descname"><span class="pre">test_transform_from_ad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/clinical_transformer/pt/datasets/preprocessor/unittest_.html#TestPreprocessor.test_transform_from_ad"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor.test_transform_from_ad" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-clinical_transformer.pt.datasets.preprocessor">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-clinical_transformer.pt.datasets.preprocessor" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, ADS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,10 @@
+clinical\_transformer.pt.training.GPT package
+=============================================
+
+Module contents
+---------------
+
+.. automodule:: clinical_transformer.pt.training.GPT
+   :members:
+   :show-inheritance:
+   :undoc-members:

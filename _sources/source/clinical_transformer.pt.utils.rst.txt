@@ -1,0 +1,21 @@
+clinical\_transformer.pt.utils package
+======================================
+
+Submodules
+----------
+
+clinical\_transformer.pt.utils.embeddings module
+------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.utils.embeddings
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: clinical_transformer.pt.utils
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,21 @@
+clinical\_transformer.pt.tokenizer package
+==========================================
+
+Submodules
+----------
+
+clinical\_transformer.pt.tokenizer.FeatureTokenizer module
+----------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.tokenizer.FeatureTokenizer
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: clinical_transformer.pt.tokenizer
+   :members:
+   :show-inheritance:
+   :undoc-members:

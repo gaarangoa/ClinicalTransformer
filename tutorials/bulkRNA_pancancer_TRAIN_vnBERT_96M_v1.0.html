@@ -1,0 +1,569 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Training vnBERT 96M Foundation Model on Bulk RNA-seq Data &mdash; FMs 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="BulkRNA pancancer nBERT_80M_v1.0" href="bulkRNA_pancancer_nBERT_80M_v1.0.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FMs
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Training Tutorials:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Training vnBERT 96M Foundation Model on Bulk RNA-seq Data</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vnbert-architecture">vnBERT Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dataset">Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#prerequisites">Prerequisites</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#required-libraries">Required Libraries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#data-requirements">Data Requirements</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#step-by-step-implementation">Step-by-Step Implementation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#load-gene-vocabulary">1. Load Gene Vocabulary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#initialize-and-configure-tokenizer">2. Initialize and Configure Tokenizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-pretrained-tokenizer">3. Save Pretrained Tokenizer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#load-and-filter-training-data">4. Load and Filter Training Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tokenize-training-data">5. Tokenize Training Data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#save-processed-dataset">6. Save Processed Dataset</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#complete-training-pipeline">Complete Training Pipeline</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#model-architecture-components">Model Architecture Components</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#custom-embeddings-ctembeddings">1. Custom Embeddings (<code class="docutils literal notranslate"><span class="pre">CTEmbeddings</span></code>)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#transformer-encoder">2. Transformer Encoder</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#value-prediction-head">3. Value Prediction Head</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#complete-training-example">Complete Training Example</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#configuration-setup">1. Configuration Setup</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-script">2. Training Script</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#troubleshooting-common-issues">Troubleshooting Common Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#memory-issues">Memory Issues</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#model-outputs-and-applications">Model Outputs and Applications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#extract-gene-embeddings">Extract Gene Embeddings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#fine-tune-for-classification">Fine-tune for Classification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#model-release-and-production-deployment">Model Release and Production Deployment</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#overview-of-production-deployment">Overview of Production Deployment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-1-environment-setup-and-dependencies">Step 1: Environment Setup and Dependencies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-2-configure-deployment-paths">Step 2: Configure Deployment Paths</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-3-convert-deepspeed-checkpoint-to-standard-format">Step 3: Convert DeepSpeed Checkpoint to Standard Format</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#step-4-package-production-model-files">Step 4: Package Production Model Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Inference Tutorials:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bulkRNA_pancancer_nBERT_80M_v1.0.html">BulkRNA pancancer nBERT_80M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bulkRNA_pancancer_modernBERT_109M_v1.0.html">BulkRNA pancancer modernBERT_109M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bulkRNA_pancancer_rnBERT_96M_v1.0.html">BulkRNA pancancer rnBERT_96M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bulkRNA_pancancer_vnBERT_96M_v1.0.html">BulkRNA pancancer vnBERT_96M_v1.0</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FMs</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Training vnBERT 96M Foundation Model on Bulk RNA-seq Data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorials/bulkRNA_pancancer_TRAIN_vnBERT_96M_v1.0.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="training-vnbert-96m-foundation-model-on-bulk-rna-seq-data">
+<h1>Training vnBERT 96M Foundation Model on Bulk RNA-seq Data<a class="headerlink" href="#training-vnbert-96m-foundation-model-on-bulk-rna-seq-data" title="Link to this heading"></a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h2>
+<p>This tutorial demonstrates how to train a vnBERT (Value-based BERT) foundation model using the Clinical Transformer framework. vnBERT is a specialized transformer architecture designed for data that leverages a value-based encoding approach to handle numerical gene expression values from RNA sequencing data or any other modality.</p>
+</section>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Link to this heading"></a></h2>
+<section id="vnbert-architecture">
+<h3>vnBERT Architecture<a class="headerlink" href="#vnbert-architecture" title="Link to this heading"></a></h3>
+<p>vnBERT (Value-based BERT) is a transformer-based foundation model specifically designed for omics data. Unlike traditional BERT models that work with discrete tokens, vnBERT can directly process continuous numerical values representing e.g., gene expression levels. This makes it particularly well-suited for genomic applications where preserving the quantitative nature of gene expression is crucial.</p>
+</section>
+<section id="dataset">
+<h3>Dataset<a class="headerlink" href="#dataset" title="Link to this heading"></a></h3>
+<p>We use RNA-seq data from two major cancer genomics consortiums:</p>
+<ul class="simple">
+<li><p><strong>TCGA (The Cancer Genome Atlas)</strong>: A comprehensive cancer genomics dataset</p></li>
+<li><p><strong>CPTAC (Clinical Proteomic Tumor Analysis Consortium)</strong>: Multi-omic cancer data</p></li>
+</ul>
+<p>The data is formatted as dictionaries where:</p>
+<ul class="simple">
+<li><p><strong>Keys</strong>: Gene identifiers (e.g., Ensembl gene IDs)</p></li>
+<li><p><strong>Values</strong>: Gene expression levels (typically log-transformed counts or TPM values)</p></li>
+</ul>
+</section>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Link to this heading"></a></h2>
+<section id="required-libraries">
+<h3>Required Libraries<a class="headerlink" href="#required-libraries" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">vnBertTokenizer</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pickle</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+</pre></div>
+</div>
+</section>
+<section id="data-requirements">
+<h3>Data Requirements<a class="headerlink" href="#data-requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>Gene list: A collection of gene identifiers used as vocabulary</p></li>
+<li><p>RNA-seq data: Formatted as list of dictionaries with gene:expression pairs</p></li>
+</ul>
+</section>
+</section>
+<section id="step-by-step-implementation">
+<h2>Step-by-Step Implementation<a class="headerlink" href="#step-by-step-implementation" title="Link to this heading"></a></h2>
+<section id="load-gene-vocabulary">
+<h3>1. Load Gene Vocabulary<a class="headerlink" href="#load-gene-vocabulary" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the gene list that will serve as the model&#39;s vocabulary</span>
+<span class="c1"># This list defines which genes the model will be trained on</span>
+<span class="n">genes</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/your/data/gene_list.pk&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>What this does:</strong></p>
+<ul class="simple">
+<li><p>Loads a curated list of genes that will form the model’s vocabulary</p></li>
+<li><p>These genes are typically selected based on criteria such as:</p>
+<ul>
+<li><p>Expression variability across samples</p></li>
+<li><p>Biological relevance</p></li>
+<li><p>Data quality metrics</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="initialize-and-configure-tokenizer">
+<h3>2. Initialize and Configure Tokenizer<a class="headerlink" href="#initialize-and-configure-tokenizer" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Initialize the vnBERT tokenizer</span>
+<span class="c1"># This tokenizer is specifically designed to handle continuous gene expression values</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">vnBertTokenizer</span><span class="p">()</span>
+
+<span class="c1"># Fit the tokenizer on the gene features</span>
+<span class="c1"># This step creates the vocabulary mapping and sets up value encoding parameters</span>
+<span class="n">gene_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">genes</span><span class="p">)</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">gene_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>What this does:</strong></p>
+<ul class="simple">
+<li><p>Creates a vnBERT tokenizer instance optimized for genomic data</p></li>
+<li><p>Fits the tokenizer to learn the gene vocabulary and expression value distributions</p></li>
+<li><p>Establishes mappings between gene names and token IDs</p></li>
+</ul>
+</section>
+<section id="save-pretrained-tokenizer">
+<h3>3. Save Pretrained Tokenizer<a class="headerlink" href="#save-pretrained-tokenizer" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save the fitted tokenizer for future use</span>
+<span class="c1"># This allows consistent tokenization across training and inference</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="s1">&#39;/path/to/your/models/tokenizers/ensembl_vnBERT/&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>What this does:</strong></p>
+<ul class="simple">
+<li><p>Persists the tokenizer configuration and vocabulary</p></li>
+<li><p>Enables reproducible tokenization for model deployment</p></li>
+<li><p>Stores normalization parameters for value encoding</p></li>
+</ul>
+</section>
+<section id="load-and-filter-training-data">
+<h3>4. Load and Filter Training Data<a class="headerlink" href="#load-and-filter-training-data" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Load the RNA-seq training dataset</span>
+<span class="c1"># Data format: List of dictionaries, each representing one sample</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/your/data/RNASeq+tcga+cptac.pk&#39;</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span>
+
+<span class="c1"># Filter samples to only include genes present in our vocabulary</span>
+<span class="c1"># This ensures consistency between tokenizer vocabulary and training data</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="p">[{</span><span class="n">k</span><span class="p">:</span><span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span><span class="n">v</span> <span class="ow">in</span> <span class="n">i</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">genes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="kc">False</span><span class="p">)}</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">X_train</span><span class="p">]</span>
+</pre></div>
+</div>
+<p><strong>What this does:</strong></p>
+<ul class="simple">
+<li><p>Loads the combined TCGA + CPTAC RNA-seq dataset</p></li>
+<li><p>Filters each sample to only include genes that are in the model vocabulary</p></li>
+<li><p>Ensures data consistency and removes genes not relevant for training</p></li>
+</ul>
+</section>
+<section id="tokenize-training-data">
+<h3>5. Tokenize Training Data<a class="headerlink" href="#tokenize-training-data" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Tokenize the filtered training data</span>
+<span class="c1"># Configure tokenization parameters for vnBERT training</span>
+<span class="n">encoded</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+    <span class="n">X_train</span><span class="p">,</span> 
+    <span class="n">return_tensors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>           <span class="c1"># Return as lists rather than tensors</span>
+    <span class="n">return_attention_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>   <span class="c1"># Don&#39;t generate attention masks</span>
+    <span class="n">return_quantile_values</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>  <span class="c1"># Don&#39;t return quantile-normalized values</span>
+    <span class="n">return_robust_zscore_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>  <span class="c1"># Use robust z-score normalization</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Tokenization Parameters:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">return_tensors=None</span></code>: Returns Python lists for flexibility in downstream processing</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return_attention_mask=False</span></code>: Attention masks not needed for this training setup</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return_quantile_values=False</span></code>: Skips quantile normalization</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">return_robust_zscore_values=True</span></code>: Applies robust z-score normalization to handle outliers</p></li>
+</ul>
+<p><strong>What robust z-score normalization does:</strong></p>
+<ul class="simple">
+<li><p>Normalizes expression values using median and median absolute deviation (MAD)</p></li>
+<li><p>More robust to outliers compared to standard z-score normalization</p></li>
+<li><p>Formula: (x - median) / (MAD)</p></li>
+</ul>
+</section>
+<section id="save-processed-dataset">
+<h3>6. Save Processed Dataset<a class="headerlink" href="#save-processed-dataset" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Save the tokenized dataset for training</span>
+<span class="c1"># This preprocessed data can be directly used for model training</span>
+<span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">encoded</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;/path/to/your/data/GeneTokenizer+vnBERT+RNAseq+tcga+cptac.pk&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p><strong>What this does:</strong></p>
+<ul class="simple">
+<li><p>Saves the tokenized and normalized dataset</p></li>
+<li><p>Creates a training-ready dataset that can be loaded efficiently during model training</p></li>
+<li><p>Preserves the preprocessing pipeline for reproducibility</p></li>
+</ul>
+</section>
+</section>
+<section id="complete-training-pipeline">
+<h2>Complete Training Pipeline<a class="headerlink" href="#complete-training-pipeline" title="Link to this heading"></a></h2>
+<p>After data preprocessing, the vnBERT model training involves several key components that work together to create a robust foundation model for genomic data.</p>
+<section id="model-architecture-components">
+<h3>Model Architecture Components<a class="headerlink" href="#model-architecture-components" title="Link to this heading"></a></h3>
+<section id="custom-embeddings-ctembeddings">
+<h4>1. Custom Embeddings (<code class="docutils literal notranslate"><span class="pre">CTEmbeddings</span></code>)<a class="headerlink" href="#custom-embeddings-ctembeddings" title="Link to this heading"></a></h4>
+<p>vnBERT uses a specialized embedding layer that combines:</p>
+<ul class="simple">
+<li><p><strong>Token Embeddings</strong>: Standard learnable embeddings for gene tokens</p></li>
+<li><p><strong>Value Embeddings</strong>: Linear projection of continuous expression values</p></li>
+<li><p><strong>Layer Normalization</strong>: Separate normalization for token and value embeddings</p></li>
+<li><p><strong>Scaling</strong>: Square root scaling based on hidden dimension size</p></li>
+</ul>
+</section>
+<section id="transformer-encoder">
+<h4>2. Transformer Encoder<a class="headerlink" href="#transformer-encoder" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Based on BERT architecture with multi-head attention</p></li>
+<li><p>Supports FlashAttention for memory efficiency</p></li>
+<li><p>Configurable number of layers and attention heads</p></li>
+<li><p>Custom attention masking for value-based tokens</p></li>
+</ul>
+</section>
+<section id="value-prediction-head">
+<h4>3. Value Prediction Head<a class="headerlink" href="#value-prediction-head" title="Link to this heading"></a></h4>
+<ul class="simple">
+<li><p>Linear layer that predicts masked expression values</p></li>
+<li><p>Trained using Mean Squared Error (MSE) loss</p></li>
+<li><p>Only computes loss on masked positions</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="complete-training-example">
+<h2>Complete Training Example<a class="headerlink" href="#complete-training-example" title="Link to this heading"></a></h2>
+<p>Here’s a comprehensive example that demonstrates the entire vnBERT training pipeline from data preparation to model training:</p>
+<section id="configuration-setup">
+<h3>1. Configuration Setup<a class="headerlink" href="#configuration-setup" title="Link to this heading"></a></h3>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1"># config.yaml - Training configuration file</span>
+<span class="nt">experiment</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;vnBERT_96M_pancancer&quot;</span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">seed</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">42</span>
+<span class="w">  </span><span class="nt">save_dir</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/experiments&quot;</span>
+<span class="w">  </span>
+<span class="nt">model</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">vocab_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20000</span><span class="w">  </span><span class="c1"># Set based on your gene vocabulary</span>
+<span class="w">  </span><span class="nt">hidden_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">768</span>
+<span class="w">  </span><span class="nt">num_hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span>
+<span class="w">  </span><span class="nt">num_attention_heads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">12</span>
+<span class="w">  </span><span class="nt">intermediate_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3072</span>
+<span class="w">  </span><span class="nt">max_position_embeddings</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4096</span>
+<span class="w">  </span><span class="nt">enable_flash_attention</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span>
+<span class="nt">dataset</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">input_file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/tokenized_data.pk&quot;</span>
+<span class="w">  </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">16</span>
+<span class="w">  </span><span class="nt">context_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2048</span>
+<span class="w">  </span><span class="nt">masking_fraction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.15</span>
+<span class="w">  </span><span class="nt">shuffle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">num_workers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+<span class="w">  </span>
+<span class="nt">trainer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">epochs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">10</span>
+<span class="w">  </span><span class="nt">learning_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1e-4</span>
+<span class="w">  </span><span class="nt">optimizer</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;torch.optim.AdamW&quot;</span>
+<span class="w">  </span><span class="nt">strategy</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;deepspeed&quot;</span>
+<span class="w">  </span><span class="nt">precision</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;16-mixed&quot;</span>
+<span class="w">  </span><span class="nt">devices</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span>
+<span class="w">  </span><span class="nt">accumulate_grad_batches</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</pre></div>
+</div>
+</section>
+<section id="training-script">
+<h3>2. Training Script<a class="headerlink" href="#training-script" title="Link to this heading"></a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">8</span><span class="w"> </span>--no-python<span class="w"> </span>train_vnBERT<span class="w"> </span>config.yaml
+</pre></div>
+</div>
+</section>
+</section>
+<section id="troubleshooting-common-issues">
+<h2>Troubleshooting Common Issues<a class="headerlink" href="#troubleshooting-common-issues" title="Link to this heading"></a></h2>
+<section id="memory-issues">
+<h3>Memory Issues<a class="headerlink" href="#memory-issues" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Problem</strong>: CUDA out of memory errors</p></li>
+<li><p><strong>Solutions</strong>:</p>
+<ul>
+<li><p>Reduce <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> in configuration</p></li>
+<li><p>Decrease <code class="docutils literal notranslate"><span class="pre">context_window</span></code> size</p></li>
+<li><p>Enable gradient accumulation</p></li>
+<li><p>Use DeepSpeed with model sharding</p></li>
+</ul>
+</li>
+</ul>
+</section>
+</section>
+<section id="model-outputs-and-applications">
+<h2>Model Outputs and Applications<a class="headerlink" href="#model-outputs-and-applications" title="Link to this heading"></a></h2>
+<p>The trained vnBERT model produces rich representations that can be used for various downstream tasks:</p>
+<section id="extract-gene-embeddings">
+<h3>Extract Gene Embeddings<a class="headerlink" href="#extract-gene-embeddings" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get contextualized gene representations</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">outputs</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">sample_tokens</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">sample_values</span><span class="p">)</span>
+    <span class="n">gene_embeddings</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span>  <span class="c1"># [batch_size, seq_len, hidden_size]</span>
+</pre></div>
+</div>
+</section>
+<section id="fine-tune-for-classification">
+<h3>Fine-tune for Classification<a class="headerlink" href="#fine-tune-for-classification" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Add classification head for cancer type prediction</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">vnBERTClassifier</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vnbert_model</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">vnbert</span> <span class="o">=</span> <span class="n">vnbert_model</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">768</span><span class="p">,</span> <span class="n">num_classes</span><span class="p">)</span>
+        
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tokens</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="n">outputs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vnbert</span><span class="p">(</span><span class="n">tokens</span><span class="o">=</span><span class="n">tokens</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">cls_embedding</span> <span class="o">=</span> <span class="n">outputs</span><span class="o">.</span><span class="n">last_hidden_state</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span>  <span class="c1"># CLS token</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">classifier</span><span class="p">(</span><span class="n">cls_embedding</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="model-release-and-production-deployment">
+<h2>Model Release and Production Deployment<a class="headerlink" href="#model-release-and-production-deployment" title="Link to this heading"></a></h2>
+<p>After training your vnBERT model, you’ll want to prepare it for production use and potentially release it to Hugging Face Hub for broader accessibility. This section covers the complete workflow for converting trained models to production-ready formats.</p>
+<section id="overview-of-production-deployment">
+<h3>Overview of Production Deployment<a class="headerlink" href="#overview-of-production-deployment" title="Link to this heading"></a></h3>
+<p>Production deployment involves several key steps:</p>
+<ol class="arabic simple">
+<li><p><strong>Model Conversion</strong>: Transform distributed training checkpoints to single-file format</p></li>
+<li><p><strong>Weight Extraction</strong>: Convert from Lightning/DeepSpeed format to standard PyTorch</p></li>
+<li><p><strong>Configuration Packaging</strong>: Prepare model config and tokenizer files</p></li>
+<li><p><strong>Hugging Face Integration</strong>: Upload to Hugging Face Hub for API access</p></li>
+<li><p><strong>Production Setup</strong>: Deploy for inference in production environments</p></li>
+</ol>
+</section>
+<section id="step-1-environment-setup-and-dependencies">
+<h3>Step 1: Environment Setup and Dependencies<a class="headerlink" href="#step-1-environment-setup-and-dependencies" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Required imports for model conversion and deployment</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers.models.bert.modeling_bert</span><span class="w"> </span><span class="kn">import</span> <span class="n">BertLayer</span><span class="p">,</span> <span class="n">BertConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.pt.datasets.preprocessor.tabular</span><span class="w"> </span><span class="kn">import</span> <span class="n">Preprocessor</span> <span class="k">as</span> <span class="n">Tokenizer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.pt.datasets.dataloader.tabular</span><span class="w"> </span><span class="kn">import</span> <span class="n">TabularDataset</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.pt.training.BERT.nBERT</span><span class="w"> </span><span class="kn">import</span> <span class="n">CTBERT</span> <span class="k">as</span> <span class="n">clinical_transformer</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.utilities.deepspeed</span><span class="w"> </span><span class="kn">import</span> <span class="n">convert_zero_checkpoint_to_fp32_state_dict</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepspeed.runtime.zero.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">ZeroStageEnum</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepspeed.runtime.fp16.loss_scaler</span><span class="w"> </span><span class="kn">import</span> <span class="n">LossScaler</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">deepspeed.utils.tensor_fragment</span><span class="w"> </span><span class="kn">import</span> <span class="n">fragment_address</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BertConfig</span>
+</pre></div>
+</div>
+</section>
+<section id="step-2-configure-deployment-paths">
+<h3>Step 2: Configure Deployment Paths<a class="headerlink" href="#step-2-configure-deployment-paths" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Configuration for model conversion and deployment</span>
+<span class="n">device</span> <span class="o">=</span> <span class="s1">&#39;cuda&#39;</span>
+
+<span class="c1"># Source paths - where your trained model is stored</span>
+<span class="n">path</span> <span class="o">=</span> <span class="s1">&#39;/path/to/your/experiments/&#39;</span>
+<span class="n">fm_name</span> <span class="o">=</span> <span class="s1">&#39;ssl/vnBERT&#39;</span>  <span class="c1"># Update to match your vnBERT model name</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="mi">47999</span>  <span class="c1"># Specify the epoch checkpoint to use</span>
+<span class="n">version</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># Production destination - where the production-ready model will be stored</span>
+<span class="n">production_path</span> <span class="o">=</span> <span class="s1">&#39;/path/to/your/production/vnBERT_pancancer_96M_v1.0/&#39;</span>
+
+<span class="c1"># Create production directory if it doesn&#39;t exist</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">production_path</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Path Configuration Details:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: Root directory of your training experiment</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">fm_name</span></code>: Model name within the experiment (should match your training config)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">epoch</span></code>: Specific checkpoint epoch to convert (use best performing epoch)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">version</span></code>: Experiment version number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">production_path</span></code>: Destination for production-ready model files</p></li>
+</ul>
+</section>
+<section id="step-3-convert-deepspeed-checkpoint-to-standard-format">
+<h3>Step 3: Convert DeepSpeed Checkpoint to Standard Format<a class="headerlink" href="#step-3-convert-deepspeed-checkpoint-to-standard-format" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Register safe globals for checkpoint loading</span>
+<span class="c1"># This is required for loading DeepSpeed checkpoints with custom classes</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">serialization</span><span class="o">.</span><span class="n">add_safe_globals</span><span class="p">([</span>
+    <span class="n">ZeroStageEnum</span><span class="p">,</span> 
+    <span class="n">LossScaler</span><span class="p">,</span> 
+    <span class="n">BertConfig</span><span class="p">,</span> 
+    <span class="n">fragment_address</span>
+<span class="p">])</span>
+
+<span class="c1"># Convert distributed DeepSpeed checkpoint to single-file FP32 format</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Converting DeepSpeed checkpoint to FP32 state dict...&quot;</span><span class="p">)</span>
+<span class="n">convert_zero_checkpoint_to_fp32_state_dict</span><span class="p">(</span>
+    <span class="n">checkpoint_dir</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/models/</span><span class="si">{</span><span class="n">fm_name</span><span class="si">}</span><span class="s2">/version_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/models/epoch=</span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">.ckpt&quot;</span><span class="p">,</span>
+    <span class="n">output_file</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/models/</span><span class="si">{</span><span class="n">fm_name</span><span class="si">}</span><span class="s2">/version_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s2">/models/epoch=</span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s2">.ckpt/lightning_model.pt&quot;</span>
+<span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Checkpoint conversion completed successfully!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>What this does:</strong></p>
+<ul class="simple">
+<li><p>Converts distributed training checkpoints to a single file</p></li>
+<li><p>Handles DeepSpeed Zero optimization state reconstruction</p></li>
+<li><p>Converts from mixed precision to FP32 for broader compatibility</p></li>
+<li><p>Creates a standard PyTorch state dict that can be loaded without DeepSpeed</p></li>
+</ul>
+</section>
+<section id="step-4-package-production-model-files">
+<h3>Step 4: Package Production Model Files<a class="headerlink" href="#step-4-package-production-model-files" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Copy converted model weights to production directory</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Copying model files to production directory...&quot;</span><span class="p">)</span>
+
+<span class="c1"># Copy model weights</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">/models/</span><span class="si">{</span><span class="n">fm_name</span><span class="si">}</span><span class="s1">/version_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">/models/epoch=</span><span class="si">{</span><span class="n">epoch</span><span class="si">}</span><span class="s1">.ckpt/lightning_model.pt </span><span class="si">{</span><span class="n">production_path</span><span class="si">}</span><span class="s1">/weights.pt&#39;</span><span class="p">)</span>
+
+<span class="c1"># Copy model configuration</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">/models/</span><span class="si">{</span><span class="n">fm_name</span><span class="si">}</span><span class="s1">/version_</span><span class="si">{</span><span class="n">version</span><span class="si">}</span><span class="s1">/model_config.json </span><span class="si">{</span><span class="n">production_path</span><span class="si">}</span><span class="s1">/&#39;</span><span class="p">)</span>
+
+<span class="c1"># Copy tokenizer configuration</span>
+<span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;cp </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">/models/</span><span class="si">{</span><span class="n">fm_name</span><span class="si">}</span><span class="s1">/preprocessor.yaml </span><span class="si">{</span><span class="n">production_path</span><span class="si">}</span><span class="s1">/tokenizer.yaml&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Production model packaging completed!&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Production Package Contents:</strong></p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">weights.pt</span></code>: Model weights in standard PyTorch format</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">model_config.json</span></code>: BERT configuration (vocab size, hidden dims, etc.)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tokenizer.yaml</span></code>: Tokenizer configuration and vocabulary mapping</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bulkRNA_pancancer_nBERT_80M_v1.0.html" class="btn btn-neutral float-right" title="BulkRNA pancancer nBERT_80M_v1.0" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, ADS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

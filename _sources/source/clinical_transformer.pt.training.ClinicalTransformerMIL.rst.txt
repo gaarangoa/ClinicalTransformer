@@ -1,0 +1,37 @@
+clinical\_transformer.pt.training.ClinicalTransformerMIL package
+================================================================
+
+Submodules
+----------
+
+clinical\_transformer.pt.training.ClinicalTransformerMIL.dataset module
+-----------------------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.training.ClinicalTransformerMIL.dataset
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+clinical\_transformer.pt.training.ClinicalTransformerMIL.modeling module
+------------------------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.training.ClinicalTransformerMIL.modeling
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+clinical\_transformer.pt.training.ClinicalTransformerMIL.pipeline module
+------------------------------------------------------------------------
+
+.. automodule:: clinical_transformer.pt.training.ClinicalTransformerMIL.pipeline
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+Module contents
+---------------
+
+.. automodule:: clinical_transformer.pt.training.ClinicalTransformerMIL
+   :members:
+   :show-inheritance:
+   :undoc-members:
