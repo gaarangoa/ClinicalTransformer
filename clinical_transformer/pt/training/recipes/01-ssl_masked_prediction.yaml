@@ -1,0 +1,45 @@
+experiment:
+  name: self_supervised_learning
+  version: 1
+  save_dir: ../data/runs/
+  seed: 0
+  set_float32_matmul_precision: medium
+
+dataset:
+  input_file: train_data.json
+  categorical_features: []
+  numerical_features: []
+  num_workers: 8
+  batch_size: 1024
+  context_window: 3500
+  masking_fraction: 0.2
+  mask_values: False
+  shuffle: True
+
+model:
+  vocabulary_size: 20000
+  embedding_size: 128
+  hidden_layer_size: 1024
+  heads: 4
+  layers: 4
+  enable_flash_attention: true
+
+loss:
+  loss_token_weight: 1.0
+  loss_value_weight: 1.0
+
+optimizer:
+  lr: 1e-3
+
+trainer:
+  epochs: 100
+  log_every_n_steps: 1
+  deterministic: false
+  devices: [0, 1]
+  accelerator: 'cuda'
+  strategy: 'deepspeed_stage_3'
+  precision: 16
+  num_nodes: 1
+  reload_dataloaders_every_n_epochs: False
+  save_every_n_epochs: 100
+  from_checkpoint: 

@@ -1,0 +1,14 @@
+__pycache__
+**/.ipynb_checkpoints/
+**/data/
+**/env/
+usr
+build
+**.egg-info
+.DS_Store
+*.pyc
+.jupyter
+docs/source
+agents.yaml
+.mypy_cache
+**/tf/
