@@ -1,0 +1,50 @@
+experiment:
+  name: My_FM_NAME
+  version: 1
+  save_dir: /out/path/
+  seed: 0
+  set_float32_matmul_precision: medium
+  comments: ""
+
+dataset:
+  input_file: /dev/shm/training_data.h5ad
+  priors_file:
+  num_workers: 23
+  batch_size: 1184
+  context_window: 22
+  masking_fraction: 0.3
+  filter_zeros: False
+  shuffle: True
+
+model:
+  modalities: 1
+  vocab_size: 30
+  hidden_size: 128
+  intermediate_size: 512
+  num_attention_heads: 2
+  num_hidden_layers: 2
+  enable_flash_attention: true
+  dropout: 0.1
+  _attn_implementation: 'sdpa'
+  learning_rate: 1.0e-5
+  optimizer: 'torch.optim.Adam' # 'DeepSpeedCPUAdam|torch.optim.Adam'
+  pad_token_id: 0
+
+trainer:
+  epochs: 1000
+  log_every_n_steps: 1
+  deterministic: false
+  devices: 8
+  accelerator: 'cuda'
+  precision: 'bf16-mixed'
+  num_nodes: 1
+  reload_dataloaders_every_n_epochs: False
+  save_every_n_epochs: 100
+  accumulate_grad_batches: 1
+  from_checkpoint: 
+  strategy: 
+    name: deepspeed
+    params: 
+      stage: 2
+      offload_optimizer: False
+      offload_parameters: False
