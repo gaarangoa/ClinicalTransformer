@@ -48,21 +48,14 @@ processed = tokenizer(
     return_tensors="pt",
 )
 
-# Prepend CLS token
-batch_size = processed["input_ids"].shape[0]
-tokens = torch.cat(
-    [torch.full((batch_size, 1), 2, dtype=torch.long), processed["input_ids"]], dim=1
-).to(device)
-values = torch.cat(
-    [torch.full((batch_size, 1), 1.0), processed["minmax_values"]], dim=1
-).to(device)
+tokens = processed["input_ids"].to(device)
+values = processed["minmax_values"].to(device)
 
-with torch.no_grad():
+with torch.inference_mode():
     output = model(
         tokens=tokens, values=values,
         output_last_states=True, return_dict=True,
     )
-    embeddings = output.last_hidden_state[:, 0, :].detach().cpu()  # CLS embeddings
 ```
 
 ## Training Pipeline
