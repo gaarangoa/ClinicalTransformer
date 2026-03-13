@@ -75,7 +75,7 @@ The full vnBERT pipeline has five steps:
 torchrun --nproc_per_node=8 train.py config.yaml
 ```
 
-See the [full documentation](docs/) for detailed guides on each step.
+See the [full documentation](https://gaarangoa.github.io/ClinicalTransformer/) for detailed guides on each step.
 
 ## Pretrained Models
 
