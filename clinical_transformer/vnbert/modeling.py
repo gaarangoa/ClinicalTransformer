@@ -140,59 +140,57 @@ class nBERTPretrainedModel(BertPreTrainedModel):
         # Create masks for different token types using scGPT strategy
         padding_mask = (tokens != 0)  # Not padding tokens
         masked_positions = (values == -10.0)  # Masked value positions
-        
+
         # scGPT attention strategy: masked positions excluded from keys/values
         # but can still be queries (can attend to others AND themselves)
         # key_value_mask: True for positions that can be keys/values
         key_value_mask = padding_mask & (~masked_positions)
-        
-        # For embeddings, replace masked values with 0 to ignore them
-        values_for_embedding = values.clone()
-        values_for_embedding[masked_positions] = 0.0
-        
+
+        # Zero out masked values for embedding without cloning
+        values_for_embedding = torch.where(
+            masked_positions, torch.zeros_like(values), values
+        )
+
         # Get embeddings and apply ONLY padding mask (not masked positions)
         embeddings, _ = self.embedder(tokens=tokens,
                                       values=values_for_embedding)
-        embeddings = (padding_mask.unsqueeze(-1).type_as(embeddings) *
-                      embeddings)
-        
+
+        # Precompute padding expansion once for reuse across layers
+        padding_expanded = padding_mask.unsqueeze(-1).type_as(embeddings)
+        embeddings = padding_expanded * embeddings
+
+        # Build attention mask once (identical across all layers)
+        batch_size, seq_len = tokens.shape
+
+        # Base attention mask for padding
+        attention_mask = padding_mask.unsqueeze(1).unsqueeze(2).expand(
+            batch_size, 1, seq_len, seq_len
+        )
+
+        # Restrict: no position can attend TO masked positions
+        key_value_expanded = key_value_mask.unsqueeze(1).unsqueeze(1).expand(
+            batch_size, 1, seq_len, seq_len
+        )
+        attention_mask = attention_mask & key_value_expanded
+
+        # Allow masked positions to attend to themselves (diagonal)
+        diagonal_mask = torch.eye(
+            seq_len, device=tokens.device, dtype=torch.bool
+        )
+        masked_self_attend = (
+            masked_positions.unsqueeze(1) & diagonal_mask.unsqueeze(0)
+        )
+        attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
+
+        # Convert to attention scores format (large negative for blocked)
+        attention_mask = (-1e6 * (~attention_mask)).type_as(embeddings)
+
         # Pass through transformer layers
         hidden_state = embeddings
         for layer in self.encoder:
             if output_hidden_states:
                 all_hidden_states = all_hidden_states + (hidden_state,)
-            
-            # Create scGPT attention mask:
-            # - Masked positions can attend to themselves (diagonal)
-            # - Masked positions cannot attend to other masked positions
-            # - Masked positions cannot be attended to by any position
-            batch_size, seq_len = tokens.shape
-            
-            # Start with base attention mask for padding
-            attention_mask = padding_mask.unsqueeze(1).unsqueeze(2)
-            attention_mask = attention_mask.expand(batch_size, 1, seq_len,
-                                                   seq_len)
-            
-            # Create mask where masked positions cannot be keys/values
-            key_value_expanded = key_value_mask.unsqueeze(1).unsqueeze(1)
-            key_value_expanded = key_value_expanded.expand(batch_size, 1,
-                                                           seq_len, seq_len)
-            
-            # Apply key/value restriction: no position can attend TO masked
-            attention_mask = attention_mask & key_value_expanded
-            
-            # Allow masked positions to attend to themselves (diagonal)
-            diagonal_mask = torch.eye(seq_len, device=tokens.device,
-                                      dtype=torch.bool)
-            masked_self_attend = (masked_positions.unsqueeze(1) &
-                                  diagonal_mask.unsqueeze(0))
-            
-            # Combine: normal attention + masked self-attention
-            attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
-            
-            # Convert to attention scores format (large negative for blocked)
-            attention_mask = (-1e6 * (~attention_mask)).type_as(hidden_state)
-            
+
             layer_outputs = layer(
                 hidden_states=hidden_state,
                 attention_mask=attention_mask,
@@ -204,17 +202,13 @@ class nBERTPretrainedModel(BertPreTrainedModel):
                 all_attentions = all_attentions + (attention_weights,)
             else:
                 hidden_state = layer_outputs[0]
-            
-            # Zero out padding positions, keep masked positions for queries
-            padding_expanded = padding_mask.unsqueeze(-1)
-            hidden_state = (padding_expanded.type_as(hidden_state) *
-                            hidden_state)
+
+            # Zero out padding positions
+            hidden_state = padding_expanded * hidden_state
 
         # Final layer normalization
         hidden_state = self.output_ln(hidden_state)
-        padding_expanded = padding_mask.unsqueeze(-1)
-        hidden_state = (padding_expanded.type_as(hidden_state) *
-                        hidden_state)
+        hidden_state = padding_expanded * hidden_state
         
         # Add final hidden state if collecting all states
         if output_hidden_states:
@@ -314,7 +308,19 @@ class LightningTrainerModel(lightning.LightningModule):
         self.save_hyperparameters()
         
         self.loss = torch.nn.MSELoss(reduction='none')
-        self.optimizer_ = eval(config.optimizer)
+
+        _OPTIMIZERS = {
+            'torch.optim.Adam': torch.optim.Adam,
+            'torch.optim.AdamW': torch.optim.AdamW,
+            'DeepSpeedCPUAdam': DeepSpeedCPUAdam,
+            'FusedAdam': FusedAdam,
+        }
+        if config.optimizer not in _OPTIMIZERS:
+            raise ValueError(
+                f"Unknown optimizer '{config.optimizer}'. "
+                f"Supported: {list(_OPTIMIZERS.keys())}"
+            )
+        self.optimizer_ = _OPTIMIZERS[config.optimizer]
         self.lr = config.learning_rate
          
         
@@ -403,10 +409,13 @@ def pipeline():
         mask_prob=config.dataset.masking_fraction,
     )
     train_dataloader = DataLoader(
-        train_dataset, 
-        batch_size=config.dataset.batch_size, 
-        shuffle=config.dataset.shuffle, 
-        num_workers=config.dataset.num_workers
+        train_dataset,
+        batch_size=config.dataset.batch_size,
+        shuffle=config.dataset.shuffle,
+        num_workers=config.dataset.num_workers,
+        pin_memory=True,
+        persistent_workers=config.dataset.num_workers > 0,
+        prefetch_factor=2 if config.dataset.num_workers > 0 else None,
     )
 
     model_config = BertConfig(
@@ -414,6 +423,7 @@ def pipeline():
     )
 
     model = LightningTrainerModel(model_config)
+    model = torch.compile(model)
     model_config.to_json_file(f'{config.experiment.output_dir}/model_config.json')
     
     if config.trainer.strategy['name'] == 'deepspeed':
