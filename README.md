@@ -15,7 +15,12 @@ A framework for training and deploying transformer-based foundation models on cl
 ### Installation
 
 ```bash
-pip install https://github.com/gaarangoa/ClinicalTransformer.git
+# Set up a virtual environment with uv
+uv venv && source .venv/bin/activate
+uv pip install -e .
+
+# Or install directly from GitHub
+uv pip install git+https://github.com/gaarangoa/ClinicalTransformer.git
 ```
 
 ### Inference
@@ -85,6 +90,19 @@ See the [full documentation](docs/) for detailed guides on each step.
 |-------|-----------|------|-------------|
 | vnBERT RNA | TBD | TBD | TBD |
 
+
+## Docker
+
+```bash
+# Build
+docker build -t clinical-transformer .
+
+# Run with GPU access
+docker run --gpus all -it clinical-transformer
+
+# Mount data and models
+docker run --gpus all -v /path/to/data:/data -v /path/to/models:/models -it clinical-transformer
+```
 
 ## Requirements
 

@@ -13,3 +13,5 @@ agents.yaml
 .mypy_cache
 **/tf/
 .claude/
+.venv/
+uv.lock
