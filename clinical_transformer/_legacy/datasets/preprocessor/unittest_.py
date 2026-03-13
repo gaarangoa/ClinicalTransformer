@@ -1,7 +1,7 @@
 import unittest
 import numpy as np
 
-from clinical_transformer.pt.datasets.preprocessor.tabular import Preprocessor
+from clinical_transformer._legacy.datasets.preprocessor.tabular import Preprocessor
 
 class MockAnnData:
     def __init__(self, X, var_names):

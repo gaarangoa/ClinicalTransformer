@@ -12,3 +12,4 @@ docs/source
 agents.yaml
 .mypy_cache
 **/tf/
+.claude/

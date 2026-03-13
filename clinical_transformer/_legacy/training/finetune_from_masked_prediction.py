@@ -12,12 +12,12 @@ import json
 # sys.path.append(f'{home_dir}/samecode/')
 
 import torch
-from clinical_transformer.pt.datasets.preprocessor.tabular import Preprocessor
-from clinical_transformer.pt.datasets.dataloader.tabular import TabularDataset
-from clinical_transformer.pt.models.masked_prediction import MaskedSSL
-from clinical_transformer.pt.models.classifier import Classifier
-from clinical_transformer.pt.models.regressor import Regressor
-from clinical_transformer.pt.training import Config
+from clinical_transformer._legacy.datasets.preprocessor.tabular import Preprocessor
+from clinical_transformer._legacy.datasets.dataloader.tabular import TabularDataset
+from clinical_transformer._legacy.models.masked_prediction import MaskedSSL
+from clinical_transformer._legacy.models.classifier import Classifier
+from clinical_transformer._legacy.models.regressor import Regressor
+from clinical_transformer._legacy.training import Config
 
 from lightning.pytorch.loggers import CSVLogger
 from lightning.pytorch.callbacks import ModelCheckpoint

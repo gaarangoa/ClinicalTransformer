@@ -2,8 +2,8 @@ import os
 from tqdm import tqdm
 import h5py
 
-from clinical_transformer.pt.losses.contrastive import ntxent as contrastive_loss
-from clinical_transformer.pt.training.ClinicalTransformerMIL.dataset import MILDataset
+from clinical_transformer._legacy.losses.contrastive import ntxent as contrastive_loss
+from clinical_transformer._legacy.training.ClinicalTransformerMIL.dataset import MILDataset
 from clinical_transformer import ClinicalTransformerMILConfig, ClinicalTransformerMILModel
 from torch.utils.data import DataLoader
 import torch.distributed as dist

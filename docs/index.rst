@@ -1,31 +1,40 @@
-.. FMs documentation master file, created by
-   sphinx-quickstart on Mon Mar 17 22:21:50 2025.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+Clinical Transformer
+====================
 
-Welcome to Clinical Transformer documentation!
-===============================
+Clinical Transformer is a framework for training and deploying transformer-based foundation models on clinical, genomic, and tabular data. It provides ready-to-use architectures (vnBERT, nBERT, rnBERT, ModernBERT) with distributed training via DeepSpeed and a HuggingFace-compatible inference API.
 
 .. toctree::
    :maxdepth: 2
-   :caption: Getting Started:
+   :caption: Getting Started
 
-   ./tutorials/install.md
+   getting-started/installation
 
 .. toctree::
    :maxdepth: 2
-   :caption: Training Tutorials:
+   :caption: vnBERT Tutorial
 
-   ./tutorials/bulkRNA_pancancer_TRAIN_vnBERT_96M_v1.0.md
+   vnbert/overview
+   vnbert/build-dataset
+   vnbert/configuration
+   vnbert/training
+   vnbert/release-model
+   vnbert/inference
 
 .. toctree::
-   :maxdepth: 3
-   :caption: Inference Tutorials:
+   :maxdepth: 2
+   :caption: Model Cards
 
-   tutorials/bulkRNA_pancancer_nBERT_80M_v1.0.md
-   tutorials/bulkRNA_pancancer_modernBERT_109M_v1.0.md
-   tutorials/bulkRNA_pancancer_rnBERT_96M_v1.0.md
-   tutorials/bulkRNA_pancancer_vnBERT_96M_v1.0.md
+   models/vnbert-96m
+   models/nbert-80m
+   models/rnbert-96m
+   models/modernbert-109m
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Reference
+
+   reference/troubleshooting
+
 
 Indices and tables
 ==================

@@ -1,6 +1,6 @@
-from clinical_transformer.pt.datasets.preprocessor.tabular import Preprocessor
-from clinical_transformer.pt.datasets.dataloader.tabular import TabularDataset
-from clinical_transformer.pt.models.masked_prediction import MaskedSSL
+from clinical_transformer._legacy.datasets.preprocessor.tabular import Preprocessor
+from clinical_transformer._legacy.datasets.dataloader.tabular import TabularDataset
+from clinical_transformer._legacy.models.masked_prediction import MaskedSSL
 from torch.utils.data import DataLoader
 import os
 import pickle
@@ -14,12 +14,12 @@ from sklearn.metrics import roc_auc_score
 import torch.nn.functional as F
 import lightning 
 
-from clinical_transformer.pt.training import Config
+from clinical_transformer._legacy.training import Config
 
 from deepspeed.ops.adam import DeepSpeedCPUAdam
 from lightning.pytorch.strategies import DeepSpeedStrategy
 
-from clinical_transformer.pt.losses.survival.cindex import cindex_loss
+from clinical_transformer._legacy.losses.survival.cindex import cindex_loss
 
 from lightning.pytorch import Trainer, seed_everything
 from lightning.pytorch.loggers import CSVLogger
@@ -86,7 +86,7 @@ def pipeline():
     config.pretrained.from_pretrained = os.path.abspath(f'{config.pretrained.path}/models/{config.pretrained.model_name}/version_{config.pretrained.version}/models/epoch={config.pretrained.epoch}.ckpt/lightning_model.pt')
     
     # Loss
-    config.loss.name = eval(config.loss.name) # clinical_transformer.pt.losses.survival.cindex.cindex_loss
+    config.loss.name = eval(config.loss.name) # clinical_transformer._legacy.losses.survival.cindex.cindex_loss
     
     # Optimizer
     config.optimizer.name = eval(config.optimizer.name)

@@ -9,7 +9,7 @@ from deepspeed.runtime.fp16.loss_scaler import LossScaler
 from deepspeed.utils.tensor_fragment import fragment_address
 from transformers import BertConfig
 
-from clinical_transformer.pt.training.vnBERT.modeling import LightningTrainerModel
+from clinical_transformer.vnbert.modeling import LightningTrainerModel
 
 
 model_path = "path_to_model_hub"

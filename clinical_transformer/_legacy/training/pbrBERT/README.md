@@ -41,8 +41,8 @@ import torch
 from torch.utils.data import DataLoader
 
 # Import the components
-from clinical_transformer.pt.training.pbrBERT.tokenizer import GeneExpressionTokenizer
-from clinical_transformer.pt.training.pbrBERT.dataset import MaskedTokenDataset
+from clinical_transformer._legacy.training.pbrBERT.tokenizer import GeneExpressionTokenizer
+from clinical_transformer._legacy.training.pbrBERT.dataset import MaskedTokenDataset
 
 # Step 1: Create gene expression data
 gene_names = ["BRCA1", "BRCA2", "TP53", "EGFR", "KRAS", "PIK3CA", "PTEN"]
@@ -104,9 +104,9 @@ from torch.utils.data import DataLoader
 from transformers.models.bert.modeling_bert import BertConfig
 
 # Import pbrBERT components
-from clinical_transformer.pt.training.pbrBERT.tokenizer import GeneExpressionTokenizer
-from clinical_transformer.pt.training.pbrBERT.dataset import MaskedTokenDataset
-from clinical_transformer.pt.training.pbrBERT.modeling import nBERTPretrainedModel, nBERTModelOutput
+from clinical_transformer._legacy.training.pbrBERT.tokenizer import GeneExpressionTokenizer
+from clinical_transformer._legacy.training.pbrBERT.dataset import MaskedTokenDataset
+from clinical_transformer._legacy.training.pbrBERT.modeling import nBERTPretrainedModel, nBERTModelOutput
 
 # Step 1: Prepare realistic gene expression data
 def create_clinical_dataset():
@@ -433,9 +433,9 @@ from transformers.models.bert.modeling_bert import BertConfig
 from tqdm.auto import tqdm
 
 # Import pbrBERT components
-from clinical_transformer.pt.training.pbrBERT.tokenizer import GeneExpressionTokenizer
-from clinical_transformer.pt.training.pbrBERT.dataset import MaskedTokenDataset
-from clinical_transformer.pt.training.pbrBERT.modeling import nBERTPretrainedModel
+from clinical_transformer._legacy.training.pbrBERT.tokenizer import GeneExpressionTokenizer
+from clinical_transformer._legacy.training.pbrBERT.dataset import MaskedTokenDataset
+from clinical_transformer._legacy.training.pbrBERT.modeling import nBERTPretrainedModel
 
 def create_large_clinical_dataset():
     """Create a larger dataset for multi-GPU training"""

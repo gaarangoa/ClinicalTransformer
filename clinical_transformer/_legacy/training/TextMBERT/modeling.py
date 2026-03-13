@@ -8,9 +8,9 @@ import yaml
 import lightning
 import torch
 from transformers import ModernBertForMaskedLM, ModernBertConfig
-from clinical_transformer.pt.datasets.preprocessor.tabular_gpt import PreprocessorGPT as Tokenizer
-from clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked import MaskedTokenDataset as TabularMaskedDataset
-from clinical_transformer.pt.training import Config
+from clinical_transformer._legacy.datasets.preprocessor.tabular_gpt import PreprocessorGPT as Tokenizer
+from clinical_transformer._legacy.datasets.dataloader.tabular_sorted_masked import MaskedTokenDataset as TabularMaskedDataset
+from clinical_transformer._legacy.training import Config
 
 import pickle
 from torch.utils.data import DataLoader

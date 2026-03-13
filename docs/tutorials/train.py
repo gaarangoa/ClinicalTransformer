@@ -7,9 +7,9 @@ import anndata
 import lightning
 import torch
 from transformers.models.bert.modeling_bert import BertConfig
-from clinical_transformer.pt.training.vnBERT.dataset import MaskedTokenDatasetFromAnnData as MaskedTokenDataset
-from clinical_transformer.pt.training.vnBERT.modeling import LightningTrainerModel
-from clinical_transformer.pt.training import Config
+from clinical_transformer.vnbert.dataset import MaskedTokenDatasetFromAnnData as MaskedTokenDataset
+from clinical_transformer.vnbert.modeling import LightningTrainerModel
+from clinical_transformer.utils.config import Config
 
 import pickle
 from lightning.pytorch import Trainer

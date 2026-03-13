@@ -8,10 +8,10 @@ from transformers.models.bert.modeling_bert import BertLayer, BertConfig
 from transformers.models.bert.modeling_bert import BertPreTrainedModel
 from transformers.modeling_outputs import BaseModelOutput
 from transformers.utils import ModelOutput
-from clinical_transformer.pt.training.pbrBERT.dataset import MaskedTokenDataset as TabularMaskedDataset
+from clinical_transformer._legacy.training.pbrBERT.dataset import MaskedTokenDataset as TabularMaskedDataset
 
-from clinical_transformer.pt.losses.masked_prediction import MaskPredictionLoss
-from clinical_transformer.pt.training import Config
+from clinical_transformer._legacy.losses.masked_prediction import MaskPredictionLoss
+from clinical_transformer._legacy.training import Config
 
 import pickle
 

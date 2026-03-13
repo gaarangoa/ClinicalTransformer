@@ -5,11 +5,11 @@ import yaml
 import lightning
 import torch
 from transformers.models.bert.modeling_bert import BertLayer, BertConfig
-from clinical_transformer.pt.losses.masked_prediction import MaskPredictionLoss
-from clinical_transformer.pt.training import Config
+from clinical_transformer._legacy.losses.masked_prediction import MaskPredictionLoss
+from clinical_transformer._legacy.training import Config
 
 import pickle
-from clinical_transformer.pt.datasets.dataloader.tabular import TabularMaskedDataset
+from clinical_transformer._legacy.datasets.dataloader.tabular import TabularMaskedDataset
 from torch.utils.data import DataLoader
 from lightning.pytorch import Trainer
 

@@ -258,7 +258,7 @@ class CTOutput:
 ```python
 import torch
 import yaml
-from clinical_transformer.pt.training.BERT.nBERT import CTBERT, pipeline
+from clinical_transformer._legacy.training.BERT.nBERT import CTBERT, pipeline
 from transformers.models.bert.modeling_bert import BertConfig
 
 # Load configuration
@@ -279,8 +279,8 @@ pipeline()
 ```python
 import torch
 from torch.utils.data import DataLoader
-from clinical_transformer.pt.training.BERT.nBERT import CTBERT
-from clinical_transformer.pt.datasets.dataloader.tabular import TabularMaskedDataset
+from clinical_transformer._legacy.training.BERT.nBERT import CTBERT
+from clinical_transformer._legacy.datasets.dataloader.tabular import TabularMaskedDataset
 
 # Load your data
 with open('clinical_data.pkl', 'rb') as f:

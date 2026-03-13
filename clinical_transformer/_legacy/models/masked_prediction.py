@@ -5,7 +5,7 @@ import torch.nn.functional as F
 import lightning as L
 
 from .core import BaseClinicalTransformer
-from clinical_transformer.pt.losses.masked_prediction import MaskPredictionLoss
+from clinical_transformer._legacy.losses.masked_prediction import MaskPredictionLoss
 
 from deepspeed.ops.adam import DeepSpeedCPUAdam
 from deepspeed.ops.adam import FusedAdam
