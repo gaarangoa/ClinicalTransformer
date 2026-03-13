@@ -1,6 +1,6 @@
 [project]
 name = "clinical-transformer"
-version = "1.0.1"
+version = "1.0.2"
 description = "Foundation models for clinical, genomic, and tabular data"
 authors = [{ name = "Gustavo Arango" }]
 requires-python = ">=3.10"
