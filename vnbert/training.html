@@ -1,0 +1,414 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step 3: Training &mdash; Clinical Transformer 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Step 4: Release the Model" href="release-model.html" />
+    <link rel="prev" title="Step 2: Configuration" href="configuration.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Clinical Transformer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html#from-git">From Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html#core-dependencies">Core Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html#docker">Docker</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="build-dataset.html">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release-model.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Model Cards</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/vnbert-96m.html">vnBERT 96M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models/nbert-80m.html">nBERT 80M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rnbert-96m.html">rnBERT 96M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models/modernbert-109m.html">ModernBERT 109M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#training-issues">Training Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#cuda-out-of-memory">CUDA out of memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#nan-loss">NaN loss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#training-loss-not-decreasing">Training loss not decreasing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#slow-data-loading">Slow data loading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#configuration-issues">Configuration Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#vocab-size-mismatch">vocab_size mismatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#devices-mismatch">devices mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#model-release-issues">Model Release Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#can-t-load-checkpoint">Can’t load checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#missing-tokenizer-files">Missing tokenizer files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#inference-issues">Inference Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#feature-name-mismatch">Feature name mismatch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Clinical Transformer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Step 3: Training</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/vnbert/training.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="step-3-training">
+<h1>Step 3: Training<a class="headerlink" href="#step-3-training" title="Link to this heading"></a></h1>
+<p>This step launches the vnBERT pretraining loop using PyTorch Lightning and DeepSpeed.</p>
+<section id="the-training-script">
+<h2>The Training Script<a class="headerlink" href="#the-training-script" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">train.py</span></code> script reads the config, builds the dataset and model, and runs the training loop. Below is the complete script with comments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HDF5_USE_FILE_LOCKING&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FALSE&quot;</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">transformers.models.bert.modeling_bert</span><span class="w"> </span><span class="kn">import</span> <span class="n">BertConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.vnbert.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">MaskedTokenDatasetFromAnnData</span> <span class="k">as</span> <span class="n">MaskedTokenDataset</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.vnbert.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningTrainerModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Trainer</span><span class="p">,</span> <span class="n">seed_everything</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.loggers</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVLogger</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.callbacks</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModelCheckpoint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.strategies</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeepSpeedStrategy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pipeline</span><span class="p">():</span>
+    <span class="n">config_file</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">config_</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">config_file</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">))</span>
+    <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">config_</span><span class="p">)</span>
+
+    <span class="c1"># Global settings</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">enable_flash_sdp</span><span class="p">(</span>
+        <span class="n">enabled</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">enable_flash_attention</span>
+    <span class="p">)</span>
+    <span class="n">seed_everything</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">set_float32_matmul_precision</span><span class="p">(</span>
+        <span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">set_float32_matmul_precision</span>
+    <span class="p">)</span>
+    <span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">save_dir</span><span class="si">}</span><span class="s2">/&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">/&quot;</span>
+        <span class="sa">f</span><span class="s2">&quot;version_</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">version</span><span class="si">}</span><span class="s2">/&quot;</span>
+    <span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Save a copy of the config to the output directory</span>
+    <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
+        <span class="n">config_</span><span class="p">,</span>
+        <span class="nb">open</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/experiment_</span><span class="si">{</span><span class="n">config_file</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;w&quot;</span><span class="p">,</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Logger</span>
+    <span class="n">csv_logger</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span>
+        <span class="n">save_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">save_dir</span><span class="p">,</span>
+        <span class="n">name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Checkpoint callback</span>
+    <span class="n">checkpoint_callback</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span>
+        <span class="n">dirpath</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/models/&quot;</span><span class="p">,</span>
+        <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{epoch}</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">monitor</span><span class="o">=</span><span class="s2">&quot;epoch&quot;</span><span class="p">,</span>
+        <span class="n">save_top_k</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">save_weights_only</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">every_n_epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">save_every_n_epochs</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Dataset and dataloader</span>
+    <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">MaskedTokenDataset</span><span class="p">(</span>
+        <span class="n">anndata_path</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">input_file</span><span class="p">,</span>
+        <span class="n">context_window</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">context_window</span><span class="p">,</span>
+        <span class="n">mask_prob</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">masking_fraction</span><span class="p">,</span>
+        <span class="n">filter_zeros</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">filter_zeros</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">train_dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">train_dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">,</span>
+        <span class="n">num_workers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Model</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">BertConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">LightningTrainerModel</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
+    <span class="n">model_config</span><span class="o">.</span><span class="n">to_json_file</span><span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/model_config.json&quot;</span>
+    <span class="p">)</span>
+
+    <span class="c1"># Strategy</span>
+    <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;deepspeed&quot;</span><span class="p">:</span>
+        <span class="n">ds_strategy</span> <span class="o">=</span> <span class="n">DeepSpeedStrategy</span><span class="p">(</span>
+            <span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="vm">__dict__</span>
+        <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ds_strategy</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Trainer</span>
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+        <span class="n">log_every_n_steps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">log_every_n_steps</span><span class="p">,</span>
+        <span class="n">deterministic</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span>
+        <span class="n">devices</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">devices</span><span class="p">,</span>
+        <span class="n">accelerator</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">accelerator</span><span class="p">,</span>
+        <span class="n">strategy</span><span class="o">=</span><span class="n">ds_strategy</span><span class="p">,</span>
+        <span class="n">max_epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
+        <span class="n">precision</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
+        <span class="n">accumulate_grad_batches</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">accumulate_grad_batches</span><span class="p">,</span>
+        <span class="n">reload_dataloaders_every_n_epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">reload_dataloaders_every_n_epochs</span><span class="p">,</span>
+        <span class="n">logger</span><span class="o">=</span><span class="n">csv_logger</span><span class="p">,</span>
+        <span class="n">callbacks</span><span class="o">=</span><span class="p">[</span><span class="n">checkpoint_callback</span><span class="p">],</span>
+        <span class="n">num_nodes</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">num_nodes</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+        <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
+        <span class="n">train_dataloaders</span><span class="o">=</span><span class="n">train_dataloader</span><span class="p">,</span>
+        <span class="n">ckpt_path</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">from_checkpoint</span><span class="p">,</span>
+    <span class="p">)</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">pipeline</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="launch-command">
+<h2>Launch Command<a class="headerlink" href="#launch-command" title="Link to this heading"></a></h2>
+<p>Create a <code class="docutils literal notranslate"><span class="pre">train.sh</span></code> file or run directly from the terminal:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-GPU: set --nproc_per_node to match trainer.devices in config.yaml</span>
+torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">8</span><span class="w"> </span>train.py<span class="w"> </span>config.yaml
+</pre></div>
+</div>
+<p>For a single GPU:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>train.py<span class="w"> </span>config.yaml
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Make sure <code class="docutils literal notranslate"><span class="pre">trainer.devices</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> matches <code class="docutils literal notranslate"><span class="pre">--nproc_per_node</span></code>. If they differ, the training will fail or behave unexpectedly.</p>
+</div>
+</section>
+<section id="what-happens-during-training">
+<h2>What Happens During Training<a class="headerlink" href="#what-happens-during-training" title="Link to this heading"></a></h2>
+<ol class="arabic simple">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">MaskedTokenDataset</span></code> loads the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> file and, for each sample:</p>
+<ul class="simple">
+<li><p>randomly selects <code class="docutils literal notranslate"><span class="pre">context_window</span></code> features</p></li>
+<li><p>masks <code class="docutils literal notranslate"><span class="pre">masking_fraction</span></code> of those features</p></li>
+</ul>
+</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">LightningTrainerModel</span></code> processes each batch through the BERT encoder</p></li>
+<li><p>The model predicts the <strong>values</strong> of masked features using MSE loss</p></li>
+<li><p>Checkpoints are saved every <code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code> epochs to <code class="docutils literal notranslate"><span class="pre">&lt;output_dir&gt;/models/</span></code></p></li>
+</ol>
+</section>
+<section id="monitoring-training">
+<h2>Monitoring Training<a class="headerlink" href="#monitoring-training" title="Link to this heading"></a></h2>
+<p>Training metrics are logged as CSV files in:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">save_dir</span><span class="o">&gt;/&lt;</span><span class="n">name</span><span class="o">&gt;/</span><span class="n">version_</span><span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;/</span>
+</pre></div>
+</div>
+<p>Plot the loss curve:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="n">metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;&lt;save_dir&gt;/&lt;name&gt;/version_&lt;version&gt;/metrics.csv&#39;</span><span class="p">)</span>
+<span class="n">metrics</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;train_loss&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="resuming-from-a-checkpoint">
+<h2>Resuming from a Checkpoint<a class="headerlink" href="#resuming-from-a-checkpoint" title="Link to this heading"></a></h2>
+<p>If training is interrupted, set <code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">trainer</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">from_checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/models/My_FM_NAME/version_1/models/epoch=500.ckpt</span>
+</pre></div>
+</div>
+<p>Then re-run <code class="docutils literal notranslate"><span class="pre">train.sh</span></code>. Training resumes from the exact state (model weights, optimizer, epoch counter).</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="configuration.html" class="btn btn-neutral float-left" title="Step 2: Configuration" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="release-model.html" class="btn btn-neutral float-right" title="Step 4: Release the Model" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, ADS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

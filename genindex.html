@@ -5,14 +5,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; FMs 0.0.1 documentation</title>
+  <title>Index &mdash; Clinical Transformer 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
@@ -29,7 +29,7 @@
           
           
           <a href="index.html" class="icon icon-home">
-            FMs
+            Clinical Transformer
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -39,20 +39,135 @@
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Getting Started:</span></p>
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="getting-started/installation.html#from-git">From Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started/installation.html#core-dependencies">Core Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="getting-started/installation.html#docker">Docker</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Training Tutorials:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/bulkRNA_pancancer_TRAIN_vnBERT_96M_v1.0.html">Training vnBERT 96M Foundation Model on Bulk RNA-seq Data</a></li>
+</li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Inference Tutorials:</span></p>
+<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/bulkRNA_pancancer_nBERT_80M_v1.0.html">BulkRNA pancancer nBERT_80M_v1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/bulkRNA_pancancer_modernBERT_109M_v1.0.html">BulkRNA pancancer modernBERT_109M_v1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/bulkRNA_pancancer_rnBERT_96M_v1.0.html">BulkRNA pancancer rnBERT_96M_v1.0</a></li>
-<li class="toctree-l1"><a class="reference internal" href="tutorials/bulkRNA_pancancer_vnBERT_96M_v1.0.html">BulkRNA pancancer vnBERT_96M_v1.0</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vnbert/overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/overview.html#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/overview.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vnbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vnbert/configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vnbert/training.html">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/training.html#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/training.html#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/training.html#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/training.html#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vnbert/release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="vnbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/release-model.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="vnbert/inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vnbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Model Cards</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="models/vnbert-96m.html">vnBERT 96M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/vnbert-96m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/vnbert-96m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/vnbert-96m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/vnbert-96m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models/nbert-80m.html">nBERT 80M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/nbert-80m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/nbert-80m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/nbert-80m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/nbert-80m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models/rnbert-96m.html">rnBERT 96M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/rnbert-96m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/rnbert-96m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/rnbert-96m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/rnbert-96m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="models/modernbert-109m.html">ModernBERT 109M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="models/modernbert-109m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/modernbert-109m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/modernbert-109m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="models/modernbert-109m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="reference/troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="reference/troubleshooting.html#training-issues">Training Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#cuda-out-of-memory">CUDA out of memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#nan-loss">NaN loss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#training-loss-not-decreasing">Training loss not decreasing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#slow-data-loading">Slow data loading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/troubleshooting.html#configuration-issues">Configuration Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#vocab-size-mismatch">vocab_size mismatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#devices-mismatch">devices mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/troubleshooting.html#model-release-issues">Model Release Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#can-t-load-checkpoint">Can’t load checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#missing-tokenizer-files">Missing tokenizer files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="reference/troubleshooting.html#inference-issues">Inference Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="reference/troubleshooting.html#feature-name-mismatch">Feature name mismatch</a></li>
+</ul>
+</li>
+</ul>
+</li>
 </ul>
 
         </div>
@@ -61,7 +176,7 @@
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">FMs</a>
+          <a href="index.html">Clinical Transformer</a>
       </nav>
 
       <div class="wy-nav-content">
@@ -82,676 +197,8 @@
 <h1 id="index">Index</h1>
 
 <div class="genindex-jumpbox">
- <a href="#B"><strong>B</strong></a>
- | <a href="#C"><strong>C</strong></a>
- | <a href="#F"><strong>F</strong></a>
- | <a href="#G"><strong>G</strong></a>
- | <a href="#L"><strong>L</strong></a>
- | <a href="#M"><strong>M</strong></a>
- | <a href="#N"><strong>N</strong></a>
- | <a href="#P"><strong>P</strong></a>
- | <a href="#R"><strong>R</strong></a>
- | <a href="#S"><strong>S</strong></a>
- | <a href="#T"><strong>T</strong></a>
  
 </div>
-<h2 id="B">B</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.core.BaseClinicalTransformer">BaseClinicalTransformer (class in clinical_transformer.pt.models.core)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="C">C</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.losses.survival.html#clinical_transformer.pt.losses.survival.cindex.cindex_loss">cindex_loss() (in module clinical_transformer.pt.losses.survival.cindex)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.losses.survival.html#clinical_transformer.pt.losses.survival.cindex.cindex_loss_squared">cindex_loss_squared() (in module clinical_transformer.pt.losses.survival.cindex)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier">Classifier (class in clinical_transformer.pt.models.classifier)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier">(class in clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier)</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.html#module-clinical_transformer.pt">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.html#module-clinical_transformer.pt.datasets">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.dataloader
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.dataloader.tabular
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.dataloader.tabular_gpt
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular_gpt">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.preprocessor
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.preprocessor.sorted_samples
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.sorted_samples">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.preprocessor.tabular
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.tabular">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.preprocessor.tabular_gpt
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.tabular_gpt">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.datasets.preprocessor.unittest_
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.unittest_">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.losses
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.losses.html#module-clinical_transformer.pt.losses">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.losses.contrastive
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.losses.contrastive.html#module-clinical_transformer.pt.losses.contrastive">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.losses.masked_prediction
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.losses.html#module-clinical_transformer.pt.losses.masked_prediction">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.losses.survival
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.losses.survival.html#module-clinical_transformer.pt.losses.survival">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.losses.survival.cindex
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.losses.survival.html#module-clinical_transformer.pt.losses.survival.cindex">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.losses.vae
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.losses.vae.html#module-clinical_transformer.pt.losses.vae">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.models
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.models.classifier
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.classifier">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.models.core
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.core">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.models.masked_prediction
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.masked_prediction">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.models.regressor
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.regressor">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.tokenizer
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.tokenizer.html#module-clinical_transformer.pt.tokenizer">module</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li>
-    clinical_transformer.pt.tokenizer.FeatureTokenizer
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.tokenizer.html#module-clinical_transformer.pt.tokenizer.FeatureTokenizer">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.BERT
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.BERT.html#module-clinical_transformer.pt.training.BERT">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.BERT.unittest
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.BERT.html#module-clinical_transformer.pt.training.BERT.unittest">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.ClinicalTransformerMIL
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.ClinicalTransformerMIL.html#module-clinical_transformer.pt.training.ClinicalTransformerMIL">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.ClinicalTransformerMIL.dataset
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.ClinicalTransformerMIL.html#module-clinical_transformer.pt.training.ClinicalTransformerMIL.dataset">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.finetune_from_masked_prediction
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetune_from_masked_prediction">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.GPT
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.GPT.html#module-clinical_transformer.pt.training.GPT">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.pbrBERT
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.pbrBERT.html#module-clinical_transformer.pt.training.pbrBERT">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.pbrBERT.dataset
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.pbrBERT.html#module-clinical_transformer.pt.training.pbrBERT.dataset">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.rnaBERT
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.rnaBERT.html#module-clinical_transformer.pt.training.rnaBERT">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.rnaBERT.dataset
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.rnaBERT.html#module-clinical_transformer.pt.training.rnaBERT.dataset">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.rnaVAE
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.rnaVAE.html#module-clinical_transformer.pt.training.rnaVAE">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.rnaVAE.dataset
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.rnaVAE.html#module-clinical_transformer.pt.training.rnaVAE.dataset">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.TextMBERT
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.TextMBERT.html#module-clinical_transformer.pt.training.TextMBERT">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.train_MaskedSSL
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.train_MaskedSSL">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.training.vnBERT
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.vnBERT.html#module-clinical_transformer.pt.training.vnBERT">module</a>
-</li>
-      </ul></li>
-      <li>
-    clinical_transformer.pt.utils
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.utils.html#module-clinical_transformer.pt.utils">module</a>
-</li>
-      </ul></li>
-      <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.compute_auc">compute_auc() (clinical_transformer.pt.models.classifier.Classifier method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.compute_auc">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier method)</a>
-</li>
-      </ul></li>
-      <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.Config">Config (class in clinical_transformer.pt.training)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.configure_optimizers">configure_optimizers() (clinical_transformer.pt.models.classifier.Classifier method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL.configure_optimizers">(clinical_transformer.pt.models.masked_prediction.MaskedSSL method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor.configure_optimizers">(clinical_transformer.pt.models.regressor.Regressor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.configure_optimizers">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor.configure_optimizers">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival.configure_optimizers">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="F">F</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.feature_transformer">feature_transformer() (clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.feature_transformer">(clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.feature_transformer">(clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT method)</a>
-</li>
-      </ul></li>
-      <li><a href="source/clinical_transformer.pt.tokenizer.html#clinical_transformer.pt.tokenizer.FeatureTokenizer.FeatureTokenizer">FeatureTokenizer (class in clinical_transformer.pt.tokenizer.FeatureTokenizer)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.fit">fit() (clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.fit">(clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.fit">(clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT method)</a>
-</li>
-      </ul></li>
-      <li><a href="source/clinical_transformer.pt.losses.html#clinical_transformer.pt.losses.masked_prediction.MaskPredictionLoss.forward">forward() (clinical_transformer.pt.losses.masked_prediction.MaskPredictionLoss method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.forward">(clinical_transformer.pt.models.classifier.Classifier method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.core.BaseClinicalTransformer.forward">(clinical_transformer.pt.models.core.BaseClinicalTransformer method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL.forward">(clinical_transformer.pt.models.masked_prediction.MaskedSSL method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor.forward">(clinical_transformer.pt.models.regressor.Regressor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.forward">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor.forward">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival.forward">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.from_pretrained">from_pretrained() (clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.from_pretrained">(clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="G">G</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#clinical_transformer.pt.datasets.dataloader.tabular_gpt.GPTNextTokenDataset">GPTNextTokenDataset (class in clinical_transformer.pt.datasets.dataloader.tabular_gpt)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="L">L</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.load">load() (clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.load">(clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.load">(clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetune_from_masked_prediction.load_pretrained_model">load_pretrained_model() (in module clinical_transformer.pt.training.finetune_from_masked_prediction)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.losses.vae.html#clinical_transformer.pt.losses.vae.loss_function">loss_function() (in module clinical_transformer.pt.losses.vae)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="M">M</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL">MaskedSSL (class in clinical_transformer.pt.models.masked_prediction)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked.MaskedTokenDataset">MaskedTokenDataset (class in clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.pbrBERT.html#clinical_transformer.pt.training.pbrBERT.dataset.MaskedTokenDataset">(class in clinical_transformer.pt.training.pbrBERT.dataset)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.rnaBERT.html#clinical_transformer.pt.training.rnaBERT.dataset.MaskedTokenDataset">(class in clinical_transformer.pt.training.rnaBERT.dataset)</a>
-</li>
-      </ul></li>
-      <li><a href="source/clinical_transformer.pt.losses.html#clinical_transformer.pt.losses.masked_prediction.MaskPredictionLoss">MaskPredictionLoss (class in clinical_transformer.pt.losses.masked_prediction)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.training.ClinicalTransformerMIL.html#clinical_transformer.pt.training.ClinicalTransformerMIL.dataset.MILDataset">MILDataset (class in clinical_transformer.pt.training.ClinicalTransformerMIL.dataset)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.unittest_.MockAnnData">MockAnnData (class in clinical_transformer.pt.datasets.preprocessor.unittest_)</a>
-</li>
-      <li>
-    module
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.html#module-clinical_transformer.pt">clinical_transformer.pt</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.html#module-clinical_transformer.pt.datasets">clinical_transformer.pt.datasets</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader">clinical_transformer.pt.datasets.dataloader</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular">clinical_transformer.pt.datasets.dataloader.tabular</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular_gpt">clinical_transformer.pt.datasets.dataloader.tabular_gpt</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#module-clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked">clinical_transformer.pt.datasets.dataloader.tabular_sorted_masked</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor">clinical_transformer.pt.datasets.preprocessor</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.sorted_samples">clinical_transformer.pt.datasets.preprocessor.sorted_samples</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.tabular">clinical_transformer.pt.datasets.preprocessor.tabular</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.tabular_gpt">clinical_transformer.pt.datasets.preprocessor.tabular_gpt</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#module-clinical_transformer.pt.datasets.preprocessor.unittest_">clinical_transformer.pt.datasets.preprocessor.unittest_</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.losses.html#module-clinical_transformer.pt.losses">clinical_transformer.pt.losses</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.losses.contrastive.html#module-clinical_transformer.pt.losses.contrastive">clinical_transformer.pt.losses.contrastive</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.losses.html#module-clinical_transformer.pt.losses.masked_prediction">clinical_transformer.pt.losses.masked_prediction</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.losses.survival.html#module-clinical_transformer.pt.losses.survival">clinical_transformer.pt.losses.survival</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.losses.survival.html#module-clinical_transformer.pt.losses.survival.cindex">clinical_transformer.pt.losses.survival.cindex</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.losses.vae.html#module-clinical_transformer.pt.losses.vae">clinical_transformer.pt.losses.vae</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models">clinical_transformer.pt.models</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.classifier">clinical_transformer.pt.models.classifier</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.core">clinical_transformer.pt.models.core</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.masked_prediction">clinical_transformer.pt.models.masked_prediction</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#module-clinical_transformer.pt.models.regressor">clinical_transformer.pt.models.regressor</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.tokenizer.html#module-clinical_transformer.pt.tokenizer">clinical_transformer.pt.tokenizer</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.tokenizer.html#module-clinical_transformer.pt.tokenizer.FeatureTokenizer">clinical_transformer.pt.tokenizer.FeatureTokenizer</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training">clinical_transformer.pt.training</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.BERT.html#module-clinical_transformer.pt.training.BERT">clinical_transformer.pt.training.BERT</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.BERT.html#module-clinical_transformer.pt.training.BERT.unittest">clinical_transformer.pt.training.BERT.unittest</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.ClinicalTransformerMIL.html#module-clinical_transformer.pt.training.ClinicalTransformerMIL">clinical_transformer.pt.training.ClinicalTransformerMIL</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.ClinicalTransformerMIL.html#module-clinical_transformer.pt.training.ClinicalTransformerMIL.dataset">clinical_transformer.pt.training.ClinicalTransformerMIL.dataset</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetune_from_masked_prediction">clinical_transformer.pt.training.finetune_from_masked_prediction</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier">clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor">clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival">clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.GPT.html#module-clinical_transformer.pt.training.GPT">clinical_transformer.pt.training.GPT</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.pbrBERT.html#module-clinical_transformer.pt.training.pbrBERT">clinical_transformer.pt.training.pbrBERT</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.pbrBERT.html#module-clinical_transformer.pt.training.pbrBERT.dataset">clinical_transformer.pt.training.pbrBERT.dataset</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.rnaBERT.html#module-clinical_transformer.pt.training.rnaBERT">clinical_transformer.pt.training.rnaBERT</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.rnaBERT.html#module-clinical_transformer.pt.training.rnaBERT.dataset">clinical_transformer.pt.training.rnaBERT.dataset</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.rnaVAE.html#module-clinical_transformer.pt.training.rnaVAE">clinical_transformer.pt.training.rnaVAE</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.rnaVAE.html#module-clinical_transformer.pt.training.rnaVAE.dataset">clinical_transformer.pt.training.rnaVAE.dataset</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.TextMBERT.html#module-clinical_transformer.pt.training.TextMBERT">clinical_transformer.pt.training.TextMBERT</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#module-clinical_transformer.pt.training.train_MaskedSSL">clinical_transformer.pt.training.train_MaskedSSL</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.vnBERT.html#module-clinical_transformer.pt.training.vnBERT">clinical_transformer.pt.training.vnBERT</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.utils.html#module-clinical_transformer.pt.utils">clinical_transformer.pt.utils</a>
-</li>
-      </ul></li>
-  </ul></td>
-</tr></table>
-
-<h2 id="N">N</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.losses.contrastive.html#clinical_transformer.pt.losses.contrastive.ntxent">ntxent() (in module clinical_transformer.pt.losses.contrastive)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="P">P</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetune_from_masked_prediction.pipeline">pipeline() (in module clinical_transformer.pt.training.finetune_from_masked_prediction)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.pipeline">(in module clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.pipeline">(in module clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.pipeline">(in module clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.train_MaskedSSL.pipeline">(in module clinical_transformer.pt.training.train_MaskedSSL)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor">Preprocessor (class in clinical_transformer.pt.datasets.preprocessor.tabular)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT">PreprocessorGPT (class in clinical_transformer.pt.datasets.preprocessor.tabular_gpt)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="R">R</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor">Regressor (class in clinical_transformer.pt.models.regressor)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor">(class in clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer">RNAExpressionGeneOrderer (class in clinical_transformer.pt.datasets.preprocessor.sorted_samples)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="S">S</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer.save">save() (clinical_transformer.pt.datasets.preprocessor.sorted_samples.RNAExpressionGeneOrderer method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.save">(clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.save">(clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.Config.save">(clinical_transformer.pt.training.Config method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor.setUp">setUp() (clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor method)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival">Survival (class in clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival)</a>
-</li>
-  </ul></td>
-</tr></table>
-
-<h2 id="T">T</h2>
-<table style="width: 100%" class="indextable genindextable"><tr>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#clinical_transformer.pt.datasets.dataloader.tabular.TabularDataset">TabularDataset (class in clinical_transformer.pt.datasets.dataloader.tabular)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.datasets.dataloader.html#clinical_transformer.pt.datasets.dataloader.tabular.TabularMaskedDataset">TabularMaskedDataset (class in clinical_transformer.pt.datasets.dataloader.tabular)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor.test_transform_from_ad">test_transform_from_ad() (clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor method)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.unittest_.TestPreprocessor">TestPreprocessor (class in clinical_transformer.pt.datasets.preprocessor.unittest_)</a>
-</li>
-      <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.classifier.Classifier.training_step">training_step() (clinical_transformer.pt.models.classifier.Classifier method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.masked_prediction.MaskedSSL.training_step">(clinical_transformer.pt.models.masked_prediction.MaskedSSL method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.models.html#clinical_transformer.pt.models.regressor.Regressor.training_step">(clinical_transformer.pt.models.regressor.Regressor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier.training_step">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_classifier.Classifier method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor.training_step">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_regressor.Regressor method)</a>
-</li>
-        <li><a href="source/clinical_transformer.pt.training.html#clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival.training_step">(clinical_transformer.pt.training.finetuning_from_MaskedSSL_survival.Survival method)</a>
-</li>
-      </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.transform">transform() (clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor method)</a>
-
-      <ul>
-        <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT.transform">(clinical_transformer.pt.datasets.preprocessor.tabular_gpt.PreprocessorGPT method)</a>
-</li>
-      </ul></li>
-      <li><a href="source/clinical_transformer.pt.datasets.preprocessor.html#clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor.transform_from_ad">transform_from_ad() (clinical_transformer.pt.datasets.preprocessor.tabular.Preprocessor method)</a>
-</li>
-  </ul></td>
-</tr></table>
-
 
 
            </div>

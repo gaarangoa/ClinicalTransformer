@@ -1,8 +1,0 @@
-ClinicalTransformer
-===================
-
-.. toctree::
-   :maxdepth: 4
-
-   clinical_transformer
-   setup

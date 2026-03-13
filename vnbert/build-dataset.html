@@ -1,0 +1,408 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Step 1: Build the Dataset &mdash; Clinical Transformer 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Step 2: Configuration" href="configuration.html" />
+    <link rel="prev" title="vnBERT Overview" href="overview.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Clinical Transformer
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Getting Started</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../getting-started/installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html#from-git">From Git</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html#core-dependencies">Core Dependencies</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../getting-started/installation.html#docker">Docker</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#save-and-verify">1.6 Save and Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="training.html">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="training.html#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="release-model.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Model Cards</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/vnbert-96m.html">vnBERT 96M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/vnbert-96m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models/nbert-80m.html">nBERT 80M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/nbert-80m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models/rnbert-96m.html">rnBERT 96M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/rnbert-96m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../models/modernbert-109m.html">ModernBERT 109M v1.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#quick-start">Quick Start</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#specifications">Specifications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../models/modernbert-109m.html#training-data">Training Data</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../reference/troubleshooting.html">Troubleshooting</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#training-issues">Training Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#cuda-out-of-memory">CUDA out of memory</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#nan-loss">NaN loss</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#training-loss-not-decreasing">Training loss not decreasing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#slow-data-loading">Slow data loading</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#configuration-issues">Configuration Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#vocab-size-mismatch">vocab_size mismatch</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#devices-mismatch">devices mismatch</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#model-release-issues">Model Release Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#can-t-load-checkpoint">Can’t load checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#missing-tokenizer-files">Missing tokenizer files</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../reference/troubleshooting.html#inference-issues">Inference Issues</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../reference/troubleshooting.html#feature-name-mismatch">Feature name mismatch</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Clinical Transformer</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Step 1: Build the Dataset</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/vnbert/build-dataset.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="step-1-build-the-dataset">
+<h1>Step 1: Build the Dataset<a class="headerlink" href="#step-1-build-the-dataset" title="Link to this heading"></a></h1>
+<p>vnBERT trains on an <strong>AnnData</strong> (<code class="docutils literal notranslate"><span class="pre">.h5ad</span></code>) sparse matrix where rows are samples and columns are token IDs. The <code class="docutils literal notranslate"><span class="pre">vnBertTokenizerTabular</span></code> tokenizer converts your raw tabular data into this format.</p>
+<section id="load-your-data">
+<h2>1.1 Load Your Data<a class="headerlink" href="#load-your-data" title="Link to this heading"></a></h2>
+<p>Start from any tabular file — CSV, Excel, Parquet, or anything pandas can read:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">anndata</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">coo_matrix</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">vnBertTokenizerTabular</span> <span class="k">as</span> <span class="n">TokenizerTabular</span>
+
+<span class="c1"># ── EDIT THESE for your dataset ──────────────────────────</span>
+<span class="n">model_id</span> <span class="o">=</span> <span class="s1">&#39;MyModel&#39;</span>
+<span class="n">DATA_PATH</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;data/</span><span class="si">{</span><span class="n">model_id</span><span class="si">}</span><span class="s1">/my_dataset.csv&#39;</span>
+<span class="n">TOKENIZER_SAVE_DIR</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;models/ssl/</span><span class="si">{</span><span class="n">model_id</span><span class="si">}</span><span class="s1">/tokenizer/&#39;</span>
+<span class="n">OUTPUT_PATH</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;data/</span><span class="si">{</span><span class="n">model_id</span><span class="si">}</span><span class="s1">/training_data.h5ad&#39;</span>
+<span class="c1"># ─────────────────────────────────────────────────────────</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">DATA_PATH</span><span class="p">)</span>   <span class="c1"># or pd.read_excel(), pd.read_parquet()</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Loaded </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1"> samples x </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> columns&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="define-your-features">
+<h2>1.2 Define Your Features<a class="headerlink" href="#define-your-features" title="Link to this heading"></a></h2>
+<p>Split your columns into three groups:</p>
+<dl class="simple myst">
+<dt>Categorical features</dt><dd><p>String or label columns the model should learn (e.g. diagnosis, treatment, sex).</p>
+</dd>
+<dt>Numerical features</dt><dd><p>Continuous or binary-coded numbers (e.g. age, BMI, lab values, gene expression). Binary 0/1 columns go here too.</p>
+</dd>
+<dt>Labels / metadata</dt><dd><p>Columns kept as <code class="docutils literal notranslate"><span class="pre">.obs</span></code> metadata in the AnnData object. These are <strong>not</strong> tokenised and are not seen by the model during training. Use this for sample IDs, outcomes, survival times, etc.</p>
+</dd>
+</dl>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ── EDIT THESE for your dataset ──────────────────────────</span>
+<span class="n">categorical_features</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Cancer_type&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Drug_class&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">numerical_features</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;Age&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;BMI&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;NLR&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;TMB&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;Sex&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">label_columns</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s1">&#39;SAMPLE_ID&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OS_Event&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;OS_Months&#39;</span><span class="p">,</span>
+<span class="p">]</span>
+<span class="c1"># ─────────────────────────────────────────────────────────</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Categorical: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">categorical_features</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Numerical:   </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">numerical_features</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Labels/meta: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">label_columns</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="fit-and-save-the-tokenizer">
+<h2>1.3 Fit and Save the Tokenizer<a class="headerlink" href="#fit-and-save-the-tokenizer" title="Link to this heading"></a></h2>
+<p>The tokenizer learns two things during <code class="docutils literal notranslate"><span class="pre">.fit()</span></code>:</p>
+<ol class="arabic simple">
+<li><p>A <strong>vocabulary</strong> mapping each feature name to a unique token ID</p></li>
+<li><p>The <strong>min/max range</strong> for each numerical feature (used for normalisation)</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">feature_cols</span> <span class="o">=</span> <span class="n">categorical_features</span> <span class="o">+</span> <span class="n">numerical_features</span>
+<span class="n">samples</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">feature_cols</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">orient</span><span class="o">=</span><span class="s1">&#39;records&#39;</span><span class="p">)</span>
+
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">TokenizerTabular</span><span class="p">()</span>
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span>
+    <span class="n">samples</span><span class="p">,</span>
+    <span class="n">categorical_features</span><span class="o">=</span><span class="n">categorical_features</span><span class="p">,</span>
+    <span class="n">numerical_features</span><span class="o">=</span><span class="n">numerical_features</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="n">TOKENIZER_SAVE_DIR</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>Save the tokenizer now. You will need it again when releasing the model (Step 4) and during inference (Step 5). The tokenizer directory must live alongside your training outputs.</p>
+</div>
+</section>
+<section id="encode-and-inspect">
+<h2>1.4 Encode and Inspect<a class="headerlink" href="#encode-and-inspect" title="Link to this heading"></a></h2>
+<p>Encode all samples. The tokenizer returns:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">input_ids</span></code>: the token ID for each feature</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">minmax_values</span></code>: the value normalised to [0, 1] using the learned min/max</p></li>
+</ul>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">encoded</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">(</span>
+    <span class="n">samples</span><span class="p">,</span>
+    <span class="n">return_tensors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">return_attention_mask</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">return_minmax_values</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># ── Inspect a single sample ─────────────────────────────</span>
+<span class="n">sample_idx</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">sample_raw</span> <span class="o">=</span> <span class="n">samples</span><span class="p">[</span><span class="n">sample_idx</span><span class="p">]</span>
+<span class="n">sample_enc</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">encode_sample</span><span class="p">(</span><span class="n">sample_raw</span><span class="p">,</span> <span class="n">return_minmax_values</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">rows_example</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">tid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sample_enc</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]):</span>
+    <span class="n">feat</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">convert_ids_to_tokens</span><span class="p">(</span><span class="n">tid</span><span class="p">)</span>
+    <span class="n">rows_example</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;feature&#39;</span><span class="p">:</span> <span class="n">feat</span><span class="p">,</span>
+        <span class="s1">&#39;token_id&#39;</span><span class="p">:</span> <span class="n">tid</span><span class="p">,</span>
+        <span class="s1">&#39;raw_value&#39;</span><span class="p">:</span> <span class="n">sample_raw</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">feat</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+        <span class="s1">&#39;minmax_encoded&#39;</span><span class="p">:</span> <span class="nb">round</span><span class="p">(</span><span class="n">sample_enc</span><span class="p">[</span><span class="s1">&#39;minmax_values&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span>
+    <span class="p">})</span>
+
+<span class="n">example_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">rows_example</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">example_df</span><span class="o">.</span><span class="n">to_string</span><span class="p">())</span>
+</pre></div>
+</div>
+<p>Verify that each feature maps to a unique token ID and that values are normalised between 0 and 1 before moving on.</p>
+</section>
+<section id="build-the-sparse-anndata-matrix">
+<h2>1.5 Build the Sparse AnnData Matrix<a class="headerlink" href="#build-the-sparse-anndata-matrix" title="Link to this heading"></a></h2>
+<p>Each sample becomes a sparse row where column indices are token IDs and values are the minmax-encoded numbers:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cols</span> <span class="o">=</span> <span class="n">encoded</span><span class="p">[</span><span class="s1">&#39;input_ids&#39;</span><span class="p">]</span>
+<span class="n">values</span> <span class="o">=</span> <span class="n">encoded</span><span class="p">[</span><span class="s1">&#39;minmax_values&#39;</span><span class="p">]</span>
+
+<span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+    <span class="n">rows</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ix</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+<span class="n">cols_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+<span class="n">values_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
+<span class="n">rows_flat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+
+<span class="n">sparse_matrix</span> <span class="o">=</span> <span class="n">coo_matrix</span><span class="p">(</span>
+    <span class="p">(</span><span class="n">values_flat</span><span class="p">,</span> <span class="p">(</span><span class="n">rows_flat</span><span class="p">,</span> <span class="n">cols_flat</span><span class="p">)),</span>
+    <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">),</span> <span class="n">tokenizer</span><span class="o">.</span><span class="n">vocab_size</span><span class="p">),</span>
+<span class="p">)</span>
+
+<span class="n">adata</span> <span class="o">=</span> <span class="n">anndata</span><span class="o">.</span><span class="n">AnnData</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">sparse_matrix</span><span class="o">.</span><span class="n">tocsr</span><span class="p">())</span>
+
+<span class="c1"># Attach metadata</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;SAMPLE_ID&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">label_columns</span><span class="p">:</span>
+    <span class="n">adata</span><span class="o">.</span><span class="n">obs</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">adata</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="save-and-verify">
+<h2>1.6 Save and Verify<a class="headerlink" href="#save-and-verify" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">OUTPUT_PATH</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">adata</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">OUTPUT_PATH</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Saved to </span><span class="si">{</span><span class="n">OUTPUT_PATH</span><span class="si">}</span><span class="s1">  |  Shape: </span><span class="si">{</span><span class="n">adata</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<span class="c1"># Sanity check</span>
+<span class="n">adata2</span> <span class="o">=</span> <span class="n">anndata</span><span class="o">.</span><span class="n">read_h5ad</span><span class="p">(</span><span class="n">OUTPUT_PATH</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Reloaded shape: </span><span class="si">{</span><span class="n">adata2</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Non-zero entries (sample 0): </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">adata2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Obs columns: </span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="n">adata2</span><span class="o">.</span><span class="n">obs</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>For faster data loading during training, copy the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> file to shared memory:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>cp<span class="w"> </span>data/MyModel/training_data.h5ad<span class="w"> </span>/dev/shm/training_data.h5ad
+</pre></div>
+</div>
+<p>Then point <code class="docutils literal notranslate"><span class="pre">dataset.input_file</span></code> in your config to <code class="docutils literal notranslate"><span class="pre">/dev/shm/training_data.h5ad</span></code>.</p>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="overview.html" class="btn btn-neutral float-left" title="vnBERT Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="configuration.html" class="btn btn-neutral float-right" title="Step 2: Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, ADS.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
