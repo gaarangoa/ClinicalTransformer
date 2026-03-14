@@ -52,89 +52,21 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/overview.html">mBERT Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#how-it-works">How It Works</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#training-optimizations">Training Optimizations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#data-flow">Data Flow</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/configuration.html">Step 2: Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#field-reference">Field Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#experiment">experiment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#dataset">dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#model">model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer">trainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/training.html">Step 3: Training</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#the-training-script">The Training Script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#launch-command">Launch Command</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#what-happens-during-training">What Happens During Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#monitoring-training">Monitoring Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/release-model.html">Step 4: Release the Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#conversion-script">Conversion Script</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#output">Output</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/inference.html">Step 5: Inference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#load-the-model">Load the Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">mBERT Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-backends">Attention Backends</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#training-optimizations">Training Optimizations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#project-structure">Project Structure</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="build-dataset.html">Step 1: Build the Dataset</a><ul>
@@ -156,8 +88,8 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Step 3: Training</a><ul>
@@ -184,6 +116,74 @@
 <li class="toctree-l2"><a class="reference internal" href="inference.html#extracting-embeddings">Extracting Embeddings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#tokenizers">Tokenizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#dataset-classes">Dataset Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/training.html">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
 </ul>
 </li>
 </ul>
@@ -231,7 +231,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Step 3: Training</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/vnbert/training.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/mbert/training.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -241,10 +241,9 @@
              
   <section id="step-3-training">
 <h1>Step 3: Training<a class="headerlink" href="#step-3-training" title="Link to this heading"></a></h1>
-<p>This step launches the vnBERT pretraining loop using PyTorch Lightning and DeepSpeed.</p>
+<p>This step launches the mBERT pretraining loop using PyTorch Lightning.</p>
 <section id="the-training-script">
 <h2>The Training Script<a class="headerlink" href="#the-training-script" title="Link to this heading"></a></h2>
-<p>The <code class="docutils literal notranslate"><span class="pre">train.py</span></code> script reads the config, builds the dataset and model, and runs the training loop. Below is the complete script with comments:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HDF5_USE_FILE_LOCKING&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;FALSE&quot;</span>
 
@@ -252,11 +251,12 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">transformers.models.bert.modeling_bert</span><span class="w"> </span><span class="kn">import</span> <span class="n">BertConfig</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.vnbert.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">MaskedTokenDatasetFromAnnData</span> <span class="k">as</span> <span class="n">MaskedTokenDataset</span><span class="p">,</span>
+    <span class="n">collate_variable_length</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.vnbert.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningTrainerModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.utils.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningTrainerModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Trainer</span><span class="p">,</span> <span class="n">seed_everything</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.loggers</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVLogger</span>
@@ -271,9 +271,6 @@
     <span class="n">config</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">config_</span><span class="p">)</span>
 
     <span class="c1"># Global settings</span>
-    <span class="n">torch</span><span class="o">.</span><span class="n">backends</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">enable_flash_sdp</span><span class="p">(</span>
-        <span class="n">enabled</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">enable_flash_attention</span>
-    <span class="p">)</span>
     <span class="n">seed_everything</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">seed</span><span class="p">,</span> <span class="n">workers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">torch</span><span class="o">.</span><span class="n">set_float32_matmul_precision</span><span class="p">(</span>
         <span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">set_float32_matmul_precision</span>
@@ -285,7 +282,6 @@
     <span class="p">)</span>
     <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="c1"># Save a copy of the config to the output directory</span>
     <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span>
         <span class="n">config_</span><span class="p">,</span>
         <span class="nb">open</span><span class="p">(</span>
@@ -323,22 +319,30 @@
         <span class="n">batch_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
         <span class="n">shuffle</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">,</span>
         <span class="n">num_workers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
+        <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">persistent_workers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
+        <span class="n">prefetch_factor</span><span class="o">=</span><span class="mi">2</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_variable_length</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="c1"># Model</span>
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">BertConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+    <span class="n">model_kwargs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">model_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;enable_flash_attention&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">BertConfig</span><span class="p">(</span><span class="o">**</span><span class="n">model_kwargs</span><span class="p">)</span>
+
     <span class="n">model</span> <span class="o">=</span> <span class="n">LightningTrainerModel</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
     <span class="n">model_config</span><span class="o">.</span><span class="n">to_json_file</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/model_config.json&quot;</span>
     <span class="p">)</span>
 
     <span class="c1"># Strategy</span>
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;deepspeed&quot;</span><span class="p">:</span>
-        <span class="n">ds_strategy</span> <span class="o">=</span> <span class="n">DeepSpeedStrategy</span><span class="p">(</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="n">DeepSpeedStrategy</span><span class="p">(</span>
             <span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="vm">__dict__</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">ds_strategy</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">strategy</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
 
     <span class="c1"># Trainer</span>
     <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
@@ -346,7 +350,7 @@
         <span class="n">deterministic</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span>
         <span class="n">devices</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">devices</span><span class="p">,</span>
         <span class="n">accelerator</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">accelerator</span><span class="p">,</span>
-        <span class="n">strategy</span><span class="o">=</span><span class="n">ds_strategy</span><span class="p">,</span>
+        <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">,</span>
         <span class="n">max_epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
         <span class="n">precision</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
         <span class="n">accumulate_grad_batches</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">accumulate_grad_batches</span><span class="p">,</span>
@@ -370,41 +374,43 @@
 </section>
 <section id="launch-command">
 <h2>Launch Command<a class="headerlink" href="#launch-command" title="Link to this heading"></a></h2>
-<p>Create a <code class="docutils literal notranslate"><span class="pre">train.sh</span></code> file or run directly from the terminal:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-GPU: set --nproc_per_node to match trainer.devices in config.yaml</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-GPU with DDP</span>
 torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">8</span><span class="w"> </span>train.py<span class="w"> </span>config.yaml
-</pre></div>
-</div>
-<p>For a single GPU:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>train.py<span class="w"> </span>config.yaml
+
+<span class="c1"># Single GPU</span>
+python<span class="w"> </span>train.py<span class="w"> </span>config.yaml
 </pre></div>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Make sure <code class="docutils literal notranslate"><span class="pre">trainer.devices</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> matches <code class="docutils literal notranslate"><span class="pre">--nproc_per_node</span></code>. If they differ, the training will fail or behave unexpectedly.</p>
+<p>Make sure <code class="docutils literal notranslate"><span class="pre">trainer.devices</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> matches <code class="docutils literal notranslate"><span class="pre">--nproc_per_node</span></code>. If they differ, training will fail or behave unexpectedly.</p>
 </div>
 </section>
 <section id="what-happens-during-training">
 <h2>What Happens During Training<a class="headerlink" href="#what-happens-during-training" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">MaskedTokenDataset</span></code> loads the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> file and, for each sample:</p>
+<li><p>The dataset loads data and, for each sample:</p>
 <ul class="simple">
-<li><p>randomly selects <code class="docutils literal notranslate"><span class="pre">context_window</span></code> features</p></li>
-<li><p>masks <code class="docutils literal notranslate"><span class="pre">masking_fraction</span></code> of those features</p></li>
+<li><p>randomly selects <code class="docutils literal notranslate"><span class="pre">context_window</span></code> features (if set)</p></li>
+<li><p>masks the last <code class="docutils literal notranslate"><span class="pre">masking_fraction</span></code> of those features</p></li>
 </ul>
 </li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">LightningTrainerModel</span></code> processes each batch through the BERT encoder</p></li>
-<li><p>The model predicts the <strong>values</strong> of masked features using MSE loss</p></li>
-<li><p>Checkpoints are saved every <code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code> epochs to <code class="docutils literal notranslate"><span class="pre">&lt;output_dir&gt;/models/</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">collate_variable_length</span></code> pads the batch to the max sequence length</p></li>
+<li><p>The model:</p>
+<ul class="simple">
+<li><p>computes embeddings</p></li>
+<li><p>if FA2 backend: unpacks padded tensors → runs FA2 varlen attention → repacks</p></li>
+<li><p>if SDPA backend: runs SDPA attention with appropriate mask</p></li>
+<li><p>runs the prediction head <strong>only on masked positions</strong></p></li>
+<li><p>computes MSE loss on masked positions</p></li>
+</ul>
+</li>
+<li><p>Checkpoints are saved every <code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code> epochs</p></li>
 </ol>
 </section>
 <section id="monitoring-training">
 <h2>Monitoring Training<a class="headerlink" href="#monitoring-training" title="Link to this heading"></a></h2>
-<p>Training metrics are logged as CSV files in:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">save_dir</span><span class="o">&gt;/&lt;</span><span class="n">name</span><span class="o">&gt;/</span><span class="n">version_</span><span class="o">&lt;</span><span class="n">version</span><span class="o">&gt;/</span>
-</pre></div>
-</div>
-<p>Plot the loss curve:</p>
+<p>Training metrics are logged as CSV files. Plot the loss curve:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="n">metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;&lt;save_dir&gt;/&lt;name&gt;/version_&lt;version&gt;/metrics.csv&#39;</span><span class="p">)</span>
 <span class="n">metrics</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;train_loss&#39;</span><span class="p">)</span>
@@ -413,12 +419,12 @@ torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span cl
 </section>
 <section id="resuming-from-a-checkpoint">
 <h2>Resuming from a Checkpoint<a class="headerlink" href="#resuming-from-a-checkpoint" title="Link to this heading"></a></h2>
-<p>If training is interrupted, set <code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>:</p>
+<p>Set <code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">trainer</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">from_checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/models/My_FM_NAME/version_1/models/epoch=500.ckpt</span>
+<span class="w">  </span><span class="nt">from_checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/models/epoch=500.ckpt</span>
 </pre></div>
 </div>
-<p>Then re-run <code class="docutils literal notranslate"><span class="pre">train.sh</span></code>. Training resumes from the exact state (model weights, optimizer, epoch counter).</p>
+<p>Then re-run the training script. Training resumes from the exact state.</p>
 </section>
 </section>
 

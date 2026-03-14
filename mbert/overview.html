@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>vnBERT Overview &mdash; Clinical Transformer 1.0.0 documentation</title>
+  <title>mBERT Overview &mdash; Clinical Transformer 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Step 1: Build the Dataset" href="build-dataset.html" />
-    <link rel="prev" title="Step 5: Inference" href="../mbert/inference.html" /> 
+    <link rel="prev" title="Installation" href="../getting-started/installation.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,89 +52,21 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/overview.html">mBERT Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#how-it-works">How It Works</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#training-optimizations">Training Optimizations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#data-flow">Data Flow</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/configuration.html">Step 2: Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#field-reference">Field Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#experiment">experiment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#dataset">dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#model">model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer">trainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/training.html">Step 3: Training</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#the-training-script">The Training Script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#launch-command">Launch Command</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#what-happens-during-training">What Happens During Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#monitoring-training">Monitoring Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/release-model.html">Step 4: Release the Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#conversion-script">Conversion Script</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#output">Output</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/inference.html">Step 5: Inference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#load-the-model">Load the Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">vnBERT Overview</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">mBERT Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pretraining-objective">Pretraining Objective</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#attention-backends">Attention Backends</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#training-optimizations">Training Optimizations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-flow">Data Flow</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#end-to-end-pipeline">End-to-End Pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#project-structure">Project Structure</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="build-dataset.html">Step 1: Build the Dataset</a><ul>
@@ -156,8 +88,8 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 3: Training</a><ul>
@@ -184,6 +116,74 @@
 <li class="toctree-l2"><a class="reference internal" href="inference.html#extracting-embeddings">Extracting Embeddings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#tokenizers">Tokenizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#dataset-classes">Dataset Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/training.html">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
 </ul>
 </li>
 </ul>
@@ -229,9 +229,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">vnBERT Overview</li>
+      <li class="breadcrumb-item active">mBERT Overview</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/vnbert/overview.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/mbert/overview.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -239,30 +239,30 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="vnbert-overview">
-<h1>vnBERT Overview<a class="headerlink" href="#vnbert-overview" title="Link to this heading"></a></h1>
-<p>vnBERT (Value-based BERT) is a transformer architecture that directly handles continuous numerical values alongside categorical tokens. Unlike standard BERT which operates on discrete tokens, vnBERT encodes each feature as a <strong>token + value</strong> pair, making it ideal for:</p>
+  <section id="mbert-overview">
+<h1>mBERT Overview<a class="headerlink" href="#mbert-overview" title="Link to this heading"></a></h1>
+<p>mBERT (Masked BERT) is the next-generation transformer architecture in Clinical Transformer. It replaces HuggingFace’s <code class="docutils literal notranslate"><span class="pre">BertLayer</span></code> with custom SDPA-based layers that call <code class="docutils literal notranslate"><span class="pre">torch.nn.functional.scaled_dot_product_attention</span></code> directly, enabling automatic kernel selection (flash, memory-efficient, or math) without wrapper overhead. It optionally supports Flash Attention 2 (FA2) varlen for zero-padding-waste training on variable-length sequences.</p>
+<p>mBERT is designed for:</p>
 <ul class="simple">
 <li><p>Tabular clinical data (mixed categorical and numerical columns)</p></li>
 <li><p>Gene expression data (RNA-seq, proteomics)</p></li>
 <li><p>Any dataset with continuous and/or categorical features</p></li>
+<li><p>Variable-length sequences with dynamic padding</p></li>
 </ul>
 <section id="how-it-works">
 <h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading"></a></h2>
 <section id="pretraining-objective">
 <h3>Pretraining Objective<a class="headerlink" href="#pretraining-objective" title="Link to this heading"></a></h3>
-<p>vnBERT is pretrained with <strong>masked value prediction (MVP)</strong>. During each training step:</p>
+<p>mBERT is pretrained with <strong>masked value prediction (MVP)</strong>. During each training step:</p>
 <ol class="arabic simple">
 <li><p>A subset of features is randomly sampled (the <strong>context window</strong>)</p></li>
-<li><p>A fraction of those features is masked (typically 30%)</p></li>
+<li><p>The last fraction of those features is masked (typically 30%)</p></li>
 <li><p>The model predicts the <strong>value</strong> of each masked feature using the unmasked context</p></li>
 <li><p>The loss is <strong>MSE</strong> computed only over masked positions</p></li>
 </ol>
-<p>This forces the model to learn meaningful relationships between features.</p>
 </section>
 <section id="architecture">
 <h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
-<p>vnBERT extends HuggingFace’s <code class="docutils literal notranslate"><span class="pre">BertPreTrainedModel</span></code> with custom embedding and attention logic:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                  ┌─────────────┐
                   │  Input      │
                   │  (token_id, │
@@ -290,9 +290,9 @@
                   └──────┬──────┘
                          │
               ┌──────────▼──────────┐
-              │   N × BertLayer     │
-              │   (self-attention +  │
-              │    feed-forward)     │
+              │ N × SDPTransformer  │
+              │   Layer (SDPA/FA2   │
+              │   + feed-forward)   │
               └──────────┬──────────┘
                          │
                   ┌──────▼──────┐
@@ -308,37 +308,82 @@
 </div>
 <p><strong>Embedding layer (<code class="docutils literal notranslate"><span class="pre">CTEmbeddings</span></code>)</strong> – each input position has two components:</p>
 <ul class="simple">
-<li><p>A <strong>token embedding</strong> (<code class="docutils literal notranslate"><span class="pre">nn.Embedding</span></code>) maps the feature ID (e.g. gene index or column index) to a vector of size <code class="docutils literal notranslate"><span class="pre">hidden_size</span></code></p></li>
+<li><p>A <strong>token embedding</strong> (<code class="docutils literal notranslate"><span class="pre">nn.Embedding</span></code>) maps the feature ID to a vector of size <code class="docutils literal notranslate"><span class="pre">hidden_size</span></code></p></li>
 <li><p>A <strong>value embedding</strong> (<code class="docutils literal notranslate"><span class="pre">nn.Linear(1,</span> <span class="pre">hidden_size)</span></code>) projects the scalar value into the same space</p></li>
 <li><p>Both are independently layer-normalised, added together, scaled by <code class="docutils literal notranslate"><span class="pre">√hidden_size</span></code>, and passed through a final layer norm</p></li>
 </ul>
-<p><strong>Encoder</strong> – a stack of standard <code class="docutils literal notranslate"><span class="pre">BertLayer</span></code> modules (multi-head self-attention + feed-forward) from HuggingFace Transformers. The number of layers, heads, and hidden size are all configurable via <code class="docutils literal notranslate"><span class="pre">BertConfig</span></code>.</p>
-<p><strong>Value prediction head</strong> – a single <code class="docutils literal notranslate"><span class="pre">nn.Linear(hidden_size,</span> <span class="pre">1)</span></code> that maps each position’s hidden state to a predicted scalar value. During pretraining, loss is computed only on masked positions.</p>
+<p><strong>Encoder</strong> – a stack of custom <code class="docutils literal notranslate"><span class="pre">SDPTransformerLayer</span></code> modules. Each layer contains:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">SDPAttention</span></code>: multi-head attention calling <code class="docutils literal notranslate"><span class="pre">F.scaled_dot_product_attention</span></code> directly</p></li>
+<li><p>Post-LN residual connection + dropout</p></li>
+<li><p>Feed-forward network (Linear → GELU → Linear) with post-LN residual</p></li>
+</ul>
+<p>The layers bypass HuggingFace’s attention wrapper, which allows arbitrary attention masks (e.g. scGPT 4D mask) to work correctly with SDPA.</p>
+<p><strong>Value prediction head</strong> – a single <code class="docutils literal notranslate"><span class="pre">nn.Linear(hidden_size,</span> <span class="pre">1)</span></code> that maps each position’s hidden state to a predicted scalar value. During training, the prediction head runs only on masked positions for efficiency.</p>
+</section>
+<section id="attention-backends">
+<h3>Attention Backends<a class="headerlink" href="#attention-backends" title="Link to this heading"></a></h3>
+<p>mBERT supports two attention backends, controlled by the <code class="docutils literal notranslate"><span class="pre">attention_backend</span></code> config field:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>Config</p></th>
+<th class="head"><p>When to use</p></th>
+<th class="head"><p>Kernel</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><strong>SDPA</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">attention_backend:</span> <span class="pre">'sdpa'</span></code></p></td>
+<td><p>Default. Works on all GPUs.</p></td>
+<td><p>Flash (no mask) or memory-efficient (with mask)</p></td>
+</tr>
+<tr class="row-odd"><td><p><strong>FA2</strong></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">attention_backend:</span> <span class="pre">'fa2'</span></code></p></td>
+<td><p>Ampere/Hopper GPUs with variable-length sequences. Requires <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">flash-attn</span></code>.</p></td>
+<td><p>FA2 varlen (zero padding waste)</p></td>
+</tr>
+</tbody>
+</table>
+<p>The FA2 backend has a triple fallback guard:</p>
+<ul class="simple">
+<li><p>If <code class="docutils literal notranslate"><span class="pre">flash-attn</span></code> is not installed → falls back to SDPA</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">use_scgpt_mask:</span> <span class="pre">true</span></code> → falls back to SDPA (FA2 doesn’t support arbitrary masks)</p></li>
+<li><p>Otherwise → uses <code class="docutils literal notranslate"><span class="pre">flash_attn_varlen_func</span></code> on packed sequences</p></li>
+</ul>
 </section>
 <section id="attention-masking-strategy">
 <h3>Attention Masking Strategy<a class="headerlink" href="#attention-masking-strategy" title="Link to this heading"></a></h3>
-<p>vnBERT uses an attention masking strategy inspired by <a class="reference external" href="https://www.nature.com/articles/s41592-024-02201-0">scGPT</a> to prevent information leakage during masked value prediction:</p>
+<p>mBERT supports two masking modes via the <code class="docutils literal notranslate"><span class="pre">use_scgpt_mask</span></code> config field:</p>
+<p><strong>Full bidirectional</strong> (<code class="docutils literal notranslate"><span class="pre">use_scgpt_mask:</span> <span class="pre">false</span></code>) – every token attends to every other non-padding token. When no padding exists, the attention mask is <code class="docutils literal notranslate"><span class="pre">None</span></code> and SDPA uses the flash kernel. This is the recommended mode for maximum speed.</p>
+<p><strong>scGPT masking</strong> (<code class="docutils literal notranslate"><span class="pre">use_scgpt_mask:</span> <span class="pre">true</span></code>) – inspired by <a class="reference external" href="https://www.nature.com/articles/s41592-024-02201-0">scGPT</a>, this prevents information leakage between masked positions:</p>
 <ul class="simple">
-<li><p><strong>Unmasked tokens</strong> can attend to all other unmasked tokens (normal self-attention)</p></li>
-<li><p><strong>Masked tokens</strong> can only attend to themselves (via diagonal self-attention) – they cannot see other masked tokens</p></li>
-<li><p><strong>No position can attend to a masked token</strong> as a key/value – masked tokens are excluded from the key/value set</p></li>
+<li><p><strong>Unmasked → Unmasked</strong>: ALLOWED (full bidirectional)</p></li>
+<li><p><strong>Unmasked → Masked</strong>: BLOCKED (no leakage from unknowns)</p></li>
+<li><p><strong>Masked → Unmasked</strong>: ALLOWED (gather context for prediction)</p></li>
+<li><p><strong>Masked → Masked</strong>: BLOCKED (no cross-leakage)</p></li>
+<li><p><strong>Masked → Self</strong>: ALLOWED (attend to own token embedding)</p></li>
 </ul>
-<p>This is implemented by constructing a custom attention mask per layer:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Positions with value == -10.0 are masked</span>
-<span class="n">masked_positions</span> <span class="o">=</span> <span class="p">(</span><span class="n">values</span> <span class="o">==</span> <span class="o">-</span><span class="mf">10.0</span><span class="p">)</span>
+<p>Since masking is always a suffix (last N positions), the mask pattern is identical across all samples in a batch. mBERT builds the mask from a single sample <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">S,</span> <span class="pre">S)</span></code> and broadcasts, avoiding O(B×S²) memory allocation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The scGPT masking strategy has not been empirically validated against full bidirectional in ablation studies. Competing single-cell models (scBERT, Geneformer, scFoundation) use full bidirectional attention with competitive results. We provide both options so you can experiment.</p>
+</div>
+</section>
+<section id="variable-length-sequence-support">
+<h3>Variable-Length Sequence Support<a class="headerlink" href="#variable-length-sequence-support" title="Link to this heading"></a></h3>
+<p>mBERT handles variable-length sequences through a custom collate function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">collate_variable_length</span>
 
-<span class="c1"># Key/value mask: only unmasked, non-padding tokens can be keys</span>
-<span class="n">key_value_mask</span> <span class="o">=</span> <span class="n">padding_mask</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><span class="n">masked_positions</span><span class="p">)</span>
-
-<span class="c1"># Diagonal: masked tokens attend to themselves</span>
-<span class="n">diagonal_mask</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">seq_len</span><span class="p">)</span>
-<span class="n">masked_self_attend</span> <span class="o">=</span> <span class="n">masked_positions</span> <span class="o">&amp;</span> <span class="n">diagonal_mask</span>
-
-<span class="c1"># Final mask = normal attention + masked self-attention</span>
-<span class="n">attention_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">padding_mask</span> <span class="o">&amp;</span> <span class="n">key_value_mask</span><span class="p">)</span> <span class="o">|</span> <span class="n">masked_self_attend</span>
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
+    <span class="n">dataset</span><span class="p">,</span>
+    <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
+    <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_variable_length</span><span class="p">,</span>  <span class="c1"># pads to max length in batch</span>
+<span class="p">)</span>
 </pre></div>
 </div>
-<p>This ensures the model must predict masked values purely from unmasked context, not by copying from neighbouring masked positions.</p>
+<p>The collate function pads shorter sequences with <code class="docutils literal notranslate"><span class="pre">token=0</span></code>, <code class="docutils literal notranslate"><span class="pre">value=0.0</span></code>, <code class="docutils literal notranslate"><span class="pre">label=0.0</span></code>. The model’s padding mask (<code class="docutils literal notranslate"><span class="pre">tokens</span> <span class="pre">!=</span> <span class="pre">0</span></code>) handles these automatically. When all sequences are the same length (fixed <code class="docutils literal notranslate"><span class="pre">context_window</span></code>), the collate is a no-op.</p>
+<p>With the FA2 backend, padded sequences are unpacked before attention (<code class="docutils literal notranslate"><span class="pre">unpad_input</span></code>) and repacked after (<code class="docutils literal notranslate"><span class="pre">pad_input</span></code>), so no compute is wasted on padding tokens.</p>
 </section>
 <section id="special-tokens">
 <h3>Special Tokens<a class="headerlink" href="#special-tokens" title="Link to this heading"></a></h3>
@@ -368,23 +413,11 @@
 </tr>
 </tbody>
 </table>
-<p>Masked positions are <strong>not</strong> replaced with the <code class="docutils literal notranslate"><span class="pre">&lt;mask&gt;</span></code> token ID. Instead, the original token ID is kept and only the value is set to <code class="docutils literal notranslate"><span class="pre">-10.0</span></code>, which the model recognises as a masked signal.</p>
-</section>
-<section id="tokenizers">
-<h3>Tokenizers<a class="headerlink" href="#tokenizers" title="Link to this heading"></a></h3>
-<p>vnBERT ships with two HuggingFace-compatible tokenizers (<code class="docutils literal notranslate"><span class="pre">PreTrainedTokenizer</span></code> subclasses):</p>
-<p><strong><code class="docutils literal notranslate"><span class="pre">vnBertTokenizer</span></code></strong> – for gene expression data. Each gene name (e.g. <code class="docutils literal notranslate"><span class="pre">ENSG00000001167</span></code>) becomes a vocabulary entry. The <code class="docutils literal notranslate"><span class="pre">fit()</span></code> method learns the vocabulary and computes per-gene statistics (min, max, median, MAD) for robust z-score normalisation.</p>
-<p><strong><code class="docutils literal notranslate"><span class="pre">vnBertTokenizerTabular</span></code></strong> – for mixed tabular data. Handles both numerical and categorical columns:</p>
-<ul class="simple">
-<li><p>Categorical features are ordinal-encoded (each level mapped to an integer) and then normalised like numerical features</p></li>
-<li><p>Numerical features are normalised per-feature using min-max, z-score, or robust z-score</p></li>
-<li><p>Both output <code class="docutils literal notranslate"><span class="pre">(input_ids,</span> <span class="pre">values)</span></code> pairs compatible with the model</p></li>
-</ul>
-<p>Both tokenizers support <code class="docutils literal notranslate"><span class="pre">save_pretrained()</span></code> / <code class="docutils literal notranslate"><span class="pre">from_pretrained()</span></code> for portability.</p>
+<p>Masked positions are <strong>not</strong> replaced with the <code class="docutils literal notranslate"><span class="pre">&lt;mask&gt;</span></code> token ID. Instead, the original token ID is kept and only the value is set to <code class="docutils literal notranslate"><span class="pre">-10.0</span></code>.</p>
 </section>
 <section id="dataset-classes">
 <h3>Dataset Classes<a class="headerlink" href="#dataset-classes" title="Link to this heading"></a></h3>
-<p>Four dataset implementations handle different data sources and sampling strategies:</p>
+<p>Four dataset implementations handle different data sources:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Class</p></th>
@@ -413,21 +446,22 @@
 </table>
 <p>All four share the same processing pipeline:</p>
 <ol class="arabic simple">
-<li><p>Extract non-zero features for the sample</p></li>
+<li><p>Extract features for the sample</p></li>
 <li><p>Sample up to <code class="docutils literal notranslate"><span class="pre">context_window</span></code> features (randomly or via biological priors)</p></li>
 <li><p>Mask the last <code class="docutils literal notranslate"><span class="pre">mask_prob</span></code> fraction of the sequence (values set to <code class="docutils literal notranslate"><span class="pre">-10.0</span></code>)</p></li>
 <li><p>Prepend the CLS token (ID=2, value=1.0)</p></li>
 <li><p>Return <code class="docutils literal notranslate"><span class="pre">{tokens,</span> <span class="pre">values,</span> <span class="pre">labels}</span></code> tensors</p></li>
 </ol>
 </section>
-<section id="training">
-<h3>Training<a class="headerlink" href="#training" title="Link to this heading"></a></h3>
-<p>The <code class="docutils literal notranslate"><span class="pre">LightningTrainerModel</span></code> wraps the model as a PyTorch Lightning module:</p>
+<section id="training-optimizations">
+<h3>Training Optimizations<a class="headerlink" href="#training-optimizations" title="Link to this heading"></a></h3>
+<p>mBERT includes several performance optimizations:</p>
 <ul class="simple">
-<li><p><strong>Optimizer</strong>: configurable via config (supports <code class="docutils literal notranslate"><span class="pre">DeepSpeedCPUAdam</span></code> and <code class="docutils literal notranslate"><span class="pre">FusedAdam</span></code>)</p></li>
-<li><p><strong>Loss</strong>: <code class="docutils literal notranslate"><span class="pre">nn.MSELoss(reduction='none')</span></code> computed only on positions where <code class="docutils literal notranslate"><span class="pre">values</span> <span class="pre">==</span> <span class="pre">-10.0</span></code></p></li>
-<li><p><strong>Strategy</strong>: DeepSpeed ZeRO for distributed multi-GPU training</p></li>
-<li><p><strong>Checkpointing</strong>: periodic saves via Lightning’s <code class="docutils literal notranslate"><span class="pre">ModelCheckpoint</span></code></p></li>
+<li><p><strong>Prediction head on masked positions only</strong>: <code class="docutils literal notranslate"><span class="pre">training_step</span></code> skips the <code class="docutils literal notranslate"><span class="pre">value_predictor</span></code> linear layer on non-masked positions (~70-85% of tokens)</p></li>
+<li><p><strong>Broadcast attention mask</strong>: scGPT mask is built from one sample and broadcast over the batch</p></li>
+<li><p><strong>No-mask SDPA</strong>: full bidirectional with no padding passes <code class="docutils literal notranslate"><span class="pre">attn_mask=None</span></code>, enabling the flash kernel</p></li>
+<li><p><strong>Pre-converted dataset</strong>: token/value arrays are converted to tensors once at <code class="docutils literal notranslate"><span class="pre">__init__</span></code>, not per-sample</p></li>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">torch.compile</span></code> on inner model</strong>: compiles the model (not the Lightning wrapper) to avoid graph breaks</p></li>
 </ul>
 </section>
 <section id="data-flow">
@@ -441,14 +475,17 @@ Tokenizer.fit() ──&gt; learns vocabulary + per-feature statistics
 Tokenizer() ──&gt; encodes samples to (token_ids, normalised_values)
     |
     v
-AnnData sparse matrix (.h5ad)
+AnnData sparse matrix (.h5ad) or pickle
     |
     v
 MaskedTokenDataset ──&gt; samples context window, applies masking
     |
     v
-LightningTrainerModel ──&gt; BERT encoder + value prediction head (MSE loss)
+collate_variable_length ──&gt; pads batch to max length
     |
+    v
+LightningTrainerModel ──&gt; SDPTransformerLayer encoder (SDPA or FA2)
+    |                       + value prediction head (MSE loss, masked only)
     v
 Trained checkpoint ──&gt; convert with release_model.py
     |
@@ -460,7 +497,6 @@ HuggingFace-compatible model ──&gt; inference / embeddings
 </section>
 <section id="end-to-end-pipeline">
 <h2>End-to-End Pipeline<a class="headerlink" href="#end-to-end-pipeline" title="Link to this heading"></a></h2>
-<p>The full pipeline consists of five steps, each covered in its own page:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Step</p></th>
@@ -479,7 +515,7 @@ HuggingFace-compatible model ──&gt; inference / embeddings
 </tr>
 <tr class="row-even"><td><p>3</p></td>
 <td><p><a class="reference internal" href="training.html"><span class="doc">Step 3: Training</span></a></p></td>
-<td><p>Launch distributed training with DeepSpeed</p></td>
+<td><p>Launch distributed training</p></td>
 </tr>
 <tr class="row-odd"><td><p>4</p></td>
 <td><p><a class="reference internal" href="release-model.html"><span class="doc">Step 4: Release the Model</span></a></p></td>
@@ -492,37 +528,13 @@ HuggingFace-compatible model ──&gt; inference / embeddings
 </tbody>
 </table>
 </section>
-<section id="project-structure">
-<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading"></a></h2>
-<p>We recommend organising your experiment like this:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>my_experiment/
-├── data/
-│   └── MyModel/
-│       ├── my_dataset.csv          # raw input
-│       └── training_data.h5ad     # output of Step 1
-├── models/
-│   └── ssl/
-│       └── MyModel/
-│           ├── tokenizer/          # saved tokenizer (Step 1)
-│           └── version_1/          # training outputs (Step 3)
-│               ├── models/         # checkpoints
-│               └── model_config.json
-├── model_hub/                      # released model (Step 4)
-├── config.yaml
-├── build_dataset.py
-├── train.py
-├── train.sh
-└── release_model.py
-</pre></div>
-</div>
-</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../mbert/inference.html" class="btn btn-neutral float-left" title="Step 5: Inference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../getting-started/installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="build-dataset.html" class="btn btn-neutral float-right" title="Step 1: Build the Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

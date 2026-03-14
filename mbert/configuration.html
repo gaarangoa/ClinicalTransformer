@@ -52,89 +52,21 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/overview.html">mBERT Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#how-it-works">How It Works</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#training-optimizations">Training Optimizations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#data-flow">Data Flow</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/configuration.html">Step 2: Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#field-reference">Field Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#experiment">experiment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#dataset">dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#model">model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer">trainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/training.html">Step 3: Training</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#the-training-script">The Training Script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#launch-command">Launch Command</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#what-happens-during-training">What Happens During Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#monitoring-training">Monitoring Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/release-model.html">Step 4: Release the Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#conversion-script">Conversion Script</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#output">Output</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/inference.html">Step 5: Inference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#load-the-model">Load the Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">mBERT Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-backends">Attention Backends</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#training-optimizations">Training Optimizations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#project-structure">Project Structure</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="build-dataset.html">Step 1: Build the Dataset</a><ul>
@@ -156,8 +88,8 @@
 <li class="toctree-l3"><a class="reference internal" href="#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model-sizing-guide">Model Sizing Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 3: Training</a><ul>
@@ -184,6 +116,74 @@
 <li class="toctree-l2"><a class="reference internal" href="inference.html#extracting-embeddings">Extracting Embeddings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#tokenizers">Tokenizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#dataset-classes">Dataset Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/training.html">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
 </ul>
 </li>
 </ul>
@@ -231,7 +231,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Step 2: Configuration</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/vnbert/configuration.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/mbert/configuration.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -241,7 +241,7 @@
              
   <section id="step-2-configuration">
 <h1>Step 2: Configuration<a class="headerlink" href="#step-2-configuration" title="Link to this heading"></a></h1>
-<p>All training parameters are controlled by a single <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file. This page explains every field so you can adapt it to any dataset.</p>
+<p>All training parameters are controlled by a single <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> file. This page explains every field.</p>
 <section id="full-annotated-template">
 <h2>Full Annotated Template<a class="headerlink" href="#full-annotated-template" title="Link to this heading"></a></h2>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">experiment</span><span class="p">:</span>
@@ -253,11 +253,11 @@
 <span class="w">  </span><span class="nt">comments</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
 
 <span class="nt">dataset</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/shm/training_data.h5ad</span><span class="w">  </span><span class="c1"># .h5ad file from Step 1</span>
+<span class="w">  </span><span class="nt">input_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/shm/training_data.h5ad</span><span class="w">  </span><span class="c1"># .h5ad or .pkl file from Step 1</span>
 <span class="w">  </span><span class="nt">priors_file</span><span class="p">:</span><span class="w">                              </span><span class="c1"># Optional, leave empty if unused</span>
 <span class="w">  </span><span class="nt">num_workers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span><span class="w">           </span><span class="c1"># Data-loading workers (num_cpus - 1)</span>
 <span class="w">  </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1184</span><span class="w">          </span><span class="c1"># Samples per batch per GPU</span>
-<span class="w">  </span><span class="nt">context_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">22</span><span class="w">        </span><span class="c1"># Features sampled per training step</span>
+<span class="w">  </span><span class="nt">context_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">      </span><span class="c1"># Features sampled per training step</span>
 <span class="w">  </span><span class="nt">masking_fraction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span><span class="w">     </span><span class="c1"># Fraction of features to mask</span>
 <span class="w">  </span><span class="nt">filter_zeros</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w">       </span><span class="c1"># Skip zero-valued features</span>
 <span class="w">  </span><span class="nt">shuffle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
@@ -265,20 +265,21 @@
 <span class="nt">model</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">modalities</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">             </span><span class="c1"># Number of data modalities</span>
 <span class="w">  </span><span class="nt">vocab_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">            </span><span class="c1"># Must be &gt;= tokenizer.vocab_size</span>
-<span class="w">  </span><span class="nt">hidden_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span><span class="w">          </span><span class="c1"># Embedding dimension</span>
-<span class="w">  </span><span class="nt">intermediate_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">512</span><span class="w">    </span><span class="c1"># Feed-forward hidden size</span>
-<span class="w">  </span><span class="nt">num_attention_heads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">    </span><span class="c1"># Attention heads</span>
-<span class="w">  </span><span class="nt">num_hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">      </span><span class="c1"># Transformer layers</span>
-<span class="w">  </span><span class="nt">enable_flash_attention</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+<span class="w">  </span><span class="nt">hidden_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">256</span><span class="w">          </span><span class="c1"># Embedding dimension</span>
+<span class="w">  </span><span class="nt">intermediate_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span><span class="w">   </span><span class="c1"># Feed-forward hidden size (typically 4 × hidden_size)</span>
+<span class="w">  </span><span class="nt">num_attention_heads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">    </span><span class="c1"># Attention heads</span>
+<span class="w">  </span><span class="nt">num_hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">      </span><span class="c1"># Transformer layers</span>
+<span class="w">  </span><span class="nt">use_scgpt_mask</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1"># true: scGPT attention masking, false: full bidirectional</span>
+<span class="w">  </span><span class="nt">attention_backend</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;sdpa&#39;</span><span class="w"> </span><span class="c1"># &#39;sdpa&#39; (default) or &#39;fa2&#39; (flash_attn varlen)</span>
+<span class="w">  </span><span class="nt">enable_flash_attention</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># Legacy flag, ignored when using custom SDPA layers</span>
 <span class="w">  </span><span class="nt">dropout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
-<span class="w">  </span><span class="nt">_attn_implementation</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;sdpa&#39;</span>
 <span class="w">  </span><span class="nt">learning_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0e-5</span>
-<span class="w">  </span><span class="nt">optimizer</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;torch.optim.Adam&#39;</span>
+<span class="w">  </span><span class="nt">optimizer</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;torch.optim.AdamW&#39;</span><span class="w">  </span><span class="c1"># &#39;torch.optim.Adam|torch.optim.AdamW|FusedAdam|DeepSpeedCPUAdam&#39;</span>
 <span class="w">  </span><span class="nt">pad_token_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 
 <span class="nt">trainer</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">epochs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">  </span><span class="nt">log_every_n_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
+<span class="w">  </span><span class="nt">log_every_n_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
 <span class="w">  </span><span class="nt">deterministic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">devices</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w">                </span><span class="c1"># Number of GPUs</span>
 <span class="w">  </span><span class="nt">accelerator</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cuda&#39;</span>
@@ -289,9 +290,9 @@
 <span class="w">  </span><span class="nt">accumulate_grad_batches</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">  </span><span class="nt">from_checkpoint</span><span class="p">:</span><span class="w">          </span><span class="c1"># Leave empty to start fresh</span>
 <span class="w">  </span><span class="nt">strategy</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepspeed</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ddp</span><span class="w">               </span><span class="c1"># &#39;ddp&#39; for data parallelism, &#39;deepspeed&#39; for ZeRO sharding</span>
 <span class="w">    </span><span class="nt">params</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="w">      </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">              </span><span class="c1"># Only used with deepspeed</span>
 <span class="w">      </span><span class="nt">offload_optimizer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 <span class="w">      </span><span class="nt">offload_parameters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </pre></div>
@@ -336,7 +337,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">input_file</span></code></p></td>
-<td><p>Path to the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> file created in <a class="reference internal" href="build-dataset.html"><span class="doc">Step 1: Build the Dataset</span></a>.</p></td>
+<td><p>Path to the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> or <code class="docutils literal notranslate"><span class="pre">.pkl</span></code> file created in <a class="reference internal" href="build-dataset.html"><span class="doc">Step 1: Build the Dataset</span></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_workers</span></code></p></td>
 <td><p>Number of CPU processes for data loading. Set to <code class="docutils literal notranslate"><span class="pre">num_cpus</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p></td>
@@ -345,7 +346,7 @@
 <td><p>Samples per batch <strong>per GPU</strong>. Reduce if you get OOM errors.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">context_window</span></code></p></td>
-<td><p>How many features the model sees per training step. Set equal to total feature count for small datasets (&lt;100 features), or use a subset for large vocabularies (e.g. 1000 genes out of 20000).</p></td>
+<td><p>How many features the model sees per training step. Set to <code class="docutils literal notranslate"><span class="pre">null</span></code> for variable-length (requires <code class="docutils literal notranslate"><span class="pre">collate_variable_length</span></code>).</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">masking_fraction</span></code></p></td>
 <td><p>Fraction of context-window features to mask. 0.15–0.30 is typical.</p></td>
@@ -366,13 +367,13 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">vocab_size</span></code></p></td>
-<td><p>Must be ≥ <code class="docutils literal notranslate"><span class="pre">tokenizer.vocab_size</span></code> from Step 1.</p></td>
+<td><p>Must be &gt;= <code class="docutils literal notranslate"><span class="pre">tokenizer.vocab_size</span></code> from Step 1.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">hidden_size</span></code></p></td>
 <td><p>Embedding dimension. Must be divisible by <code class="docutils literal notranslate"><span class="pre">num_attention_heads</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">intermediate_size</span></code></p></td>
-<td><p>Feed-forward network hidden size. Typically <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">&amp;times;</span> <span class="pre">hidden_size</span></code>.</p></td>
+<td><p>Feed-forward network hidden size. Typically <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">×</span> <span class="pre">hidden_size</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_attention_heads</span></code></p></td>
 <td><p>Number of attention heads per layer.</p></td>
@@ -380,17 +381,20 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">num_hidden_layers</span></code></p></td>
 <td><p>Depth of the transformer encoder.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">enable_flash_attention</span></code></p></td>
-<td><p>Use Flash/SDPA attention for speed and memory savings.</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">use_scgpt_mask</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: scGPT attention masking (blocks masked-to-masked attention). <code class="docutils literal notranslate"><span class="pre">false</span></code>: full bidirectional (recommended for speed).</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dropout</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">attention_backend</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">'sdpa'</span></code>: PyTorch native SDPA (works everywhere). <code class="docutils literal notranslate"><span class="pre">'fa2'</span></code>: Flash Attention 2 varlen (Ampere/Hopper GPUs, requires <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">flash-attn</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dropout</span></code></p></td>
 <td><p>Dropout rate applied in attention and feed-forward layers.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code></p></td>
 <td><p>Initial learning rate.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">torch.optim.Adam</span></code> or <code class="docutils literal notranslate"><span class="pre">DeepSpeedCPUAdam</span></code> (for CPU-offloaded training).</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">torch.optim.AdamW</span></code> (recommended), <code class="docutils literal notranslate"><span class="pre">FusedAdam</span></code> (with DeepSpeed), or <code class="docutils literal notranslate"><span class="pre">DeepSpeedCPUAdam</span></code> (CPU-offloaded).</p></td>
 </tr>
 </tbody>
 </table>
@@ -413,16 +417,19 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">precision</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bf16-mixed</span></code> (recommended), <code class="docutils literal notranslate"><span class="pre">16-mixed</span></code>, or <code class="docutils literal notranslate"><span class="pre">32</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_nodes</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">log_every_n_steps</span></code></p></td>
+<td><p>How often to log metrics. 25-50 is reasonable; 1 adds overhead.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">num_nodes</span></code></p></td>
 <td><p>Number of compute nodes for multi-node training.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code></p></td>
 <td><p>Checkpoint save frequency.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">accumulate_grad_batches</span></code></p></td>
-<td><p>Accumulate gradients over N batches before updating. Increase if mixed-precision training is unstable.</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">accumulate_grad_batches</span></code></p></td>
+<td><p>Accumulate gradients over N batches before updating.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code></p></td>
 <td><p>Path to a checkpoint to resume training from. Leave empty to start fresh.</p></td>
 </tr>
 </tbody>
@@ -438,20 +445,71 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">deepspeed</span></code> (recommended) or any PyTorch Lightning strategy name.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code> (recommended when model fits in GPU memory) or <code class="docutils literal notranslate"><span class="pre">deepspeed</span></code> (for ZeRO sharding).</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stage</span></code></p></td>
-<td><p>DeepSpeed ZeRO stage. <strong>Stage 2</strong>: shards optimizer states and gradients. <strong>Stage 3</strong>: also shards model parameters (use when the model doesn’t fit in GPU memory).</p></td>
+<td><p>DeepSpeed ZeRO stage. <strong>Stage 1</strong>: shards optimizer states. <strong>Stage 2</strong>: also shards gradients. <strong>Stage 3</strong>: also shards parameters.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">offload_optimizer</span></code></p></td>
 <td><p>Move optimizer states to CPU RAM. Slower, but saves GPU memory.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">offload_parameters</span></code></p></td>
-<td><p>Move model parameters to CPU RAM. Even slower, but enables very large models.</p></td>
+<td><p>Move model parameters to CPU RAM (stage 3 only).</p></td>
 </tr>
 </tbody>
 </table>
 </section>
+</section>
+<section id="hardware-recommendations">
+<h2>Hardware Recommendations<a class="headerlink" href="#hardware-recommendations" title="Link to this heading"></a></h2>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Hardware</p></th>
+<th class="head"><p>Strategy</p></th>
+<th class="head"><p>attention_backend</p></th>
+<th class="head"><p>use_scgpt_mask</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1× GPU (any)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sdpa</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>No multi-GPU overhead</p></td>
+</tr>
+<tr class="row-odd"><td><p>8× A10 (24GB)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fa2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>FA2 supported on Ampere; model fits in 24GB</p></td>
+</tr>
+<tr class="row-even"><td><p>8× A100 (80GB)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fa2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Largest batches; FA2 native</p></td>
+</tr>
+<tr class="row-odd"><td><p>8× H100</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fa2</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Fastest; FA2 + Hopper optimizations</p></td>
+</tr>
+<tr class="row-even"><td><p>1× Blackwell (GB10)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sdpa</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>FA2 not yet supported; SDPA flash works</p></td>
+</tr>
+<tr class="row-odd"><td><p>Limited GPU memory</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deepspeed</span></code> (stage 2)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sdpa</span></code></p></td>
+<td><p>either</p></td>
+<td><p>Shard optimizer + gradients</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="model-sizing-guide">
 <h2>Model Sizing Guide<a class="headerlink" href="#model-sizing-guide" title="Link to this heading"></a></h2>
@@ -493,40 +551,6 @@
 <td><p>16</p></td>
 <td><p>12</p></td>
 <td><p>~96M</p></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="deepspeed-strategy-guide">
-<h2>DeepSpeed Strategy Guide<a class="headerlink" href="#deepspeed-strategy-guide" title="Link to this heading"></a></h2>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Scenario</p></th>
-<th class="head"><p>stage</p></th>
-<th class="head"><p>offload_optimizer</p></th>
-<th class="head"><p>offload_parameters</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>Model fits in GPU memory</p></td>
-<td><p>2</p></td>
-<td><p>False</p></td>
-<td><p>False</p></td>
-</tr>
-<tr class="row-odd"><td><p>Tight on GPU memory</p></td>
-<td><p>2</p></td>
-<td><p>True</p></td>
-<td><p>False</p></td>
-</tr>
-<tr class="row-even"><td><p>Model doesn’t fit in GPU memory</p></td>
-<td><p>3</p></td>
-<td><p>True</p></td>
-<td><p>False</p></td>
-</tr>
-<tr class="row-odd"><td><p>Very large model, limited GPU memory</p></td>
-<td><p>3</p></td>
-<td><p>True</p></td>
-<td><p>True</p></td>
 </tr>
 </tbody>
 </table>

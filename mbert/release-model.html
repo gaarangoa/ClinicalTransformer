@@ -52,89 +52,21 @@
 </li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/overview.html">mBERT Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#how-it-works">How It Works</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#training-optimizations">Training Optimizations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#data-flow">Data Flow</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/configuration.html">Step 2: Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#field-reference">Field Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#experiment">experiment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#dataset">dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#model">model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer">trainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/training.html">Step 3: Training</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#the-training-script">The Training Script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#launch-command">Launch Command</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#what-happens-during-training">What Happens During Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#monitoring-training">Monitoring Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/release-model.html">Step 4: Release the Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#conversion-script">Conversion Script</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#output">Output</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/inference.html">Step 5: Inference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#load-the-model">Load the Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
-</ul>
-</li>
-</ul>
-<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">mBERT Overview</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-backends">Attention Backends</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#training-optimizations">Training Optimizations</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
-<li class="toctree-l2"><a class="reference internal" href="overview.html#project-structure">Project Structure</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="build-dataset.html">Step 1: Build the Dataset</a><ul>
@@ -156,8 +88,8 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="training.html">Step 3: Training</a><ul>
@@ -184,6 +116,74 @@
 <li class="toctree-l2"><a class="reference internal" href="inference.html#extracting-embeddings">Extracting Embeddings</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">vnBERT Tutorial</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/overview.html">vnBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#tokenizers">Tokenizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#dataset-classes">Dataset Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#training">Training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/overview.html#data-flow">Data Flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/overview.html#project-structure">Project Structure</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/configuration.html#deepspeed-strategy-guide">DeepSpeed Strategy Guide</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/training.html">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../vnbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/release-model.html#output">Output</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../vnbert/inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../vnbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
 </ul>
 </li>
 </ul>
@@ -231,7 +231,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Step 4: Release the Model</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/vnbert/release-model.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/mbert/release-model.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -241,11 +241,11 @@
              
   <section id="step-4-release-the-model">
 <h1>Step 4: Release the Model<a class="headerlink" href="#step-4-release-the-model" title="Link to this heading"></a></h1>
-<p>After training, the checkpoints are stored in DeepSpeed’s sharded format (multiple files per checkpoint). To use the model for inference, you need to convert it to a single-file, HuggingFace-compatible format.</p>
+<p>After training, checkpoints need to be converted to a single-file, HuggingFace-compatible format for inference.</p>
 <section id="conversion-script">
 <h2>Conversion Script<a class="headerlink" href="#conversion-script" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">vnBertPretrainedModelForMVP</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">vnBertTokenizerTabular</span> <span class="k">as</span> <span class="n">vnBertTokenizer</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert</span><span class="w"> </span><span class="kn">import</span> <span class="n">mBertPretrainedModelForMVP</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert</span><span class="w"> </span><span class="kn">import</span> <span class="n">mBertTokenizerTabular</span> <span class="k">as</span> <span class="n">Tokenizer</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.utilities.deepspeed</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
@@ -256,7 +256,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">deepspeed.utils.tensor_fragment</span><span class="w"> </span><span class="kn">import</span> <span class="n">fragment_address</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">transformers</span><span class="w"> </span><span class="kn">import</span> <span class="n">BertConfig</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.vnbert.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningTrainerModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningTrainerModel</span>
 
 <span class="c1"># ── EDIT THESE ───────────────────────────────────────────</span>
 <span class="n">model_path</span> <span class="o">=</span> <span class="s2">&quot;path/to/model_hub&quot;</span>       <span class="c1"># Where the final model will be saved</span>
@@ -299,7 +299,7 @@
 <span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
 
 <span class="c1"># Save tokenizer alongside the model</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">vnBertTokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">Tokenizer</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
     <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">fm_name</span><span class="si">}</span><span class="s2">/tokenizer&quot;</span>
 <span class="p">)</span>
 <span class="n">tokenizer</span><span class="o">.</span><span class="n">save_pretrained</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">/&quot;</span><span class="p">)</span>
@@ -307,11 +307,15 @@
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model released to: </span><span class="si">{</span><span class="n">model_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you trained with DDP instead of DeepSpeed, skip the <code class="docutils literal notranslate"><span class="pre">convert_zero_checkpoint_to_fp32_state_dict</span></code> step and load the checkpoint directly.</p>
+</div>
 </section>
 </section>
 <section id="output">
 <h2>Output<a class="headerlink" href="#output" title="Link to this heading"></a></h2>
-<p>After running this script, <code class="docutils literal notranslate"><span class="pre">model_path/</span></code> will contain everything needed for inference:</p>
+<p>After running this script, <code class="docutils literal notranslate"><span class="pre">model_path/</span></code> will contain:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>model_hub/
 ├── config.json            # BERT configuration
 ├── model.safetensors      # Model weights
@@ -321,7 +325,7 @@
 </div>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>Pick the checkpoint epoch that shows the best (lowest) training loss. You can inspect the loss CSV from Step 3 to find it.</p>
+<p>Pick the checkpoint epoch that shows the best (lowest) training loss. Inspect the loss CSV from Step 3 to find it.</p>
 </div>
 </section>
 </section>
