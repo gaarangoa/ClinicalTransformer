@@ -23,6 +23,7 @@ from clinical_transformer.mbert.dataset import (
     MaskedTokenDatasetFromPytorchObject,
     MaskedTokenDatasetFromAnnData,
     MaskedPriorTokenDataset,
+    collate_variable_length,
 )
 
 __all__ = [
@@ -35,4 +36,5 @@ __all__ = [
     "MaskedTokenDatasetFromPytorchObject",
     "MaskedTokenDatasetFromAnnData",
     "MaskedPriorTokenDataset",
+    "collate_variable_length",
 ]

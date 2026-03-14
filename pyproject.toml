@@ -19,6 +19,9 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+fa2 = [
+    "flash-attn>=2.5",
+]
 analysis = [
     "seaborn>=0.13",
     "lifelines>=0.30",

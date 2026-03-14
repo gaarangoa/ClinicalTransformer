@@ -1,10 +1,24 @@
 import torch
+from torch.nn.utils.rnn import pad_sequence
 from torch.utils.data import Dataset
 import numpy as np
 from scipy import sparse
 import anndata as ad
 import os
 import pickle
+
+
+def collate_variable_length(batch):
+    """Collate variable-length samples by padding to max length in the batch.
+
+    Pads tokens with 0 (padding token), values with 0.0, labels with 0.0.
+    The model's padding_mask (tokens != 0) handles these automatically.
+    When all sequences are the same length this is a no-op (just stacks).
+    """
+    tokens = pad_sequence([s['tokens'] for s in batch], batch_first=True, padding_value=0)
+    values = pad_sequence([s['values'] for s in batch], batch_first=True, padding_value=0.0)
+    labels = pad_sequence([s['labels'] for s in batch], batch_first=True, padding_value=0.0)
+    return {'tokens': tokens, 'values': values, 'labels': labels}
 
 
 class MaskedTokenDataset(Dataset):

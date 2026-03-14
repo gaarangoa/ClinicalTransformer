@@ -25,6 +25,7 @@ model:
   num_hidden_layers: 2
   enable_flash_attention: true
   use_scgpt_mask: true
+  attention_backend: 'sdpa'  # 'sdpa' (default) or 'fa2' (flash_attn varlen, requires pip install flash-attn)
   dropout: 0.1
   learning_rate: 1.0e-5
   optimizer: 'FusedAdam' # 'DeepSpeedCPUAdam|torch.optim.Adam|torch.optim.AdamW|FusedAdam'

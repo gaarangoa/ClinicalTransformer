@@ -5,11 +5,12 @@ Validates forward pass, training step, attention masking, and dataset optimizati
 import torch
 import numpy as np
 from transformers.models.bert.modeling_bert import BertConfig
-from clinical_transformer.mbert.dataset import MaskedTokenDataset
+from clinical_transformer.mbert.dataset import MaskedTokenDataset, collate_variable_length
 from clinical_transformer.mbert.modeling import (
     nBERTPretrainedModel,
     nBertPretrainedModelForMaskingValuePrediction,
     LightningTrainerModel,
+    FA2_AVAILABLE,
 )
 
 
@@ -399,6 +400,148 @@ def test_end_to_end():
     print("  [PASS] end_to_end")
 
 
+# ── Collate and variable-length tests ──
+
+
+def test_collate_variable_length():
+    """Verify collate pads to max length in batch."""
+    samples = [
+        {'tokens': torch.tensor([2, 5, 10, 7]), 'values': torch.tensor([1.0, 0.5, -10.0, 0.3]), 'labels': torch.tensor([1.0, 0.5, 0.3, 0.3])},
+        {'tokens': torch.tensor([2, 7]), 'values': torch.tensor([1.0, 0.8]), 'labels': torch.tensor([1.0, 0.8])},
+    ]
+    batch = collate_variable_length(samples)
+    assert batch['tokens'].shape == (2, 4)
+    assert batch['values'].shape == (2, 4)
+    assert batch['labels'].shape == (2, 4)
+    # Second sample should be padded
+    assert batch['tokens'][1, 2] == 0
+    assert batch['tokens'][1, 3] == 0
+    assert batch['values'][1, 2] == 0.0
+    assert batch['labels'][1, 2] == 0.0
+    # First sample should be unchanged
+    assert batch['tokens'][0, 3] == 7
+    print("  [PASS] collate_variable_length")
+
+
+def test_collate_fixed_length_noop():
+    """Verify collate is a no-op when all samples are the same length."""
+    samples = [
+        {'tokens': torch.tensor([2, 5, 10]), 'values': torch.tensor([1.0, 0.5, -10.0]), 'labels': torch.tensor([1.0, 0.5, 0.3])},
+        {'tokens': torch.tensor([2, 7, 3]), 'values': torch.tensor([1.0, 0.8, 0.2]), 'labels': torch.tensor([1.0, 0.8, 0.2])},
+    ]
+    batch = collate_variable_length(samples)
+    assert batch['tokens'].shape == (2, 3)
+    assert (batch['tokens'][0] == torch.tensor([2, 5, 10])).all()
+    assert (batch['tokens'][1] == torch.tensor([2, 7, 3])).all()
+    print("  [PASS] collate_fixed_length_noop")
+
+
+def test_dataloader_variable_length():
+    """Dataset with no context_window produces variable-length; collate handles it."""
+    tokens_data = [
+        np.random.randint(1, 30, size=20).tolist(),
+        np.random.randint(1, 30, size=10).tolist(),
+        np.random.randint(1, 30, size=30).tolist(),
+        np.random.randint(1, 30, size=15).tolist(),
+    ]
+    values_data = [np.random.randn(len(t)).tolist() for t in tokens_data]
+
+    ds = MaskedTokenDataset(tokens_data, values_data, context_window=None, mask_prob=0.3)
+    dl = torch.utils.data.DataLoader(ds, batch_size=4, collate_fn=collate_variable_length)
+    batch = next(iter(dl))
+
+    # Should pad to max_len + 1 (CLS) = 31
+    assert batch['tokens'].shape == (4, 31)
+    # Shorter samples should have padding (token=0) at the end
+    assert batch['tokens'][1, 11:].sum() == 0  # sample with 10 features → 11 tokens
+    print("  [PASS] dataloader_variable_length")
+
+
+def test_model_with_padded_variable_length():
+    """Model handles padded variable-length batch correctly."""
+    config = make_config(use_scgpt_mask=False)
+    model = LightningTrainerModel(config)
+    model.train()
+
+    # Simulate collated batch: sample 1 has 15 tokens, sample 2 has 10 (padded to 15)
+    tokens = torch.randint(1, 30, (2, 15))
+    tokens[1, 10:] = 0  # padding
+    values = torch.randn(2, 15)
+    values[:, -4:] = -10.0
+    values[1, 10:] = 0.0  # padding values
+    labels = torch.randn(2, 15)
+    labels[1, 10:] = 0.0
+
+    batch = {'tokens': tokens, 'values': values, 'labels': labels}
+    loss = model.training_step(batch, 0)
+    assert not torch.isnan(loss), "NaN loss with padded batch"
+    loss.backward()
+    print("  [PASS] model_with_padded_variable_length")
+
+
+def test_end_to_end_variable_length():
+    """Full pipeline with variable-length data through collate."""
+    tokens_data = [np.random.randint(1, 30, size=np.random.randint(10, 50)).tolist() for _ in range(20)]
+    values_data = [np.random.randn(len(t)).tolist() for t in tokens_data]
+
+    ds = MaskedTokenDataset(tokens_data, values_data, context_window=None, mask_prob=0.3)
+    dl = torch.utils.data.DataLoader(ds, batch_size=4, collate_fn=collate_variable_length)
+
+    config = make_config(use_scgpt_mask=False)
+    model = LightningTrainerModel(config)
+    model.train()
+
+    batch = next(iter(dl))
+    loss = model.training_step(batch, 0)
+    loss.backward()
+
+    has_grad = any(p.grad is not None and p.grad.abs().sum() > 0 for p in model.parameters())
+    assert has_grad, "No gradients computed"
+    print("  [PASS] end_to_end_variable_length")
+
+
+def test_fa2_fallback_no_flash_attn():
+    """FA2 backend gracefully falls back to SDPA when flash_attn not installed."""
+    config = make_config(use_scgpt_mask=False, attention_backend='fa2')
+    model = nBERTPretrainedModel(config)
+
+    if not FA2_AVAILABLE:
+        assert not model._use_fa2, "Should fall back to SDPA when flash_attn not installed"
+    print("  [PASS] fa2_fallback_no_flash_attn")
+
+
+def test_fa2_fallback_scgpt_mask():
+    """FA2 backend falls back to SDPA when scGPT mask is enabled."""
+    config = make_config(use_scgpt_mask=True, attention_backend='fa2')
+    model = nBERTPretrainedModel(config)
+    assert not model._use_fa2, "Should fall back to SDPA when scGPT mask is active"
+    print("  [PASS] fa2_fallback_scgpt_mask")
+
+
+def test_fa2_forward():
+    """Test FA2 forward if flash_attn is available, otherwise skip."""
+    if not FA2_AVAILABLE:
+        print("  [SKIP] fa2_forward (flash_attn not installed)")
+        return
+
+    config = make_config(use_scgpt_mask=False, attention_backend='fa2')
+    model = nBERTPretrainedModel(config)
+    model.eval()
+    assert model._use_fa2
+
+    tokens = torch.randint(1, 30, (4, 21)).cuda()
+    values = torch.randn(4, 21).cuda()
+    values[:, -6:] = -10.0
+    model = model.cuda()
+
+    with torch.no_grad():
+        out = model(tokens, values, return_dict=True)
+
+    assert out.last_hidden_state.shape == (4, 21, 64)
+    assert not torch.isnan(out.last_hidden_state).any()
+    print("  [PASS] fa2_forward")
+
+
 if __name__ == "__main__":
     print("Dataset tests:")
     test_dataset_basic()
@@ -421,6 +564,18 @@ if __name__ == "__main__":
     test_bidirectional_mask_no_padding()
     test_bidirectional_mask_with_padding()
     test_scgpt_mask_correctness()
+
+    print("\nCollate and variable-length tests:")
+    test_collate_variable_length()
+    test_collate_fixed_length_noop()
+    test_dataloader_variable_length()
+    test_model_with_padded_variable_length()
+    test_end_to_end_variable_length()
+
+    print("\nFA2 tests:")
+    test_fa2_fallback_no_flash_attn()
+    test_fa2_fallback_scgpt_mask()
+    test_fa2_forward()
 
     print("\nEnd-to-end tests:")
     test_end_to_end()
