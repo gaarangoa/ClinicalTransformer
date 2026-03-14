@@ -4,7 +4,9 @@ import yaml
 
 import lightning
 import torch
-from transformers.models.bert.modeling_bert import BertLayer, BertConfig
+import torch.nn as nn
+import torch.nn.functional as F
+from transformers.models.bert.modeling_bert import BertConfig
 from transformers.models.bert.modeling_bert import BertPreTrainedModel
 from transformers.modeling_outputs import BaseModelOutput
 from transformers.utils import ModelOutput
@@ -58,6 +60,88 @@ class nBERTModelOutput(ModelOutput):
     input_embeddings: Optional[torch.FloatTensor] = None
 
 
+# ---------------------------------------------------------------------------
+# Custom transformer layer using PyTorch SDPA directly (bypasses HuggingFace)
+# ---------------------------------------------------------------------------
+
+class SDPAttention(nn.Module):
+    """Multi-head attention using F.scaled_dot_product_attention directly.
+
+    Supports arbitrary float attention masks (e.g. scGPT 4D mask) without
+    going through HuggingFace's sdpa_attention_forward wrapper.
+    SDPA auto-selects the best backend: flash (no mask), memory-efficient
+    (with mask), or math fallback.
+    """
+
+    def __init__(self, config: BertConfig):
+        super().__init__()
+        self.num_heads = config.num_attention_heads
+        self.head_dim = config.hidden_size // config.num_attention_heads
+        self.dropout = config.attention_probs_dropout_prob
+
+        self.q_proj = nn.Linear(config.hidden_size, config.hidden_size)
+        self.k_proj = nn.Linear(config.hidden_size, config.hidden_size)
+        self.v_proj = nn.Linear(config.hidden_size, config.hidden_size)
+        self.out_proj = nn.Linear(config.hidden_size, config.hidden_size)
+
+    def forward(self, hidden_states, attention_mask=None):
+        """
+        Args:
+            hidden_states: (B, S, H)
+            attention_mask: None, or float tensor broadcastable to (B, num_heads, S, S)
+                            with 0 for attend and -inf for block.
+        Returns:
+            (B, S, H)
+        """
+        B, S, _ = hidden_states.shape
+
+        # Project and reshape: (B, S, H) -> (B, num_heads, S, head_dim)
+        q = self.q_proj(hidden_states).view(B, S, self.num_heads, self.head_dim).transpose(1, 2)
+        k = self.k_proj(hidden_states).view(B, S, self.num_heads, self.head_dim).transpose(1, 2)
+        v = self.v_proj(hidden_states).view(B, S, self.num_heads, self.head_dim).transpose(1, 2)
+
+        # SDPA: auto-selects flash (no mask) or memory-efficient (with mask)
+        attn_out = F.scaled_dot_product_attention(
+            q, k, v,
+            attn_mask=attention_mask,
+            dropout_p=self.dropout if self.training else 0.0,
+        )
+
+        # Reshape back: (B, num_heads, S, head_dim) -> (B, S, H)
+        attn_out = attn_out.transpose(1, 2).contiguous().view(B, S, -1)
+        return self.out_proj(attn_out)
+
+
+class SDPTransformerLayer(nn.Module):
+    """Transformer layer: SDPA attention + FFN with post-LN residuals.
+
+    Matches BertLayer's post-LN architecture for weight compatibility.
+    """
+
+    def __init__(self, config: BertConfig):
+        super().__init__()
+        self.attention = SDPAttention(config)
+        self.attn_ln = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
+        self.attn_dropout = nn.Dropout(config.hidden_dropout_prob)
+
+        self.ffn_dense_in = nn.Linear(config.hidden_size, config.intermediate_size)
+        self.ffn_act = nn.GELU()
+        self.ffn_dense_out = nn.Linear(config.intermediate_size, config.hidden_size)
+        self.ffn_ln = nn.LayerNorm(config.hidden_size, eps=config.layer_norm_eps)
+        self.ffn_dropout = nn.Dropout(config.hidden_dropout_prob)
+
+    def forward(self, hidden_states, attention_mask=None, **kwargs):
+        # Self-attention with post-LN residual
+        attn_out = self.attention(hidden_states, attention_mask)
+        hidden_states = self.attn_ln(hidden_states + self.attn_dropout(attn_out))
+
+        # FFN with post-LN residual
+        ffn_out = self.ffn_dense_out(self.ffn_act(self.ffn_dense_in(hidden_states)))
+        hidden_states = self.ffn_ln(hidden_states + self.ffn_dropout(ffn_out))
+
+        return (hidden_states,)
+
+
 class CTEmbeddings(torch.nn.Module):
     def __init__(self, config):
         super().__init__()
@@ -97,8 +181,10 @@ class nBERTPretrainedModel(BertPreTrainedModel):
         # INPUT
         self.embedder = CTEmbeddings(config)
 
-        # ENCODER TRANSFORMER
-        self.encoder = torch.nn.ModuleList([BertLayer(config) for _ in range(config.num_hidden_layers)])
+        # ENCODER TRANSFORMER (custom SDPA layers, bypass HuggingFace wrapper)
+        self.encoder = nn.ModuleList(
+            [SDPTransformerLayer(config) for _ in range(config.num_hidden_layers)]
+        )
 
         self.hidden_size = config.hidden_size
         self.output_ln = torch.nn.LayerNorm(config.hidden_size)
@@ -159,60 +245,47 @@ class nBERTPretrainedModel(BertPreTrainedModel):
 
         if self.use_scgpt_mask:
             # scGPT attention strategy:
-            #   - Known  -> Known:  ALLOWED  (full bidirectional)
-            #   - Known  -> Masked: BLOCKED  (no information leakage from unknowns)
-            #   - Masked -> Known:  ALLOWED  (gather context for prediction)
-            #   - Masked -> Masked: BLOCKED  (no cross-leakage between unknowns)
-            #   - Masked -> Self:   ALLOWED  (attend to own token embedding)
+            #   - Known  -> Known:  ALLOWED
+            #   - Known  -> Masked: BLOCKED
+            #   - Masked -> Known:  ALLOWED
+            #   - Masked -> Masked: BLOCKED
+            #   - Masked -> Self:   ALLOWED
+            #
+            # Since masking is a fixed suffix, the mask pattern is identical
+            # across all samples in the batch. Build for one sample and broadcast.
 
-            # Positions that can be used as keys/values: non-masked & non-padded
-            key_value_mask = padding_mask & (~masked_positions)
+            # Use first sample as representative (all have same pattern)
+            kv_mask = padding_mask[0] & (~masked_positions[0])  # (S,)
+            # Every query can attend to known positions
+            attention_mask = kv_mask.unsqueeze(0).expand(seq_len, seq_len)  # (S, S)
+            # Masked positions can also attend to themselves (diagonal)
+            diag = torch.arange(seq_len, device=tokens.device)
+            masked_self = masked_positions[0].unsqueeze(0) & (diag.unsqueeze(1) == diag.unsqueeze(0))
+            attention_mask = attention_mask | masked_self
+            # Zero out padding query rows
+            attention_mask = attention_mask & padding_mask[0].unsqueeze(1)
+            # Reshape for broadcast: (1, 1, S, S)
+            attention_mask = attention_mask.unsqueeze(0).unsqueeze(0)
 
-            # Base: every query can attend to all valid key positions
-            attention_mask = key_value_mask.unsqueeze(1).unsqueeze(1).expand(
-                batch_size, 1, seq_len, seq_len
-            )
-
-            # Allow masked positions to also attend to themselves (diagonal)
-            diagonal_mask = torch.eye(
-                seq_len, device=tokens.device, dtype=torch.bool
-            )
-            masked_self_attend = (
-                masked_positions.unsqueeze(1) & diagonal_mask.unsqueeze(0)
-            )
-            attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
-
-            # Zero out padding rows (padding queries should attend to nothing)
-            query_mask = padding_mask.unsqueeze(1).unsqueeze(-1).expand(
-                batch_size, 1, seq_len, seq_len
-            )
-            attention_mask = attention_mask & query_mask
+            # Convert to float attention bias (0 for attend, -inf for block)
+            attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
         else:
-            # Full bidirectional: attend to all non-padding positions
-            attention_mask = padding_mask.unsqueeze(1).unsqueeze(1).expand(
-                batch_size, 1, seq_len, seq_len
-            )
+            # Full bidirectional attention.
+            # If no padding exists (all tokens are real), pass None so SDPA
+            # can use the flash attention kernel without mask overhead.
+            if padding_mask.all():
+                attention_mask = None
+            else:
+                attention_mask = padding_mask[0:1].unsqueeze(1).unsqueeze(1)
+                attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
 
-        # Convert to attention scores format (large negative for blocked)
-        attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
-
-        # Pass through transformer layers
+        # Pass through SDPA transformer layers
         hidden_state = embeddings
         for layer in self.encoder:
             if output_hidden_states:
                 all_hidden_states = all_hidden_states + (hidden_state,)
 
-            layer_outputs = layer(
-                hidden_states=hidden_state,
-                attention_mask=attention_mask,
-                output_attentions=output_attentions
-            )
-
-            if output_attentions:
-                hidden_state, attention_weights = layer_outputs
-                all_attentions = all_attentions + (attention_weights,)
-            else:
-                hidden_state = layer_outputs[0]
+            hidden_state = layer(hidden_state, attention_mask=attention_mask)[0]
 
             # Zero out padding positions
             hidden_state = padding_expanded * hidden_state
@@ -294,8 +367,11 @@ class nBertPretrainedModelForMaskingValuePrediction(nBERTPretrainedModel):
         else:
             hidden_state = outputs[0]
 
-        # Generate value predictions
-        value_predictions = self.value_predictor(hidden_state).squeeze(-1)
+        # Generate value predictions (skip if caller will handle it)
+        if output_predictions:
+            value_predictions = self.value_predictor(hidden_state).squeeze(-1)
+        else:
+            value_predictions = None
 
         if not return_dict:
             return outputs + (value_predictions,)
@@ -340,31 +416,31 @@ class LightningTrainerModel(lightning.LightningModule):
         return out
 
     def training_step(self, batch, batch_idx):
-        tokens = batch['tokens']  # Ensure Long dtype
-        values = batch['values']  # Values with -10 at masked positions
-        labels = batch['labels']  # Original values (ground truth)
+        tokens = batch['tokens']
+        values = batch['values']
+        labels = batch['labels']
 
+        masked_positions = (values == -10.0)
+
+        if not masked_positions.any():
+            self.log('train_loss', 0.0)
+            return torch.tensor(0.0, device=values.device, requires_grad=True)
+
+        # Get hidden states without running prediction head on all positions
         out = self.forward(
             tokens=tokens,
             values=values,
             output_last_hidden_state=True,
+            output_predictions=False,
             return_dict=True
         )
 
-        # Create mask for masked positions only (where input values == -10)
-        masked_positions = (values == -10.0)
+        # Run prediction head only on masked positions
+        masked_hidden = out.last_hidden_state[masked_positions]
+        value_pred = self.model.value_predictor(masked_hidden).squeeze(-1)
+        value_true = labels[masked_positions]
 
-        # Only compute loss for masked positions
-        if masked_positions.any():
-            value_pred = out.value_predictions[masked_positions]
-            value_true = labels[masked_positions]
-
-            # Calculate MSE loss only for masked positions
-            loss = self.loss(value_pred, value_true).mean()
-        else:
-            # No masked positions in this batch
-            loss = torch.tensor(0.0, device=values.device, requires_grad=True)
-
+        loss = self.loss(value_pred, value_true).mean()
         self.log('train_loss', loss)
 
         return loss
@@ -374,98 +450,3 @@ class LightningTrainerModel(lightning.LightningModule):
         optimizer = self.optimizer_(self.parameters(), lr=self.lr)
         return optimizer
 
-def pipeline():
-    """
-    Pipeline for training BERT model using clinical transformer.
-    """
-    config_file = sys.argv[1]
-    config_ = yaml.safe_load(open(config_file, 'r'))
-    config = Config(config_)
-
-    # Global configs
-    torch.backends.cuda.enable_flash_sdp(enabled=config.model.enable_flash_attention)
-    seed_everything(config.experiment.seed, workers=True)
-    torch.set_float32_matmul_precision(config.experiment.set_float32_matmul_precision)
-    config.experiment.output_dir = f'{config.experiment.save_dir}/{config.experiment.name}/version_{config.experiment.version}/'
-    os.makedirs(config.experiment.output_dir, exist_ok=True)
-
-    yaml.dump(config_, open(f'{config.experiment.output_dir}/experiment_{config_file.split("/")[-1]}', 'w'))
-
-    # Loggers
-    csv_logger = CSVLogger(
-        save_dir=config.experiment.save_dir,
-        name=config.experiment.name,
-        version=config.experiment.version
-    )
-
-    checkpoint_callback = ModelCheckpoint(
-        monitor="epoch",  # You can monitor a specific metric, but for saving after each epoch, we use "epoch"
-        dirpath=f"{config.experiment.output_dir}/models/",  # Directory to save the models
-        filename="{epoch}",  # Filename format for saving the model
-        save_top_k=-1,  # Save all models (otherwise it saves only the best `k` models)
-        save_weights_only=False,  # Save only the model weights (no optimizer states, etc.)
-        every_n_epochs=config.trainer.save_every_n_epochs  # Save every epoch
-    )
-
-
-    tokenizer_output = pickle.load(open(config.dataset.input_file, 'rb'))
-    input_ids = tokenizer_output['input_ids']
-    values = tokenizer_output['robust_zscore_values']
-
-    train_dataset = MaskedTokenDataset(
-        tokens=input_ids,
-        values=values,
-        context_window=config.dataset.context_window,
-        mask_prob=config.dataset.masking_fraction,
-    )
-    train_dataloader = DataLoader(
-        train_dataset,
-        batch_size=config.dataset.batch_size,
-        shuffle=config.dataset.shuffle,
-        num_workers=config.dataset.num_workers,
-        pin_memory=True,
-        persistent_workers=config.dataset.num_workers > 0,
-        prefetch_factor=2 if config.dataset.num_workers > 0 else None,
-    )
-
-    model_kwargs = config.model.__dict__.copy()
-    enable_flash = model_kwargs.pop('enable_flash_attention', False)
-    if enable_flash:
-        model_kwargs['attn_implementation'] = 'sdpa'
-    model_config = BertConfig(**model_kwargs)
-
-    model = LightningTrainerModel(model_config)
-    model = torch.compile(model)
-    model_config.to_json_file(f'{config.experiment.output_dir}/model_config.json')
-
-    if config.trainer.strategy['name'] == 'deepspeed':
-        ds_strategy = DeepSpeedStrategy(
-            **config.trainer.strategy.params.__dict__
-        )
-    else:
-        ds_strategy = config.trainer.strategy['name']
-
-    # Trainer
-    trainer = Trainer(
-        log_every_n_steps=config.trainer.log_every_n_steps,
-        deterministic=config.trainer.deterministic,
-        devices=config.trainer.devices,
-        accelerator=config.trainer.accelerator,
-        strategy=ds_strategy,
-        max_epochs=config.trainer.epochs,
-        precision=config.trainer.precision,
-        accumulate_grad_batches=config.trainer.accumulate_grad_batches,
-        reload_dataloaders_every_n_epochs=config.trainer.reload_dataloaders_every_n_epochs,
-        logger=csv_logger,
-        callbacks=[checkpoint_callback],
-        num_nodes=config.trainer.num_nodes,
-    )
-
-    trainer.fit(
-        model=model,
-        train_dataloaders=train_dataloader,
-        ckpt_path= config.trainer.from_checkpoint
-    )
-
-if __name__ == "__main__":
-    pipeline()

@@ -63,22 +63,22 @@ class MaskedTokenDataset(Dataset):
                  **kwargs):
         """
         Dataset for masked token prediction with gene expression data.
-        
+
         Args:
-            tokenizer_output: Output from tokenizer containing 'input_ids'
-                             and 'raw_values'
+            tokens: List/array of tokenized samples
+            values: List/array of expression value samples
             context_window: Number of genes to randomly select per sample
                            (None = use all)
             mask_prob: Probability of masking each token (default 0.15)
         """
-        self.input_ids = tokens
-        self.raw_values = values
+        if len(tokens) != len(values):
+            raise ValueError("input_ids and raw_values must have same length")
+
+        # Pre-convert to tensors once at init to avoid per-sample conversion
+        self.input_ids = [torch.as_tensor(t, dtype=torch.long) for t in tokens]
+        self.raw_values = [torch.as_tensor(v, dtype=torch.float32) for v in values]
         self.context_window = context_window
         self.mask_prob = mask_prob
-        
-        # Validate input lengths
-        if len(self.input_ids) != len(self.raw_values):
-            raise ValueError("input_ids and raw_values must have same length")
     
     def __len__(self):
         return len(self.input_ids)
@@ -108,51 +108,37 @@ class MaskedTokenDataset(Dataset):
         5. Apply end-of-sequence masking strategy
         6. Prepend CLS token to sequence
         """
-        # Get tokens and values for this sample
-        sample_tokens = self.input_ids[idx]
-        sample_values = self.raw_values[idx]
-        
-        # Convert to tensors with appropriate data types
-        # LongTensor for token IDs, FloatTensor for expression values
-        tokens = torch.tensor(sample_tokens, dtype=torch.long)
-        values = torch.tensor(sample_values, dtype=torch.float32)
-        
-        # Apply context window sampling if specified
-        # This randomly selects a subset of genes to manage memory usage
-        # and introduce training variability
+        tokens = self.input_ids[idx]
+        values = self.raw_values[idx]
+
+        # Context window sampling
         if (self.context_window is not None and
                 len(tokens) > self.context_window):
-            # Randomly select indices without replacement
             indices = torch.randperm(len(tokens))[:self.context_window]
             tokens = tokens[indices]
             values = values[indices]
-        
-        # Store original values as labels for loss computation
-        # Labels preserve the true expression values for masked positions
-        labels = values.clone()
-        
-        # Apply masking strategy: mask tokens from the end of sequence
-        # This differs from BERT's random masking and preserves biological
-        # context by maintaining co-expression patterns in early positions
-        if self.mask_prob > 0:
-            # Calculate number of tokens to mask from the end
-            num_tokens_to_mask = int(len(tokens) * self.mask_prob)
-            if num_tokens_to_mask > 0:
-                # Set masked positions to special value (-10.0)
-                # This value is recognized by the model as masked
-                values[-num_tokens_to_mask:] = -10.0
-        
-        # Add CLS token at the beginning (token ID 2)
-        # CLS token serves as a global sequence representation
-        # and is assigned a neutral value of 1.0
-        tokens = torch.cat([torch.tensor([2], dtype=torch.long), tokens])
-        values = torch.cat([torch.tensor([1.0], dtype=torch.float32), values])
-        labels = torch.cat([torch.tensor([1.0], dtype=torch.float32), labels])
-        
+
+        n = len(tokens)
+        seq_len = n + 1  # +1 for CLS
+        num_masked = int(n * self.mask_prob) if self.mask_prob > 0 else 0
+
+        # Pre-allocate output tensors (CLS + sequence)
+        out_tokens = torch.empty(seq_len, dtype=torch.long)
+        out_tokens[0] = 2
+        out_tokens[1:] = tokens
+
+        out_labels = torch.empty(seq_len, dtype=torch.float32)
+        out_labels[0] = 1.0
+        out_labels[1:] = values
+
+        out_values = out_labels.clone()
+        if num_masked > 0:
+            out_values[-num_masked:] = -10.0
+
         return {
-            "tokens": tokens,
-            "values": values,
-            "labels": labels
+            "tokens": out_tokens,
+            "values": out_values,
+            "labels": out_labels
         }
 
 
