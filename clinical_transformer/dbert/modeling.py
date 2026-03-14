@@ -11,8 +11,8 @@ from transformers.models.bert.modeling_bert import BertPreTrainedModel
 from transformers.modeling_outputs import BaseModelOutput
 from transformers.utils import ModelOutput
 
-from clinical_transformer.mbert.dataset import MaskedTokenDataset
-from clinical_transformer.mbert.config import Config
+from clinical_transformer.dbert.dataset import MaskedTokenDataset
+from clinical_transformer.dbert.config import Config
 
 import pickle
 from lightning.pytorch import Trainer
@@ -34,14 +34,6 @@ from dataclasses import dataclass
 logging.basicConfig(format='%(levelname)s\t%(asctime)s\t%(message)s')
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
-
-# Optional FA2 support — graceful fallback to SDPA when unavailable
-try:
-    from flash_attn import flash_attn_varlen_func
-    from flash_attn.bert_padding import pad_input, unpad_input
-    FA2_AVAILABLE = True
-except ImportError:
-    FA2_AVAILABLE = False
 
 
 @dataclass
@@ -119,34 +111,6 @@ class SDPAttention(nn.Module):
         attn_out = attn_out.transpose(1, 2).contiguous().view(B, S, -1)
         return self.out_proj(attn_out)
 
-    def forward_varlen(self, hidden_states, cu_seqlens, max_seqlen):
-        """FA2 varlen attention on packed (total_tokens, H) input.
-
-        Args:
-            hidden_states: (total_tokens, H)
-            cu_seqlens: (B+1,) int32
-            max_seqlen: int
-        Returns:
-            (total_tokens, H)
-        """
-        N = hidden_states.shape[0]
-
-        q = self.q_proj(hidden_states).view(N, self.num_heads, self.head_dim)
-        k = self.k_proj(hidden_states).view(N, self.num_heads, self.head_dim)
-        v = self.v_proj(hidden_states).view(N, self.num_heads, self.head_dim)
-
-        attn_out = flash_attn_varlen_func(
-            q, k, v,
-            cu_seqlens_q=cu_seqlens,
-            cu_seqlens_k=cu_seqlens,
-            max_seqlen_q=max_seqlen,
-            max_seqlen_k=max_seqlen,
-            dropout_p=self.dropout if self.training else 0.0,
-            causal=False,
-        )
-
-        attn_out = attn_out.view(N, -1)
-        return self.out_proj(attn_out)
 
 
 class SDPTransformerLayer(nn.Module):
@@ -178,15 +142,6 @@ class SDPTransformerLayer(nn.Module):
 
         return (hidden_states,)
 
-    def forward_varlen(self, hidden_states, cu_seqlens, max_seqlen):
-        """FA2 varlen path on packed (total_tokens, H) input."""
-        attn_out = self.attention.forward_varlen(hidden_states, cu_seqlens, max_seqlen)
-        hidden_states = self.attn_ln(hidden_states + self.attn_dropout(attn_out))
-
-        ffn_out = self.ffn_dense_out(self.ffn_act(self.ffn_dense_in(hidden_states)))
-        hidden_states = self.ffn_ln(hidden_states + self.ffn_dropout(ffn_out))
-
-        return hidden_states
 
 
 class CTEmbeddings(torch.nn.Module):
@@ -235,19 +190,7 @@ class nBERTPretrainedModel(BertPreTrainedModel):
 
         self.hidden_size = config.hidden_size
         self.output_ln = torch.nn.LayerNorm(config.hidden_size)
-        self.use_scgpt_mask = getattr(config, 'use_scgpt_mask', True)
-        self.attention_backend = getattr(config, 'attention_backend', 'sdpa')
-
-        # Resolve effective backend: FA2 requires flash_attn and no scGPT mask
-        self._use_fa2 = (
-            self.attention_backend == 'fa2'
-            and FA2_AVAILABLE
-            and not self.use_scgpt_mask
-        )
-        if self.attention_backend == 'fa2' and not FA2_AVAILABLE:
-            logger.warning('attention_backend=fa2 but flash_attn not installed; falling back to SDPA')
-        if self.attention_backend == 'fa2' and self.use_scgpt_mask:
-            logger.warning('FA2 does not support scGPT mask; falling back to SDPA')
+        self.mask1_ratio = getattr(config, 'mask1_ratio', 0.5)
 
         self.post_init()
 
@@ -285,11 +228,20 @@ class nBERTPretrainedModel(BertPreTrainedModel):
 
         # Create masks for different token types
         padding_mask = (tokens != 0)  # Not padding tokens
-        masked_positions = (values == -10.0)  # Masked value positions
+        any_masked = (values == -10.0)  # All masked positions
+
+        # Split masked positions into isolated (mask1) and contextual (mask2)
+        # by index: first mask1_ratio of masked positions are isolated
+        masked1_positions = torch.zeros_like(any_masked)
+        for b in range(tokens.shape[0]):
+            masked_indices = torch.where(any_masked[b])[0]
+            n_mask1 = int(len(masked_indices) * self.mask1_ratio)
+            if n_mask1 > 0:
+                masked1_positions[b, masked_indices[:n_mask1]] = True
 
         # Zero out masked values for embedding without cloning
         values_for_embedding = torch.where(
-            masked_positions, torch.zeros_like(values), values
+            any_masked, torch.zeros_like(values), values
         )
 
         # Get embeddings and apply ONLY padding mask (not masked positions)
@@ -297,66 +249,61 @@ class nBERTPretrainedModel(BertPreTrainedModel):
                                       values=values_for_embedding)
 
         batch_size, seq_len = tokens.shape
+        padding_expanded = padding_mask.unsqueeze(-1).type_as(embeddings)
+        embeddings = padding_expanded * embeddings
 
-        if self._use_fa2:
-            # ── FA2 varlen path: unpack → packed attention → repack ──
-            # unpad_input expects (B, S, H) and bool mask (B, S)
-            hidden_unpadded, indices, cu_seqlens, max_seqlen = unpad_input(
-                embeddings, padding_mask
-            )
+        # Disentangled dual-mask attention strategy:
+        #   - Known   -> Known:   ALLOWED
+        #   - Known   -> Masked1: BLOCKED
+        #   - Known   -> Masked2: BLOCKED
+        #   - Masked1 -> Known:   BLOCKED  (isolated, identity-only)
+        #   - Masked1 -> Masked1: BLOCKED
+        #   - Masked1 -> Masked2: BLOCKED
+        #   - Masked1 -> Self:    ALLOWED
+        #   - Masked2 -> Known:   ALLOWED  (contextual)
+        #   - Masked2 -> Masked1: BLOCKED
+        #   - Masked2 -> Masked2: BLOCKED
+        #   - Masked2 -> Self:    ALLOWED
 
-            for layer in self.encoder:
-                if output_hidden_states:
-                    all_hidden_states = all_hidden_states + (
-                        pad_input(hidden_unpadded, indices, batch_size, seq_len),
-                    )
-                hidden_unpadded = layer.forward_varlen(
-                    hidden_unpadded, cu_seqlens, max_seqlen
-                )
+        # Key-value mask: only known (non-masked) positions can be keys
+        key_value_mask = padding_mask & (~any_masked)
 
-            hidden_unpadded = self.output_ln(hidden_unpadded)
+        # Base: all queries can attend to known keys
+        attention_mask = padding_mask.unsqueeze(1).unsqueeze(2).expand(
+            batch_size, 1, seq_len, seq_len
+        )
+        key_value_expanded = key_value_mask.unsqueeze(1).unsqueeze(1).expand(
+            batch_size, 1, seq_len, seq_len
+        )
+        attention_mask = attention_mask & key_value_expanded
 
-            # Pad back to (B, S, H) — padding positions are zeros
-            hidden_state = pad_input(hidden_unpadded, indices, batch_size, seq_len)
-        else:
-            # ── SDPA path: padded attention with optional mask ──
-            padding_expanded = padding_mask.unsqueeze(-1).type_as(embeddings)
-            embeddings = padding_expanded * embeddings
+        # Block masked1 query rows entirely (they cannot see known tokens)
+        not_masked1 = (~masked1_positions).unsqueeze(-1).unsqueeze(1).expand(
+            batch_size, 1, seq_len, seq_len
+        )
+        attention_mask = attention_mask & not_masked1
 
-            if self.use_scgpt_mask:
-                # scGPT attention strategy:
-                #   - Known  -> Known:  ALLOWED
-                #   - Known  -> Masked: BLOCKED
-                #   - Masked -> Known:  ALLOWED
-                #   - Masked -> Masked: BLOCKED
-                #   - Masked -> Self:   ALLOWED
-                #
-                # Mask pattern is identical across batch. Build once, broadcast.
-                kv_mask = padding_mask[0] & (~masked_positions[0])
-                attention_mask = kv_mask.unsqueeze(0).expand(seq_len, seq_len)
-                diag = torch.arange(seq_len, device=tokens.device)
-                masked_self = masked_positions[0].unsqueeze(0) & (diag.unsqueeze(1) == diag.unsqueeze(0))
-                attention_mask = attention_mask | masked_self
-                attention_mask = attention_mask & padding_mask[0].unsqueeze(1)
-                attention_mask = attention_mask.unsqueeze(0).unsqueeze(0)
-                attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
-            else:
-                if padding_mask.all():
-                    attention_mask = None
-                else:
-                    attention_mask = padding_mask[0:1].unsqueeze(1).unsqueeze(1)
-                    attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
+        # Add diagonal self-loop for ALL masked positions
+        diagonal_mask = torch.eye(
+            seq_len, device=tokens.device, dtype=torch.bool
+        )
+        masked_self_attend = (
+            any_masked.unsqueeze(1) & diagonal_mask.unsqueeze(0)
+        )
+        attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
 
-            hidden_state = embeddings
-            for layer in self.encoder:
-                if output_hidden_states:
-                    all_hidden_states = all_hidden_states + (hidden_state,)
+        attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
 
-                hidden_state = layer(hidden_state, attention_mask=attention_mask)[0]
-                hidden_state = padding_expanded * hidden_state
+        hidden_state = embeddings
+        for layer in self.encoder:
+            if output_hidden_states:
+                all_hidden_states = all_hidden_states + (hidden_state,)
 
-            hidden_state = self.output_ln(hidden_state)
+            hidden_state = layer(hidden_state, attention_mask=attention_mask)[0]
             hidden_state = padding_expanded * hidden_state
+
+        hidden_state = self.output_ln(hidden_state)
+        hidden_state = padding_expanded * hidden_state
 
         # Add final hidden state if collecting all states
         if output_hidden_states:
@@ -499,7 +446,7 @@ class LightningTrainerModel(lightning.LightningModule):
             return_dict=True
         )
 
-        # Run prediction head only on masked positions
+        # Run prediction head only on masked positions (both types)
         masked_hidden = out.last_hidden_state[masked_positions]
         value_pred = self.model.value_predictor(masked_hidden).squeeze(-1)
         value_true = labels[masked_positions]
