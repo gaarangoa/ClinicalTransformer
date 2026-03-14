@@ -1,13 +1,24 @@
 Clinical Transformer
 ====================
 
-Clinical Transformer is a framework for training and deploying transformer-based foundation models on clinical, genomic, and tabular data. It provides ready-to-use architectures (vnBERT, nBERT, rnBERT, ModernBERT) with distributed training via DeepSpeed and a HuggingFace-compatible inference API.
+Clinical Transformer is a framework for training and deploying transformer-based foundation models on clinical, genomic, and tabular data. It provides ready-to-use architectures with distributed training and a HuggingFace-compatible inference API.
 
 .. toctree::
    :maxdepth: 2
    :caption: Getting Started
 
    getting-started/installation
+
+.. toctree::
+   :maxdepth: 2
+   :caption: mBERT Tutorial
+
+   mbert/overview
+   mbert/build-dataset
+   mbert/configuration
+   mbert/training
+   mbert/release-model
+   mbert/inference
 
 .. toctree::
    :maxdepth: 2
@@ -19,15 +30,6 @@ Clinical Transformer is a framework for training and deploying transformer-based
    vnbert/training
    vnbert/release-model
    vnbert/inference
-
-.. toctree::
-   :maxdepth: 2
-   :caption: Model Cards
-
-   models/vnbert-96m
-   models/nbert-80m
-   models/rnbert-96m
-   models/modernbert-109m
 
 .. toctree::
    :maxdepth: 2
