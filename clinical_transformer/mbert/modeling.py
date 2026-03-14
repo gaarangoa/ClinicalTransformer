@@ -102,6 +102,7 @@ class nBERTPretrainedModel(BertPreTrainedModel):
 
         self.hidden_size = config.hidden_size
         self.output_ln = torch.nn.LayerNorm(config.hidden_size)
+        self.use_scgpt_mask = getattr(config, 'use_scgpt_mask', True)
 
         self.post_init()
 
@@ -154,43 +155,46 @@ class nBERTPretrainedModel(BertPreTrainedModel):
         padding_expanded = padding_mask.unsqueeze(-1).type_as(embeddings)
         embeddings = padding_expanded * embeddings
 
-        # Build attention mask once (identical across all layers)
-        #
-        # scGPT attention strategy:
-        #   - Known  -> Known:  ALLOWED  (full bidirectional)
-        #   - Known  -> Masked: BLOCKED  (no information leakage from unknowns)
-        #   - Masked -> Known:  ALLOWED  (gather context for prediction)
-        #   - Masked -> Masked: BLOCKED  (no cross-leakage between unknowns)
-        #   - Masked -> Self:   ALLOWED  (attend to own token embedding)
-        #
         batch_size, seq_len = tokens.shape
 
-        # Positions that can be used as keys/values: non-masked & non-padded
-        key_value_mask = padding_mask & (~masked_positions)
+        if self.use_scgpt_mask:
+            # scGPT attention strategy:
+            #   - Known  -> Known:  ALLOWED  (full bidirectional)
+            #   - Known  -> Masked: BLOCKED  (no information leakage from unknowns)
+            #   - Masked -> Known:  ALLOWED  (gather context for prediction)
+            #   - Masked -> Masked: BLOCKED  (no cross-leakage between unknowns)
+            #   - Masked -> Self:   ALLOWED  (attend to own token embedding)
 
-        # Base: every query can attend to all valid key positions
-        # Shape: (batch_size, 1, 1, seq_len) — broadcast over query dim
-        attention_mask = key_value_mask.unsqueeze(1).unsqueeze(1).expand(
-            batch_size, 1, seq_len, seq_len
-        )
+            # Positions that can be used as keys/values: non-masked & non-padded
+            key_value_mask = padding_mask & (~masked_positions)
 
-        # Allow masked positions to also attend to themselves (diagonal)
-        diagonal_mask = torch.eye(
-            seq_len, device=tokens.device, dtype=torch.bool
-        )
-        masked_self_attend = (
-            masked_positions.unsqueeze(1) & diagonal_mask.unsqueeze(0)
-        )
-        attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
+            # Base: every query can attend to all valid key positions
+            attention_mask = key_value_mask.unsqueeze(1).unsqueeze(1).expand(
+                batch_size, 1, seq_len, seq_len
+            )
 
-        # Zero out padding rows (padding queries should attend to nothing)
-        query_mask = padding_mask.unsqueeze(1).unsqueeze(-1).expand(
-            batch_size, 1, seq_len, seq_len
-        )
-        attention_mask = attention_mask & query_mask
+            # Allow masked positions to also attend to themselves (diagonal)
+            diagonal_mask = torch.eye(
+                seq_len, device=tokens.device, dtype=torch.bool
+            )
+            masked_self_attend = (
+                masked_positions.unsqueeze(1) & diagonal_mask.unsqueeze(0)
+            )
+            attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
+
+            # Zero out padding rows (padding queries should attend to nothing)
+            query_mask = padding_mask.unsqueeze(1).unsqueeze(-1).expand(
+                batch_size, 1, seq_len, seq_len
+            )
+            attention_mask = attention_mask & query_mask
+        else:
+            # Full bidirectional: attend to all non-padding positions
+            attention_mask = padding_mask.unsqueeze(1).unsqueeze(1).expand(
+                batch_size, 1, seq_len, seq_len
+            )
 
         # Convert to attention scores format (large negative for blocked)
-        attention_mask = (-1e6 * (~attention_mask)).type_as(embeddings)
+        attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
 
         # Pass through transformer layers
         hidden_state = embeddings
@@ -301,14 +305,13 @@ class nBertPretrainedModelForMaskingValuePrediction(nBERTPretrainedModel):
             value_predictions=(value_predictions if output_predictions else None),
             hidden_states=outputs.hidden_states,
             attentions=outputs.attentions,
-            input_embeddings=kwargs.get('output_input_embeddings', False),
+            input_embeddings=None,
         )
 
 
 class LightningTrainerModel(lightning.LightningModule):
     def __init__(self, config, **kwargs):
         super().__init__()
-        # Use the specialized model for masking value prediction
         self.model = nBertPretrainedModelForMaskingValuePrediction(config)
 
         logger.info('saving hyperparamters')
@@ -425,9 +428,11 @@ def pipeline():
         prefetch_factor=2 if config.dataset.num_workers > 0 else None,
     )
 
-    model_config = BertConfig(
-        **config.model.__dict__,
-    )
+    model_kwargs = config.model.__dict__.copy()
+    enable_flash = model_kwargs.pop('enable_flash_attention', False)
+    if enable_flash:
+        model_kwargs['attn_implementation'] = 'sdpa'
+    model_config = BertConfig(**model_kwargs)
 
     model = LightningTrainerModel(model_config)
     model = torch.compile(model)
@@ -438,7 +443,7 @@ def pipeline():
             **config.trainer.strategy.params.__dict__
         )
     else:
-        ds_stragety = config.trainer.strategy['name']
+        ds_strategy = config.trainer.strategy['name']
 
     # Trainer
     trainer = Trainer(
