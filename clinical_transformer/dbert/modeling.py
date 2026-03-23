@@ -84,6 +84,12 @@ class SDPAttention(nn.Module):
         self.v_proj = nn.Linear(config.hidden_size, config.hidden_size)
         self.out_proj = nn.Linear(config.hidden_size, config.hidden_size)
 
+        # Qwen-style per-head sigmoid gate after SDPA (Qiu et al., 2025)
+        # Gate is query-dependent: g = sigmoid(W_g @ q), applied per head
+        self.gated_attention = getattr(config, 'gated_attention', False)
+        if self.gated_attention:
+            self.gate_proj = nn.Linear(self.head_dim, self.head_dim)
+
     def forward(self, hidden_states, attention_mask=None):
         """
         Args:
@@ -107,6 +113,11 @@ class SDPAttention(nn.Module):
             dropout_p=self.dropout if self.training else 0.0,
         )
 
+        # Per-head sigmoid gate: query-dependent sparsity on SDPA output
+        if self.gated_attention:
+            gate = torch.sigmoid(self.gate_proj(q))  # (B, num_heads, S, head_dim)
+            attn_out = attn_out * gate
+
         # Reshape back: (B, num_heads, S, head_dim) -> (B, S, H)
         attn_out = attn_out.transpose(1, 2).contiguous().view(B, S, -1)
         return self.out_proj(attn_out)
@@ -114,10 +125,7 @@ class SDPAttention(nn.Module):
 
 
 class SDPTransformerLayer(nn.Module):
-    """Transformer layer: SDPA attention + FFN with post-LN residuals.
-
-    Matches BertLayer's post-LN architecture for weight compatibility.
-    """
+    """Transformer layer: SDPA attention + FFN with post-LN residuals."""
 
     def __init__(self, config: BertConfig):
         super().__init__()
@@ -191,6 +199,8 @@ class nBERTPretrainedModel(BertPreTrainedModel):
         self.hidden_size = config.hidden_size
         self.output_ln = torch.nn.LayerNorm(config.hidden_size)
         self.mask1_ratio = getattr(config, 'mask1_ratio', 0.5)
+        self.mask1_target = self.mask1_ratio
+        self.mask1_warmup_epochs = getattr(config, 'mask1_warmup_epochs', 0)
 
         self.post_init()
 
@@ -230,15 +240,6 @@ class nBERTPretrainedModel(BertPreTrainedModel):
         padding_mask = (tokens != 0)  # Not padding tokens
         any_masked = (values == -10.0)  # All masked positions
 
-        # Split masked positions into isolated (mask1) and contextual (mask2)
-        # by index: first mask1_ratio of masked positions are isolated
-        masked1_positions = torch.zeros_like(any_masked)
-        for b in range(tokens.shape[0]):
-            masked_indices = torch.where(any_masked[b])[0]
-            n_mask1 = int(len(masked_indices) * self.mask1_ratio)
-            if n_mask1 > 0:
-                masked1_positions[b, masked_indices[:n_mask1]] = True
-
         # Zero out masked values for embedding without cloning
         values_for_embedding = torch.where(
             any_masked, torch.zeros_like(values), values
@@ -252,47 +253,61 @@ class nBERTPretrainedModel(BertPreTrainedModel):
         padding_expanded = padding_mask.unsqueeze(-1).type_as(embeddings)
         embeddings = padding_expanded * embeddings
 
-        # Disentangled dual-mask attention strategy:
-        #   - Known   -> Known:   ALLOWED
-        #   - Known   -> Masked1: BLOCKED
-        #   - Known   -> Masked2: BLOCKED
-        #   - Masked1 -> Known:   BLOCKED  (isolated, identity-only)
-        #   - Masked1 -> Masked1: BLOCKED
-        #   - Masked1 -> Masked2: BLOCKED
-        #   - Masked1 -> Self:    ALLOWED
-        #   - Masked2 -> Known:   ALLOWED  (contextual)
-        #   - Masked2 -> Masked1: BLOCKED
-        #   - Masked2 -> Masked2: BLOCKED
-        #   - Masked2 -> Self:    ALLOWED
+        # Build attention mask based on mask1_ratio:
+        #   mask1_ratio = -1.0  → BERT:  all-to-all (padding only)
+        #   mask1_ratio =  0.0  → scGPT: masked see known + self
+        #   mask1_ratio >  0.0  → dBERT: split into isolated + contextual
 
-        # Key-value mask: only known (non-masked) positions can be keys
-        key_value_mask = padding_mask & (~any_masked)
+        if self.mask1_ratio < 0:
+            # BERT mode: all non-padding positions attend to all non-padding
+            if padding_mask.all():
+                attention_mask = None
+            else:
+                attention_mask = padding_mask.unsqueeze(1).unsqueeze(2).expand(
+                    batch_size, 1, seq_len, seq_len
+                )
+                attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
+        else:
+            # scGPT / dBERT mode
 
-        # Base: all queries can attend to known keys
-        attention_mask = padding_mask.unsqueeze(1).unsqueeze(2).expand(
-            batch_size, 1, seq_len, seq_len
-        )
-        key_value_expanded = key_value_mask.unsqueeze(1).unsqueeze(1).expand(
-            batch_size, 1, seq_len, seq_len
-        )
-        attention_mask = attention_mask & key_value_expanded
+            # Split masked positions into isolated (mask1) and contextual (mask2)
+            masked1_positions = torch.zeros_like(any_masked)
+            if self.mask1_ratio > 0:
+                for b in range(tokens.shape[0]):
+                    masked_indices = torch.where(any_masked[b])[0]
+                    n_mask1 = int(len(masked_indices) * self.mask1_ratio)
+                    if n_mask1 > 0:
+                        masked1_positions[b, masked_indices[:n_mask1]] = True
 
-        # Block masked1 query rows entirely (they cannot see known tokens)
-        not_masked1 = (~masked1_positions).unsqueeze(-1).unsqueeze(1).expand(
-            batch_size, 1, seq_len, seq_len
-        )
-        attention_mask = attention_mask & not_masked1
+            # Key-value mask: only known (non-masked) positions can be keys
+            key_value_mask = padding_mask & (~any_masked)
 
-        # Add diagonal self-loop for ALL masked positions
-        diagonal_mask = torch.eye(
-            seq_len, device=tokens.device, dtype=torch.bool
-        )
-        masked_self_attend = (
-            any_masked.unsqueeze(1) & diagonal_mask.unsqueeze(0)
-        )
-        attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
+            # Base: all queries can attend to known keys
+            attention_mask = padding_mask.unsqueeze(1).unsqueeze(2).expand(
+                batch_size, 1, seq_len, seq_len
+            )
+            key_value_expanded = key_value_mask.unsqueeze(1).unsqueeze(1).expand(
+                batch_size, 1, seq_len, seq_len
+            )
+            attention_mask = attention_mask & key_value_expanded
 
-        attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
+            # Block masked1 query rows entirely (they cannot see known tokens)
+            if self.mask1_ratio > 0:
+                not_masked1 = (~masked1_positions).unsqueeze(-1).unsqueeze(1).expand(
+                    batch_size, 1, seq_len, seq_len
+                )
+                attention_mask = attention_mask & not_masked1
+
+            # Add diagonal self-loop for ALL masked positions
+            diagonal_mask = torch.eye(
+                seq_len, device=tokens.device, dtype=torch.bool
+            )
+            masked_self_attend = (
+                any_masked.unsqueeze(1) & diagonal_mask.unsqueeze(0)
+            )
+            attention_mask = attention_mask | masked_self_attend.unsqueeze(1)
+
+            attention_mask = (torch.finfo(embeddings.dtype).min * (~attention_mask)).type_as(embeddings)
 
         hidden_state = embeddings
         for layer in self.encoder:
@@ -420,6 +435,13 @@ class LightningTrainerModel(lightning.LightningModule):
         self.optimizer_ = _OPTIMIZERS[config.optimizer]
         self.lr = config.learning_rate
 
+
+    def on_train_epoch_start(self):
+        """Anneal mask1_ratio from 0 to target over warmup epochs."""
+        warmup = self.model.mask1_warmup_epochs
+        if warmup > 0:
+            progress = min(self.current_epoch / warmup, 1.0)
+            self.model.mask1_ratio = progress * self.model.mask1_target
 
     def forward(self, **kwargs):
         out = self.model(**kwargs)
