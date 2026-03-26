@@ -51,18 +51,18 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">dBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">mBERT Overview</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">dBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#key-difference-from-vnbert">Key Difference from vnBERT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#disentangled-attention-mask">Disentangled Attention Mask</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#training-optimizations">Training Optimizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#config-parameters-specific-to-dbert">Config Parameters Specific to dBERT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
@@ -88,7 +88,6 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
 </ul>
 </li>
@@ -231,7 +230,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Step 3: Training</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/mbert/training.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/dbert/training.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -241,7 +240,7 @@
              
   <section id="step-3-training">
 <h1>Step 3: Training<a class="headerlink" href="#step-3-training" title="Link to this heading"></a></h1>
-<p>This step launches the mBERT pretraining loop using PyTorch Lightning.</p>
+<p>This step launches the dBERT pretraining loop using PyTorch Lightning and DeepSpeed.</p>
 <section id="the-training-script">
 <h2>The Training Script<a class="headerlink" href="#the-training-script" title="Link to this heading"></a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
@@ -251,12 +250,11 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">yaml</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">transformers.models.bert.modeling_bert</span><span class="w"> </span><span class="kn">import</span> <span class="n">BertConfig</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.dbert.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
     <span class="n">MaskedTokenDatasetFromAnnData</span> <span class="k">as</span> <span class="n">MaskedTokenDataset</span><span class="p">,</span>
-    <span class="n">collate_variable_length</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningTrainerModel</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.dbert.modeling</span><span class="w"> </span><span class="kn">import</span> <span class="n">LightningTrainerModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.dbert.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">Config</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Trainer</span><span class="p">,</span> <span class="n">seed_everything</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">lightning.pytorch.loggers</span><span class="w"> </span><span class="kn">import</span> <span class="n">CSVLogger</span>
@@ -290,14 +288,12 @@
         <span class="p">),</span>
     <span class="p">)</span>
 
-    <span class="c1"># Logger</span>
     <span class="n">csv_logger</span> <span class="o">=</span> <span class="n">CSVLogger</span><span class="p">(</span>
         <span class="n">save_dir</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">save_dir</span><span class="p">,</span>
         <span class="n">name</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
         <span class="n">version</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">version</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># Checkpoint callback</span>
     <span class="n">checkpoint_callback</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span>
         <span class="n">dirpath</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/models/&quot;</span><span class="p">,</span>
         <span class="n">filename</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">{epoch}</span><span class="s2">&quot;</span><span class="p">,</span>
@@ -307,7 +303,6 @@
         <span class="n">every_n_epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">save_every_n_epochs</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># Dataset and dataloader</span>
     <span class="n">train_dataset</span> <span class="o">=</span> <span class="n">MaskedTokenDataset</span><span class="p">(</span>
         <span class="n">anndata_path</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">input_file</span><span class="p">,</span>
         <span class="n">context_window</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">context_window</span><span class="p">,</span>
@@ -319,38 +314,27 @@
         <span class="n">batch_size</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
         <span class="n">shuffle</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">shuffle</span><span class="p">,</span>
         <span class="n">num_workers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span><span class="p">,</span>
-        <span class="n">pin_memory</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-        <span class="n">persistent_workers</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span>
-        <span class="n">prefetch_factor</span><span class="o">=</span><span class="mi">2</span> <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">num_workers</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_variable_length</span><span class="p">,</span>
     <span class="p">)</span>
 
-    <span class="c1"># Model</span>
-    <span class="n">model_kwargs</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-    <span class="n">model_kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;enable_flash_attention&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-    <span class="n">model_config</span> <span class="o">=</span> <span class="n">BertConfig</span><span class="p">(</span><span class="o">**</span><span class="n">model_kwargs</span><span class="p">)</span>
-
+    <span class="n">model_config</span> <span class="o">=</span> <span class="n">BertConfig</span><span class="p">(</span><span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">LightningTrainerModel</span><span class="p">(</span><span class="n">model_config</span><span class="p">)</span>
-    <span class="n">model</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
     <span class="n">model_config</span><span class="o">.</span><span class="n">to_json_file</span><span class="p">(</span>
         <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">config</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">output_dir</span><span class="si">}</span><span class="s2">/model_config.json&quot;</span>
     <span class="p">)</span>
 
-    <span class="c1"># Strategy</span>
     <span class="k">if</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;deepspeed&quot;</span><span class="p">:</span>
-        <span class="n">strategy</span> <span class="o">=</span> <span class="n">DeepSpeedStrategy</span><span class="p">(</span>
+        <span class="n">ds_strategy</span> <span class="o">=</span> <span class="n">DeepSpeedStrategy</span><span class="p">(</span>
             <span class="o">**</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="vm">__dict__</span>
         <span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">strategy</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+        <span class="n">ds_strategy</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">strategy</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
 
-    <span class="c1"># Trainer</span>
     <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
         <span class="n">log_every_n_steps</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">log_every_n_steps</span><span class="p">,</span>
         <span class="n">deterministic</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">deterministic</span><span class="p">,</span>
         <span class="n">devices</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">devices</span><span class="p">,</span>
         <span class="n">accelerator</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">accelerator</span><span class="p">,</span>
-        <span class="n">strategy</span><span class="o">=</span><span class="n">strategy</span><span class="p">,</span>
+        <span class="n">strategy</span><span class="o">=</span><span class="n">ds_strategy</span><span class="p">,</span>
         <span class="n">max_epochs</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">epochs</span><span class="p">,</span>
         <span class="n">precision</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
         <span class="n">accumulate_grad_batches</span><span class="o">=</span><span class="n">config</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">accumulate_grad_batches</span><span class="p">,</span>
@@ -374,43 +358,36 @@
 </section>
 <section id="launch-command">
 <h2>Launch Command<a class="headerlink" href="#launch-command" title="Link to this heading"></a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-GPU with DDP</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Multi-GPU</span>
 torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">8</span><span class="w"> </span>train.py<span class="w"> </span>config.yaml
 
 <span class="c1"># Single GPU</span>
-python<span class="w"> </span>train.py<span class="w"> </span>config.yaml
+torchrun<span class="w"> </span>--nproc_per_node<span class="o">=</span><span class="m">1</span><span class="w"> </span>train.py<span class="w"> </span>config.yaml
 </pre></div>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>Make sure <code class="docutils literal notranslate"><span class="pre">trainer.devices</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> matches <code class="docutils literal notranslate"><span class="pre">--nproc_per_node</span></code>. If they differ, training will fail or behave unexpectedly.</p>
+<p>Make sure <code class="docutils literal notranslate"><span class="pre">trainer.devices</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code> matches <code class="docutils literal notranslate"><span class="pre">--nproc_per_node</span></code>.</p>
 </div>
 </section>
 <section id="what-happens-during-training">
 <h2>What Happens During Training<a class="headerlink" href="#what-happens-during-training" title="Link to this heading"></a></h2>
 <ol class="arabic simple">
-<li><p>The dataset loads data and, for each sample:</p>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">MaskedTokenDataset</span></code> loads the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> file and for each sample:</p>
 <ul class="simple">
-<li><p>randomly selects <code class="docutils literal notranslate"><span class="pre">context_window</span></code> features (if set)</p></li>
-<li><p>masks the last <code class="docutils literal notranslate"><span class="pre">masking_fraction</span></code> of those features</p></li>
+<li><p>randomly selects <code class="docutils literal notranslate"><span class="pre">context_window</span></code> features</p></li>
+<li><p>masks <code class="docutils literal notranslate"><span class="pre">masking_fraction</span></code> of those features (values set to <code class="docutils literal notranslate"><span class="pre">-10.0</span></code>)</p></li>
 </ul>
 </li>
-<li><p><code class="docutils literal notranslate"><span class="pre">collate_variable_length</span></code> pads the batch to the max sequence length</p></li>
-<li><p>The model:</p>
-<ul class="simple">
-<li><p>computes embeddings</p></li>
-<li><p>if FA2 backend: unpacks padded tensors → runs FA2 varlen attention → repacks</p></li>
-<li><p>if SDPA backend: runs SDPA attention with appropriate mask</p></li>
-<li><p>runs the prediction head <strong>only on masked positions</strong></p></li>
-<li><p>computes MSE loss on masked positions</p></li>
-</ul>
-</li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">LightningTrainerModel</span></code> processes each batch through the dBERT encoder</p></li>
+<li><p>The disentangled attention mask splits masked positions into isolated and contextual groups based on <code class="docutils literal notranslate"><span class="pre">mask1_ratio</span></code></p></li>
+<li><p>The model predicts the <strong>values</strong> of all masked features using MSE loss</p></li>
+<li><p>If <code class="docutils literal notranslate"><span class="pre">mask1_warmup_epochs</span> <span class="pre">&gt;</span> <span class="pre">0</span></code>, the <code class="docutils literal notranslate"><span class="pre">mask1_ratio</span></code> is annealed from 0 to target at the start of each epoch</p></li>
 <li><p>Checkpoints are saved every <code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code> epochs</p></li>
 </ol>
 </section>
 <section id="monitoring-training">
 <h2>Monitoring Training<a class="headerlink" href="#monitoring-training" title="Link to this heading"></a></h2>
-<p>Training metrics are logged as CSV files. Plot the loss curve:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 <span class="n">metrics</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;&lt;save_dir&gt;/&lt;name&gt;/version_&lt;version&gt;/metrics.csv&#39;</span><span class="p">)</span>
 <span class="n">metrics</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;step&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;train_loss&#39;</span><span class="p">)</span>
@@ -421,10 +398,10 @@ python<span class="w"> </span>train.py<span class="w"> </span>config.yaml
 <h2>Resuming from a Checkpoint<a class="headerlink" href="#resuming-from-a-checkpoint" title="Link to this heading"></a></h2>
 <p>Set <code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code> in <code class="docutils literal notranslate"><span class="pre">config.yaml</span></code>:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">trainer</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">from_checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/models/epoch=500.ckpt</span>
+<span class="w">  </span><span class="nt">from_checkpoint</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/path/to/models/My_FM_NAME/version_1/models/epoch=500.ckpt</span>
 </pre></div>
 </div>
-<p>Then re-run the training script. Training resumes from the exact state.</p>
+<p>Then re-run <code class="docutils literal notranslate"><span class="pre">train.sh</span></code>.</p>
 </section>
 </section>
 

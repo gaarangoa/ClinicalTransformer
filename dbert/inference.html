@@ -51,18 +51,18 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">dBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">mBERT Overview</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">dBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#key-difference-from-vnbert">Key Difference from vnBERT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#disentangled-attention-mask">Disentangled Attention Mask</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#training-optimizations">Training Optimizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#config-parameters-specific-to-dbert">Config Parameters Specific to dBERT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
@@ -88,7 +88,6 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
 </ul>
 </li>
@@ -231,7 +230,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Step 5: Inference</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/mbert/inference.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/dbert/inference.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -241,17 +240,19 @@
              
   <section id="step-5-inference">
 <h1>Step 5: Inference<a class="headerlink" href="#step-5-inference" title="Link to this heading"></a></h1>
-<p>Once you have a released model from <a class="reference internal" href="release-model.html"><span class="doc">Step 4: Release the Model</span></a>, load it and extract embeddings from new data.</p>
+<p>Once you have a released model from <a class="reference internal" href="release-model.html"><span class="doc">Step 4: Release the Model</span></a>, you can load it and extract embeddings from new data.</p>
 <section id="load-the-model">
 <h2>Load the Model<a class="headerlink" href="#load-the-model" title="Link to this heading"></a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert</span><span class="w"> </span><span class="kn">import</span> <span class="n">mBertPretrainedModelForMVP</span><span class="p">,</span> <span class="n">mBertTokenizerTabular</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">dBertPretrainedModelForMVP</span><span class="p">,</span> <span class="n">dBertTokenizerTabular</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
 
 <span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">&quot;cuda:0&quot;</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">&quot;cpu&quot;</span><span class="p">)</span>
 
 <span class="n">model_path</span> <span class="o">=</span> <span class="s2">&quot;/path/to/model_hub/&quot;</span>
-<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">mBertTokenizerTabular</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">mBertPretrainedModelForMVP</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+<span class="n">tokenizer</span> <span class="o">=</span> <span class="n">dBertTokenizerTabular</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="n">model_path</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">dBertPretrainedModelForMVP</span><span class="o">.</span><span class="n">from_pretrained</span><span class="p">(</span>
+    <span class="n">model_path</span><span class="p">,</span> <span class="n">attn_implementation</span><span class="o">=</span><span class="s2">&quot;sdpa&quot;</span>
+<span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
 <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -306,12 +307,13 @@
 </section>
 <section id="extracting-embeddings">
 <h2>Extracting Embeddings<a class="headerlink" href="#extracting-embeddings" title="Link to this heading"></a></h2>
-<p><strong>CLS embedding</strong> – the representation from the special classification token:</p>
+<p>There are two common ways to obtain a sample-level embedding:</p>
+<p><strong>CLS embedding</strong> — the representation from the special classification token:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cls_embeddings</span> <span class="o">=</span> <span class="n">output</span><span class="o">.</span><span class="n">last_hidden_state</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:]</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
 <span class="c1"># Shape: (batch_size, hidden_size)</span>
 </pre></div>
 </div>
-<p><strong>Mean-pooled embedding</strong> – the average of all feature embeddings (excludes CLS):</p>
+<p><strong>Mean-pooled embedding</strong> — the average of all feature embeddings (excludes CLS):</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sample_embeddings</span> <span class="o">=</span> <span class="p">(</span>
     <span class="n">output</span><span class="o">.</span><span class="n">last_hidden_state</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">detach</span><span class="p">()</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span>
 <span class="p">)</span>
@@ -321,7 +323,7 @@
 </section>
 <section id="batch-inference-on-a-full-dataset">
 <h2>Batch Inference on a Full Dataset<a class="headerlink" href="#batch-inference-on-a-full-dataset" title="Link to this heading"></a></h2>
-<p>For larger datasets, process in batches:</p>
+<p>For larger datasets, wrap the encoding in a <code class="docutils literal notranslate"><span class="pre">Dataset</span></code> and process in batches:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">torch.utils.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">DataLoader</span><span class="p">,</span> <span class="n">Dataset</span>
 
 

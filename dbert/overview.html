@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>mBERT Overview &mdash; Clinical Transformer 1.0.0 documentation</title>
+  <title>dBERT Overview &mdash; Clinical Transformer 1.0.0 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
@@ -51,18 +51,18 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">dBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">mBERT Overview</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">dBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#key-difference-from-vnbert">Key Difference from vnBERT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#disentangled-attention-mask">Disentangled Attention Mask</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#training-optimizations">Training Optimizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#config-parameters-specific-to-dbert">Config Parameters Specific to dBERT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#data-flow">Data Flow</a></li>
 </ul>
 </li>
@@ -88,7 +88,6 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
 </ul>
 </li>
@@ -229,9 +228,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">mBERT Overview</li>
+      <li class="breadcrumb-item active">dBERT Overview</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/mbert/overview.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/dbert/overview.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -239,151 +238,116 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="mbert-overview">
-<h1>mBERT Overview<a class="headerlink" href="#mbert-overview" title="Link to this heading"></a></h1>
-<p>mBERT (Masked BERT) is the next-generation transformer architecture in Clinical Transformer. It replaces HuggingFace’s <code class="docutils literal notranslate"><span class="pre">BertLayer</span></code> with custom SDPA-based layers that call <code class="docutils literal notranslate"><span class="pre">torch.nn.functional.scaled_dot_product_attention</span></code> directly, enabling automatic kernel selection (flash, memory-efficient, or math) without wrapper overhead. It optionally supports Flash Attention 2 (FA2) varlen for zero-padding-waste training on variable-length sequences.</p>
-<p>mBERT is designed for:</p>
+  <section id="dbert-overview">
+<h1>dBERT Overview<a class="headerlink" href="#dbert-overview" title="Link to this heading"></a></h1>
+<p>dBERT (Disentangled BERT) is a transformer architecture for continuous-valued data that improves gene embedding quality through <strong>disentangled masked prediction</strong>. It builds on the same base as vnBERT (token + value embeddings, MSE loss on masked positions) but introduces a novel attention masking strategy that creates two simultaneous learning pathways during pretraining.</p>
+<section id="key-difference-from-vnbert">
+<h2>Key Difference from vnBERT<a class="headerlink" href="#key-difference-from-vnbert" title="Link to this heading"></a></h2>
+<p>vnBERT uses a single masking strategy (scGPT-style) where all masked tokens see known context. dBERT splits masked positions into two groups:</p>
 <ul class="simple">
-<li><p>Tabular clinical data (mixed categorical and numerical columns)</p></li>
-<li><p>Gene expression data (RNA-seq, proteomics)</p></li>
-<li><p>Any dataset with continuous and/or categorical features</p></li>
-<li><p>Variable-length sequences with dynamic padding</p></li>
+<li><p><strong>Isolated positions</strong>: can only attend to themselves, forcing the embedding table to encode gene behaviour from identity alone</p></li>
+<li><p><strong>Contextual positions</strong>: attend to all known tokens (same as scGPT), training the attention mechanism to learn gene-gene relationships</p></li>
 </ul>
+<p>This disentanglement acts as an implicit regulariser on the embedding space, producing tighter and better-separated gene clusters without any architectural changes or additional parameters.</p>
+</section>
 <section id="how-it-works">
 <h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading"></a></h2>
 <section id="pretraining-objective">
 <h3>Pretraining Objective<a class="headerlink" href="#pretraining-objective" title="Link to this heading"></a></h3>
-<p>mBERT is pretrained with <strong>masked value prediction (MVP)</strong>. During each training step:</p>
+<p>dBERT is pretrained with <strong>masked value prediction (MVP)</strong>, identical to vnBERT:</p>
 <ol class="arabic simple">
 <li><p>A subset of features is randomly sampled (the <strong>context window</strong>)</p></li>
-<li><p>The last fraction of those features is masked (typically 30%)</p></li>
-<li><p>The model predicts the <strong>value</strong> of each masked feature using the unmasked context</p></li>
+<li><p>A fraction of those features is masked (typically 15%)</p></li>
+<li><p>The model predicts the <strong>value</strong> of each masked feature</p></li>
 <li><p>The loss is <strong>MSE</strong> computed only over masked positions</p></li>
 </ol>
+<p>The difference is in the attention mask applied during step 3.</p>
 </section>
-<section id="architecture">
-<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                  ┌─────────────┐
-                  │  Input      │
-                  │  (token_id, │
-                  │   value)    │
-                  └──────┬──────┘
-                         │
-              ┌──────────┴──────────┐
-              │                     │
-     ┌────────▼────────┐   ┌───────▼────────┐
-     │  nn.Embedding    │   │  nn.Linear(1,H)│
-     │  (vocab → H)     │   │  (value → H)   │
-     └────────┬────────┘   └───────┬────────┘
-              │                     │
-       ┌──────▼──────┐      ┌──────▼──────┐
-       │  LayerNorm   │      │  LayerNorm   │
-       └──────┬──────┘      └──────┬──────┘
-              │                     │
-              └──────────┬──────────┘
-                         │  add
-                         ▼
-                    × √hidden_size
-                         │
-                  ┌──────▼──────┐
-                  │  LayerNorm   │
-                  └──────┬──────┘
-                         │
-              ┌──────────▼──────────┐
-              │ N × SDPTransformer  │
-              │   Layer (SDPA/FA2   │
-              │   + feed-forward)   │
-              └──────────┬──────────┘
-                         │
-                  ┌──────▼──────┐
-                  │  LayerNorm   │
-                  └──────┬──────┘
-                         │
-                  ┌──────▼──────┐
-                  │  Linear(H,1) │  ← value prediction head
-                  └──────┬──────┘
-                         │
-                    predicted value
-</pre></div>
-</div>
-<p><strong>Embedding layer (<code class="docutils literal notranslate"><span class="pre">CTEmbeddings</span></code>)</strong> – each input position has two components:</p>
-<ul class="simple">
-<li><p>A <strong>token embedding</strong> (<code class="docutils literal notranslate"><span class="pre">nn.Embedding</span></code>) maps the feature ID to a vector of size <code class="docutils literal notranslate"><span class="pre">hidden_size</span></code></p></li>
-<li><p>A <strong>value embedding</strong> (<code class="docutils literal notranslate"><span class="pre">nn.Linear(1,</span> <span class="pre">hidden_size)</span></code>) projects the scalar value into the same space</p></li>
-<li><p>Both are independently layer-normalised, added together, scaled by <code class="docutils literal notranslate"><span class="pre">√hidden_size</span></code>, and passed through a final layer norm</p></li>
-</ul>
-<p><strong>Encoder</strong> – a stack of custom <code class="docutils literal notranslate"><span class="pre">SDPTransformerLayer</span></code> modules. Each layer contains:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">SDPAttention</span></code>: multi-head attention calling <code class="docutils literal notranslate"><span class="pre">F.scaled_dot_product_attention</span></code> directly</p></li>
-<li><p>Post-LN residual connection + dropout</p></li>
-<li><p>Feed-forward network (Linear → GELU → Linear) with post-LN residual</p></li>
-</ul>
-<p>The layers bypass HuggingFace’s attention wrapper, which allows arbitrary attention masks (e.g. scGPT 4D mask) to work correctly with SDPA.</p>
-<p><strong>Value prediction head</strong> – a single <code class="docutils literal notranslate"><span class="pre">nn.Linear(hidden_size,</span> <span class="pre">1)</span></code> that maps each position’s hidden state to a predicted scalar value. During training, the prediction head runs only on masked positions for efficiency.</p>
-</section>
-<section id="attention-backends">
-<h3>Attention Backends<a class="headerlink" href="#attention-backends" title="Link to this heading"></a></h3>
-<p>mBERT supports two attention backends, controlled by the <code class="docutils literal notranslate"><span class="pre">attention_backend</span></code> config field:</p>
+<section id="disentangled-attention-mask">
+<h3>Disentangled Attention Mask<a class="headerlink" href="#disentangled-attention-mask" title="Link to this heading"></a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">mask1_ratio</span></code> parameter (default 0.25) controls what fraction of masked positions are isolated:</p>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>Backend</p></th>
-<th class="head"><p>Config</p></th>
-<th class="head"><p>When to use</p></th>
-<th class="head"><p>Kernel</p></th>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>-&gt; Known</p></th>
+<th class="head"><p>-&gt; Masked1</p></th>
+<th class="head"><p>-&gt; Masked2</p></th>
+<th class="head"><p>-&gt; Self</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><strong>SDPA</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">attention_backend:</span> <span class="pre">'sdpa'</span></code></p></td>
-<td><p>Default. Works on all GPUs.</p></td>
-<td><p>Flash (no mask) or memory-efficient (with mask)</p></td>
+<tr class="row-even"><td><p><strong>Known</strong></p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
 </tr>
-<tr class="row-odd"><td><p><strong>FA2</strong></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">attention_backend:</span> <span class="pre">'fa2'</span></code></p></td>
-<td><p>Ampere/Hopper GPUs with variable-length sequences. Requires <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">flash-attn</span></code>.</p></td>
-<td><p>FA2 varlen (zero padding waste)</p></td>
+<tr class="row-odd"><td><p><strong>Masked1</strong></p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
+</tr>
+<tr class="row-even"><td><p><strong>Masked2</strong></p></td>
+<td><p>yes</p></td>
+<td><p>no</p></td>
+<td><p>no</p></td>
+<td><p>yes</p></td>
 </tr>
 </tbody>
 </table>
-<p>The FA2 backend has a triple fallback guard:</p>
 <ul class="simple">
-<li><p>If <code class="docutils literal notranslate"><span class="pre">flash-attn</span></code> is not installed → falls back to SDPA</p></li>
-<li><p>If <code class="docutils literal notranslate"><span class="pre">use_scgpt_mask:</span> <span class="pre">true</span></code> → falls back to SDPA (FA2 doesn’t support arbitrary masks)</p></li>
-<li><p>Otherwise → uses <code class="docutils literal notranslate"><span class="pre">flash_attn_varlen_func</span></code> on packed sequences</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask1_ratio</span> <span class="pre">=</span> <span class="pre">0.0</span></code>: recovers the scGPT masking strategy (all masked tokens see context)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask1_ratio</span> <span class="pre">=</span> <span class="pre">0.25</span></code>: recommended default (25% isolated, 75% contextual)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mask1_ratio</span> <span class="pre">=</span> <span class="pre">-1.0</span></code>: standard BERT all-to-all attention (no masking of masked positions)</p></li>
 </ul>
 </section>
-<section id="attention-masking-strategy">
-<h3>Attention Masking Strategy<a class="headerlink" href="#attention-masking-strategy" title="Link to this heading"></a></h3>
-<p>mBERT supports two masking modes via the <code class="docutils literal notranslate"><span class="pre">use_scgpt_mask</span></code> config field:</p>
-<p><strong>Full bidirectional</strong> (<code class="docutils literal notranslate"><span class="pre">use_scgpt_mask:</span> <span class="pre">false</span></code>) – every token attends to every other non-padding token. When no padding exists, the attention mask is <code class="docutils literal notranslate"><span class="pre">None</span></code> and SDPA uses the flash kernel. This is the recommended mode for maximum speed.</p>
-<p><strong>scGPT masking</strong> (<code class="docutils literal notranslate"><span class="pre">use_scgpt_mask:</span> <span class="pre">true</span></code>) – inspired by <a class="reference external" href="https://www.nature.com/articles/s41592-024-02201-0">scGPT</a>, this prevents information leakage between masked positions:</p>
-<ul class="simple">
-<li><p><strong>Unmasked → Unmasked</strong>: ALLOWED (full bidirectional)</p></li>
-<li><p><strong>Unmasked → Masked</strong>: BLOCKED (no leakage from unknowns)</p></li>
-<li><p><strong>Masked → Unmasked</strong>: ALLOWED (gather context for prediction)</p></li>
-<li><p><strong>Masked → Masked</strong>: BLOCKED (no cross-leakage)</p></li>
-<li><p><strong>Masked → Self</strong>: ALLOWED (attend to own token embedding)</p></li>
-</ul>
-<p>Since masking is always a suffix (last N positions), the mask pattern is identical across all samples in a batch. mBERT builds the mask from a single sample <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">1,</span> <span class="pre">S,</span> <span class="pre">S)</span></code> and broadcasts, avoiding O(B×S²) memory allocation.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The scGPT masking strategy has not been empirically validated against full bidirectional in ablation studies. Competing single-cell models (scBERT, Geneformer, scFoundation) use full bidirectional attention with competitive results. We provide both options so you can experiment.</p>
-</div>
-</section>
-<section id="variable-length-sequence-support">
-<h3>Variable-Length Sequence Support<a class="headerlink" href="#variable-length-sequence-support" title="Link to this heading"></a></h3>
-<p>mBERT handles variable-length sequences through a custom collate function:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer.mbert.dataset</span><span class="w"> </span><span class="kn">import</span> <span class="n">collate_variable_length</span>
-
-<span class="n">dataloader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span>
-    <span class="n">dataset</span><span class="p">,</span>
-    <span class="n">batch_size</span><span class="o">=</span><span class="mi">64</span><span class="p">,</span>
-    <span class="n">collate_fn</span><span class="o">=</span><span class="n">collate_variable_length</span><span class="p">,</span>  <span class="c1"># pads to max length in batch</span>
-<span class="p">)</span>
+<section id="architecture">
+<h3>Architecture<a class="headerlink" href="#architecture" title="Link to this heading"></a></h3>
+<p>dBERT uses custom SDPA-based transformer layers (not HuggingFace BertLayer):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>                  <span class="o">+-------------+</span>
+                  <span class="o">|</span>  <span class="n">Input</span>      <span class="o">|</span>
+                  <span class="o">|</span>  <span class="p">(</span><span class="n">token_id</span><span class="p">,</span> <span class="o">|</span>
+                  <span class="o">|</span>   <span class="n">value</span><span class="p">)</span>    <span class="o">|</span>
+                  <span class="o">+------+------+</span>
+                         <span class="o">|</span>
+              <span class="o">+----------+----------+</span>
+              <span class="o">|</span>                     <span class="o">|</span>
+     <span class="o">+--------</span><span class="n">v</span><span class="o">--------+</span>   <span class="o">+-------</span><span class="n">v</span><span class="o">--------+</span>
+     <span class="o">|</span>  <span class="n">nn</span><span class="o">.</span><span class="n">Embedding</span>    <span class="o">|</span>   <span class="o">|</span>  <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">H</span><span class="p">)</span><span class="o">|</span>
+     <span class="o">|</span>  <span class="p">(</span><span class="n">vocab</span> <span class="o">-&gt;</span> <span class="n">H</span><span class="p">)</span>    <span class="o">|</span>   <span class="o">|</span>  <span class="p">(</span><span class="n">value</span> <span class="o">-&gt;</span> <span class="n">H</span><span class="p">)</span>  <span class="o">|</span>
+     <span class="o">+--------+---------+</span>   <span class="o">+-------+--------+</span>
+              <span class="o">|</span>                     <span class="o">|</span>
+       <span class="o">+------</span><span class="n">v</span><span class="o">------+</span>      <span class="o">+------</span><span class="n">v</span><span class="o">------+</span>
+       <span class="o">|</span>  <span class="n">LayerNorm</span>   <span class="o">|</span>      <span class="o">|</span>  <span class="n">LayerNorm</span>   <span class="o">|</span>
+       <span class="o">+------+------+</span>      <span class="o">+------+------+</span>
+              <span class="o">|</span>                     <span class="o">|</span>
+              <span class="o">+----------+----------+</span>
+                         <span class="o">|</span>  <span class="n">add</span>
+                         <span class="n">v</span>
+                    <span class="n">x</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">hidden_size</span><span class="p">)</span>
+                         <span class="o">|</span>
+                  <span class="o">+------</span><span class="n">v</span><span class="o">------+</span>
+                  <span class="o">|</span>  <span class="n">LayerNorm</span>   <span class="o">|</span>
+                  <span class="o">+------+------+</span>
+                         <span class="o">|</span>
+              <span class="o">+----------</span><span class="n">v</span><span class="o">----------+</span>
+              <span class="o">|</span>  <span class="n">N</span> <span class="n">x</span> <span class="n">SDPTransformer</span>  <span class="o">|</span>
+              <span class="o">|</span>  <span class="n">Layer</span> <span class="p">(</span><span class="n">SDPA</span> <span class="n">attn</span> <span class="o">+</span>  <span class="o">|</span>
+              <span class="o">|</span>  <span class="n">FFN</span><span class="p">,</span> <span class="n">post</span><span class="o">-</span><span class="n">LN</span><span class="p">)</span>       <span class="o">|</span>
+              <span class="o">+----------+----------+</span>
+                         <span class="o">|</span>
+                  <span class="o">+------</span><span class="n">v</span><span class="o">------+</span>
+                  <span class="o">|</span>  <span class="n">LayerNorm</span>   <span class="o">|</span>
+                  <span class="o">+------+------+</span>
+                         <span class="o">|</span>
+                  <span class="o">+------</span><span class="n">v</span><span class="o">------+</span>
+                  <span class="o">|</span>  <span class="n">Linear</span><span class="p">(</span><span class="n">H</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="o">|</span>  <span class="o">&lt;-</span> <span class="n">value</span> <span class="n">prediction</span> <span class="n">head</span>
+                  <span class="o">+------+------+</span>
+                         <span class="o">|</span>
+                    <span class="n">predicted</span> <span class="n">value</span>
 </pre></div>
 </div>
-<p>The collate function pads shorter sequences with <code class="docutils literal notranslate"><span class="pre">token=0</span></code>, <code class="docutils literal notranslate"><span class="pre">value=0.0</span></code>, <code class="docutils literal notranslate"><span class="pre">label=0.0</span></code>. The model’s padding mask (<code class="docutils literal notranslate"><span class="pre">tokens</span> <span class="pre">!=</span> <span class="pre">0</span></code>) handles these automatically. When all sequences are the same length (fixed <code class="docutils literal notranslate"><span class="pre">context_window</span></code>), the collate is a no-op.</p>
-<p>With the FA2 backend, padded sequences are unpacked before attention (<code class="docutils literal notranslate"><span class="pre">unpad_input</span></code>) and repacked after (<code class="docutils literal notranslate"><span class="pre">pad_input</span></code>), so no compute is wasted on padding tokens.</p>
 </section>
 <section id="special-tokens">
 <h3>Special Tokens<a class="headerlink" href="#special-tokens" title="Link to this heading"></a></h3>
@@ -409,15 +373,21 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&lt;cls&gt;</span></code></p></td>
 <td><p>2</p></td>
 <td><p>1.0</p></td>
-<td><p>Prepended to every sequence; its hidden state serves as a global representation</p></td>
+<td><p>Prepended to every sequence; global representation</p></td>
 </tr>
 </tbody>
 </table>
-<p>Masked positions are <strong>not</strong> replaced with the <code class="docutils literal notranslate"><span class="pre">&lt;mask&gt;</span></code> token ID. Instead, the original token ID is kept and only the value is set to <code class="docutils literal notranslate"><span class="pre">-10.0</span></code>.</p>
+<p>Masked positions keep their original token ID; only the value is set to <code class="docutils literal notranslate"><span class="pre">-10.0</span></code>.</p>
+</section>
+<section id="tokenizers">
+<h3>Tokenizers<a class="headerlink" href="#tokenizers" title="Link to this heading"></a></h3>
+<p>dBERT ships with the same two tokenizers as vnBERT:</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">dBertTokenizer</span></code></strong> – for gene expression data. Each gene name becomes a vocabulary entry.</p>
+<p><strong><code class="docutils literal notranslate"><span class="pre">dBertTokenizerTabular</span></code></strong> – for mixed tabular data with categorical and numerical columns.</p>
+<p>Both support <code class="docutils literal notranslate"><span class="pre">save_pretrained()</span></code> / <code class="docutils literal notranslate"><span class="pre">from_pretrained()</span></code>.</p>
 </section>
 <section id="dataset-classes">
 <h3>Dataset Classes<a class="headerlink" href="#dataset-classes" title="Link to this heading"></a></h3>
-<p>Four dataset implementations handle different data sources:</p>
 <table class="docutils align-default">
 <thead>
 <tr class="row-odd"><th class="head"><p>Class</p></th>
@@ -444,53 +414,56 @@
 </tr>
 </tbody>
 </table>
-<p>All four share the same processing pipeline:</p>
-<ol class="arabic simple">
-<li><p>Extract features for the sample</p></li>
-<li><p>Sample up to <code class="docutils literal notranslate"><span class="pre">context_window</span></code> features (randomly or via biological priors)</p></li>
-<li><p>Mask the last <code class="docutils literal notranslate"><span class="pre">mask_prob</span></code> fraction of the sequence (values set to <code class="docutils literal notranslate"><span class="pre">-10.0</span></code>)</p></li>
-<li><p>Prepend the CLS token (ID=2, value=1.0)</p></li>
-<li><p>Return <code class="docutils literal notranslate"><span class="pre">{tokens,</span> <span class="pre">values,</span> <span class="pre">labels}</span></code> tensors</p></li>
-</ol>
 </section>
-<section id="training-optimizations">
-<h3>Training Optimizations<a class="headerlink" href="#training-optimizations" title="Link to this heading"></a></h3>
-<p>mBERT includes several performance optimizations:</p>
-<ul class="simple">
-<li><p><strong>Prediction head on masked positions only</strong>: <code class="docutils literal notranslate"><span class="pre">training_step</span></code> skips the <code class="docutils literal notranslate"><span class="pre">value_predictor</span></code> linear layer on non-masked positions (~70-85% of tokens)</p></li>
-<li><p><strong>Broadcast attention mask</strong>: scGPT mask is built from one sample and broadcast over the batch</p></li>
-<li><p><strong>No-mask SDPA</strong>: full bidirectional with no padding passes <code class="docutils literal notranslate"><span class="pre">attn_mask=None</span></code>, enabling the flash kernel</p></li>
-<li><p><strong>Pre-converted dataset</strong>: token/value arrays are converted to tensors once at <code class="docutils literal notranslate"><span class="pre">__init__</span></code>, not per-sample</p></li>
-<li><p><strong><code class="docutils literal notranslate"><span class="pre">torch.compile</span></code> on inner model</strong>: compiles the model (not the Lightning wrapper) to avoid graph breaks</p></li>
-</ul>
+<section id="config-parameters-specific-to-dbert">
+<h3>Config Parameters Specific to dBERT<a class="headerlink" href="#config-parameters-specific-to-dbert" title="Link to this heading"></a></h3>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Default</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mask1_ratio</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0.25</span></code></p></td>
+<td><p>Fraction of masked tokens that are isolated. 0.0 = scGPT, -1.0 = BERT</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mask1_warmup_epochs</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>Epochs to linearly ramp mask1_ratio from 0 to target. 0 = no annealing</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">gated_attention</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+<td><p>Enable per-head sigmoid gate after SDPA (experimental)</p></td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="data-flow">
 <h3>Data Flow<a class="headerlink" href="#data-flow" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>Raw data (CSV / Excel / DataFrame)
-    |
-    v
-Tokenizer.fit() ──&gt; learns vocabulary + per-feature statistics
-    |
-    v
-Tokenizer() ──&gt; encodes samples to (token_ids, normalised_values)
-    |
-    v
-AnnData sparse matrix (.h5ad) or pickle
-    |
-    v
-MaskedTokenDataset ──&gt; samples context window, applies masking
-    |
-    v
-collate_variable_length ──&gt; pads batch to max length
-    |
-    v
-LightningTrainerModel ──&gt; SDPTransformerLayer encoder (SDPA or FA2)
-    |                       + value prediction head (MSE loss, masked only)
-    v
-Trained checkpoint ──&gt; convert with release_model.py
-    |
-    v
-HuggingFace-compatible model ──&gt; inference / embeddings
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Raw</span> <span class="n">data</span> <span class="p">(</span><span class="n">CSV</span> <span class="o">/</span> <span class="n">Excel</span> <span class="o">/</span> <span class="n">DataFrame</span><span class="p">)</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">Tokenizer</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span> <span class="o">--&gt;</span> <span class="n">learns</span> <span class="n">vocabulary</span> <span class="o">+</span> <span class="n">per</span><span class="o">-</span><span class="n">feature</span> <span class="n">statistics</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">Tokenizer</span><span class="p">()</span> <span class="o">--&gt;</span> <span class="n">encodes</span> <span class="n">samples</span> <span class="n">to</span> <span class="p">(</span><span class="n">token_ids</span><span class="p">,</span> <span class="n">normalised_values</span><span class="p">)</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">AnnData</span> <span class="n">sparse</span> <span class="n">matrix</span> <span class="p">(</span><span class="o">.</span><span class="n">h5ad</span><span class="p">)</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">MaskedTokenDataset</span> <span class="o">--&gt;</span> <span class="n">samples</span> <span class="n">context</span> <span class="n">window</span><span class="p">,</span> <span class="n">applies</span> <span class="n">masking</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">LightningTrainerModel</span> <span class="o">--&gt;</span> <span class="n">dBERT</span> <span class="n">encoder</span> <span class="o">+</span> <span class="n">disentangled</span> <span class="n">attention</span> <span class="o">+</span> <span class="n">value</span> <span class="n">prediction</span> <span class="n">head</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">Trained</span> <span class="n">checkpoint</span> <span class="o">--&gt;</span> <span class="n">convert</span> <span class="k">with</span> <span class="n">release_model</span><span class="o">.</span><span class="n">py</span>
+    <span class="o">|</span>
+    <span class="n">v</span>
+<span class="n">HuggingFace</span><span class="o">-</span><span class="n">compatible</span> <span class="n">model</span> <span class="o">--&gt;</span> <span class="n">inference</span> <span class="o">/</span> <span class="n">embeddings</span>
 </pre></div>
 </div>
 </section>
@@ -515,7 +488,7 @@ HuggingFace-compatible model ──&gt; inference / embeddings
 </tr>
 <tr class="row-even"><td><p>3</p></td>
 <td><p><a class="reference internal" href="training.html"><span class="doc">Step 3: Training</span></a></p></td>
-<td><p>Launch distributed training</p></td>
+<td><p>Launch distributed training with DeepSpeed</p></td>
 </tr>
 <tr class="row-odd"><td><p>4</p></td>
 <td><p><a class="reference internal" href="release-model.html"><span class="doc">Step 4: Release the Model</span></a></p></td>

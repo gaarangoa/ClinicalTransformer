@@ -1,18 +1,20 @@
 # Step 5: Inference
 
-Once you have a released model from {doc}`release-model`, load it and extract embeddings from new data.
+Once you have a released model from {doc}`release-model`, you can load it and extract embeddings from new data.
 
 ## Load the Model
 
 ```python
-from clinical_transformer.mbert import mBertPretrainedModelForMVP, mBertTokenizerTabular
+from clinical_transformer import dBertPretrainedModelForMVP, dBertTokenizerTabular
 import torch
 
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 model_path = "/path/to/model_hub/"
-tokenizer = mBertTokenizerTabular.from_pretrained(model_path)
-model = mBertPretrainedModelForMVP.from_pretrained(model_path).to(device)
+tokenizer = dBertTokenizerTabular.from_pretrained(model_path)
+model = dBertPretrainedModelForMVP.from_pretrained(
+    model_path, attn_implementation="sdpa"
+).to(device)
 model.eval()
 ```
 
@@ -67,14 +69,16 @@ with torch.no_grad():
 
 ## Extracting Embeddings
 
-**CLS embedding** -- the representation from the special classification token:
+There are two common ways to obtain a sample-level embedding:
+
+**CLS embedding** &mdash; the representation from the special classification token:
 
 ```python
 cls_embeddings = output.last_hidden_state[:, 0, :].detach().cpu()
 # Shape: (batch_size, hidden_size)
 ```
 
-**Mean-pooled embedding** -- the average of all feature embeddings (excludes CLS):
+**Mean-pooled embedding** &mdash; the average of all feature embeddings (excludes CLS):
 
 ```python
 sample_embeddings = (
@@ -85,7 +89,7 @@ sample_embeddings = (
 
 ## Batch Inference on a Full Dataset
 
-For larger datasets, process in batches:
+For larger datasets, wrap the encoding in a `Dataset` and process in batches:
 
 ```python
 from torch.utils.data import DataLoader, Dataset

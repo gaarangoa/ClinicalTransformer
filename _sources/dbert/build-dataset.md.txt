@@ -1,6 +1,6 @@
 # Step 1: Build the Dataset
 
-vnBERT trains on an **AnnData** (`.h5ad`) sparse matrix where rows are samples and columns are token IDs. The `vnBertTokenizerTabular` tokenizer converts your raw tabular data into this format.
+dBERT trains on an **AnnData** (`.h5ad`) sparse matrix where rows are samples and columns are token IDs. The `dBertTokenizerTabular` tokenizer converts your raw tabular data into this format.
 
 ## 1.1 Load Your Data
 
@@ -11,7 +11,7 @@ import pandas as pd
 import numpy as np
 import anndata
 from scipy.sparse import coo_matrix
-from clinical_transformer import vnBertTokenizerTabular as TokenizerTabular
+from clinical_transformer import dBertTokenizerTabular as TokenizerTabular
 
 # ── EDIT THESE for your dataset ──────────────────────────
 model_id = 'MyModel'

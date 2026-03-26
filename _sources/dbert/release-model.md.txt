@@ -1,12 +1,12 @@
 # Step 4: Release the Model
 
-After training, checkpoints need to be converted to a single-file, HuggingFace-compatible format for inference.
+After training, the checkpoints are stored in DeepSpeed's sharded format (multiple files per checkpoint). To use the model for inference, you need to convert it to a single-file, HuggingFace-compatible format.
 
 ## Conversion Script
 
 ```python
-from clinical_transformer.mbert import mBertPretrainedModelForMVP
-from clinical_transformer.mbert import mBertTokenizerTabular as Tokenizer
+from clinical_transformer import dBertPretrainedModelForMVP
+from clinical_transformer import dBertTokenizerTabular as dBertTokenizer
 import torch
 
 from lightning.pytorch.utilities.deepspeed import (
@@ -17,7 +17,7 @@ from deepspeed.runtime.fp16.loss_scaler import LossScaler
 from deepspeed.utils.tensor_fragment import fragment_address
 from transformers import BertConfig
 
-from clinical_transformer.mbert.modeling import LightningTrainerModel
+from clinical_transformer.dbert.modeling import LightningTrainerModel
 
 # ── EDIT THESE ───────────────────────────────────────────
 model_path = "path/to/model_hub"       # Where the final model will be saved
@@ -62,7 +62,7 @@ print(f"Total parameters: {total_params:,}")
 model.model.save_pretrained(f"{model_path}/")
 
 # Save tokenizer alongside the model
-tokenizer = Tokenizer.from_pretrained(
+tokenizer = dBertTokenizer.from_pretrained(
     f"{path}/{fm_name}/tokenizer"
 )
 tokenizer.save_pretrained(f"{model_path}/")
@@ -70,13 +70,9 @@ tokenizer.save_pretrained(f"{model_path}/")
 print(f"Model released to: {model_path}")
 ```
 
-:::{note}
-If you trained with DDP instead of DeepSpeed, skip the `convert_zero_checkpoint_to_fp32_state_dict` step and load the checkpoint directly.
-:::
-
 ## Output
 
-After running this script, `model_path/` will contain:
+After running this script, `model_path/` will contain everything needed for inference:
 
 ```
 model_hub/
@@ -87,5 +83,5 @@ model_hub/
 ```
 
 :::{tip}
-Pick the checkpoint epoch that shows the best (lowest) training loss. Inspect the loss CSV from Step 3 to find it.
+Pick the checkpoint epoch that shows the best (lowest) training loss. You can inspect the loss CSV from Step 3 to find it.
 :::

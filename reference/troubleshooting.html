@@ -50,71 +50,70 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">dBERT Tutorial</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/overview.html">mBERT Overview</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#how-it-works">How It Works</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#special-tokens">Special Tokens</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#training-optimizations">Training Optimizations</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/overview.html#data-flow">Data Flow</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dbert/overview.html">dBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/overview.html#key-difference-from-vnbert">Key Difference from vnBERT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/overview.html#how-it-works">How It Works</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#disentangled-attention-mask">Disentangled Attention Mask</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#architecture">Architecture</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#tokenizers">Tokenizers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#dataset-classes">Dataset Classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#config-parameters-specific-to-dbert">Config Parameters Specific to dBERT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/overview.html#end-to-end-pipeline">End-to-End Pipeline</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dbert/build-dataset.html">Step 1: Build the Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/build-dataset.html#load-your-data">1.1 Load Your Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/build-dataset.html#define-your-features">1.2 Define Your Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/build-dataset.html#fit-and-save-the-tokenizer">1.3 Fit and Save the Tokenizer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/build-dataset.html#encode-and-inspect">1.4 Encode and Inspect</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/build-dataset.html#build-the-sparse-anndata-matrix">1.5 Build the Sparse AnnData Matrix</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/build-dataset.html#save-and-verify">1.6 Save and Verify</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/configuration.html">Step 2: Configuration</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#field-reference">Field Reference</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#experiment">experiment</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#dataset">dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#model">model</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer">trainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dbert/configuration.html">Step 2: Configuration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/configuration.html#full-annotated-template">Full Annotated Template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/configuration.html#field-reference">Field Reference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/configuration.html#experiment">experiment</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/configuration.html#dataset">dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/configuration.html#model">model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/configuration.html#trainer">trainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/training.html">Step 3: Training</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#the-training-script">The Training Script</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#launch-command">Launch Command</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#what-happens-during-training">What Happens During Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#monitoring-training">Monitoring Training</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dbert/training.html">Step 3: Training</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/training.html#the-training-script">The Training Script</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/training.html#launch-command">Launch Command</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/training.html#what-happens-during-training">What Happens During Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/training.html#monitoring-training">Monitoring Training</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/training.html#resuming-from-a-checkpoint">Resuming from a Checkpoint</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/release-model.html">Step 4: Release the Model</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#conversion-script">Conversion Script</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../mbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dbert/release-model.html">Step 4: Release the Model</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/release-model.html#conversion-script">Conversion Script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/release-model.html#convert-the-deepspeed-checkpoint">Convert the DeepSpeed Checkpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../dbert/release-model.html#load-and-save-as-huggingface-model">Load and Save as HuggingFace Model</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/release-model.html#output">Output</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/release-model.html#output">Output</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../mbert/inference.html">Step 5: Inference</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#load-the-model">Load the Model</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../mbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dbert/inference.html">Step 5: Inference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/inference.html#load-the-model">Load the Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/inference.html#prepare-input-data">Prepare Input Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/inference.html#single-batch-inference">Single-Batch Inference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/inference.html#extracting-embeddings">Extracting Embeddings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/inference.html#batch-inference-on-a-full-dataset">Batch Inference on a Full Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dbert/inference.html#what-to-do-with-embeddings">What to Do with Embeddings</a></li>
 </ul>
 </li>
 </ul>

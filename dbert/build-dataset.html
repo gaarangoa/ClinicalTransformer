@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Step 2: Configuration" href="configuration.html" />
-    <link rel="prev" title="mBERT Overview" href="overview.html" /> 
+    <link rel="prev" title="dBERT Overview" href="overview.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,18 +51,18 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">dBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">mBERT Overview</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">dBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#key-difference-from-vnbert">Key Difference from vnBERT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#disentangled-attention-mask">Disentangled Attention Mask</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#training-optimizations">Training Optimizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#config-parameters-specific-to-dbert">Config Parameters Specific to dBERT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
@@ -88,7 +88,6 @@
 <li class="toctree-l3"><a class="reference internal" href="configuration.html#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="configuration.html#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="configuration.html#model-sizing-guide">Model Sizing Guide</a></li>
 </ul>
 </li>
@@ -231,7 +230,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Step 1: Build the Dataset</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/mbert/build-dataset.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/dbert/build-dataset.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -241,7 +240,7 @@
              
   <section id="step-1-build-the-dataset">
 <h1>Step 1: Build the Dataset<a class="headerlink" href="#step-1-build-the-dataset" title="Link to this heading"></a></h1>
-<p>vnBERT trains on an <strong>AnnData</strong> (<code class="docutils literal notranslate"><span class="pre">.h5ad</span></code>) sparse matrix where rows are samples and columns are token IDs. The <code class="docutils literal notranslate"><span class="pre">vnBertTokenizerTabular</span></code> tokenizer converts your raw tabular data into this format.</p>
+<p>dBERT trains on an <strong>AnnData</strong> (<code class="docutils literal notranslate"><span class="pre">.h5ad</span></code>) sparse matrix where rows are samples and columns are token IDs. The <code class="docutils literal notranslate"><span class="pre">dBertTokenizerTabular</span></code> tokenizer converts your raw tabular data into this format.</p>
 <section id="load-your-data">
 <h2>1.1 Load Your Data<a class="headerlink" href="#load-your-data" title="Link to this heading"></a></h2>
 <p>Start from any tabular file — CSV, Excel, Parquet, or anything pandas can read:</p>
@@ -249,7 +248,7 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">anndata</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.sparse</span><span class="w"> </span><span class="kn">import</span> <span class="n">coo_matrix</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">vnBertTokenizerTabular</span> <span class="k">as</span> <span class="n">TokenizerTabular</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">clinical_transformer</span><span class="w"> </span><span class="kn">import</span> <span class="n">dBertTokenizerTabular</span> <span class="k">as</span> <span class="n">TokenizerTabular</span>
 
 <span class="c1"># ── EDIT THESE for your dataset ──────────────────────────</span>
 <span class="n">model_id</span> <span class="o">=</span> <span class="s1">&#39;MyModel&#39;</span>
@@ -420,7 +419,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="overview.html" class="btn btn-neutral float-left" title="mBERT Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="overview.html" class="btn btn-neutral float-left" title="dBERT Overview" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="configuration.html" class="btn btn-neutral float-right" title="Step 2: Configuration" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

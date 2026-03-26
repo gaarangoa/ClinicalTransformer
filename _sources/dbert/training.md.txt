@@ -1,6 +1,6 @@
 # Step 3: Training
 
-This step launches the mBERT pretraining loop using PyTorch Lightning.
+This step launches the dBERT pretraining loop using PyTorch Lightning and DeepSpeed.
 
 ## The Training Script
 
@@ -12,12 +12,11 @@ import sys
 import yaml
 import torch
 from transformers.models.bert.modeling_bert import BertConfig
-from clinical_transformer.mbert.dataset import (
+from clinical_transformer.dbert.dataset import (
     MaskedTokenDatasetFromAnnData as MaskedTokenDataset,
-    collate_variable_length,
 )
-from clinical_transformer.mbert.modeling import LightningTrainerModel
-from clinical_transformer.mbert.config import Config
+from clinical_transformer.dbert.modeling import LightningTrainerModel
+from clinical_transformer.dbert.config import Config
 
 from lightning.pytorch import Trainer, seed_everything
 from lightning.pytorch.loggers import CSVLogger
@@ -51,14 +50,12 @@ def pipeline():
         ),
     )
 
-    # Logger
     csv_logger = CSVLogger(
         save_dir=config.experiment.save_dir,
         name=config.experiment.name,
         version=config.experiment.version,
     )
 
-    # Checkpoint callback
     checkpoint_callback = ModelCheckpoint(
         dirpath=f"{config.experiment.output_dir}/models/",
         filename="{epoch}",
@@ -68,7 +65,6 @@ def pipeline():
         every_n_epochs=config.trainer.save_every_n_epochs,
     )
 
-    # Dataset and dataloader
     train_dataset = MaskedTokenDataset(
         anndata_path=config.dataset.input_file,
         context_window=config.dataset.context_window,
@@ -80,38 +76,27 @@ def pipeline():
         batch_size=config.dataset.batch_size,
         shuffle=config.dataset.shuffle,
         num_workers=config.dataset.num_workers,
-        pin_memory=True,
-        persistent_workers=config.dataset.num_workers > 0,
-        prefetch_factor=2 if config.dataset.num_workers > 0 else None,
-        collate_fn=collate_variable_length,
     )
 
-    # Model
-    model_kwargs = config.model.__dict__.copy()
-    model_kwargs.pop('enable_flash_attention', None)
-    model_config = BertConfig(**model_kwargs)
-
+    model_config = BertConfig(**config.model.__dict__)
     model = LightningTrainerModel(model_config)
-    model.model = torch.compile(model.model)
     model_config.to_json_file(
         f"{config.experiment.output_dir}/model_config.json"
     )
 
-    # Strategy
     if config.trainer.strategy["name"] == "deepspeed":
-        strategy = DeepSpeedStrategy(
+        ds_strategy = DeepSpeedStrategy(
             **config.trainer.strategy.params.__dict__
         )
     else:
-        strategy = config.trainer.strategy["name"]
+        ds_strategy = config.trainer.strategy["name"]
 
-    # Trainer
     trainer = Trainer(
         log_every_n_steps=config.trainer.log_every_n_steps,
         deterministic=config.trainer.deterministic,
         devices=config.trainer.devices,
         accelerator=config.trainer.accelerator,
-        strategy=strategy,
+        strategy=ds_strategy,
         max_epochs=config.trainer.epochs,
         precision=config.trainer.precision,
         accumulate_grad_batches=config.trainer.accumulate_grad_batches,
@@ -135,34 +120,29 @@ if __name__ == "__main__":
 ## Launch Command
 
 ```bash
-# Multi-GPU with DDP
+# Multi-GPU
 torchrun --nproc_per_node=8 train.py config.yaml
 
 # Single GPU
-python train.py config.yaml
+torchrun --nproc_per_node=1 train.py config.yaml
 ```
 
 :::{important}
-Make sure `trainer.devices` in `config.yaml` matches `--nproc_per_node`. If they differ, training will fail or behave unexpectedly.
+Make sure `trainer.devices` in `config.yaml` matches `--nproc_per_node`.
 :::
 
 ## What Happens During Training
 
-1. The dataset loads data and, for each sample:
-   - randomly selects `context_window` features (if set)
-   - masks the last `masking_fraction` of those features
-2. `collate_variable_length` pads the batch to the max sequence length
-3. The model:
-   - computes embeddings
-   - if FA2 backend: unpacks padded tensors → runs FA2 varlen attention → repacks
-   - if SDPA backend: runs SDPA attention with appropriate mask
-   - runs the prediction head **only on masked positions**
-   - computes MSE loss on masked positions
-4. Checkpoints are saved every `save_every_n_epochs` epochs
+1. The `MaskedTokenDataset` loads the `.h5ad` file and for each sample:
+   - randomly selects `context_window` features
+   - masks `masking_fraction` of those features (values set to `-10.0`)
+2. The `LightningTrainerModel` processes each batch through the dBERT encoder
+3. The disentangled attention mask splits masked positions into isolated and contextual groups based on `mask1_ratio`
+4. The model predicts the **values** of all masked features using MSE loss
+5. If `mask1_warmup_epochs > 0`, the `mask1_ratio` is annealed from 0 to target at the start of each epoch
+6. Checkpoints are saved every `save_every_n_epochs` epochs
 
 ## Monitoring Training
-
-Training metrics are logged as CSV files. Plot the loss curve:
 
 ```python
 import pandas as pd
@@ -176,7 +156,7 @@ Set `from_checkpoint` in `config.yaml`:
 
 ```yaml
 trainer:
-  from_checkpoint: /path/to/models/epoch=500.ckpt
+  from_checkpoint: /path/to/models/My_FM_NAME/version_1/models/epoch=500.ckpt
 ```
 
-Then re-run the training script. Training resumes from the exact state.
+Then re-run `train.sh`.

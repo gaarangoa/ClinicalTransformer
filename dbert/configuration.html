@@ -51,18 +51,18 @@
 </ul>
 </li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">mBERT Tutorial</span></p>
+<p class="caption" role="heading"><span class="caption-text">dBERT Tutorial</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">mBERT Overview</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="overview.html">dBERT Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="overview.html#key-difference-from-vnbert">Key Difference from vnBERT</a></li>
 <li class="toctree-l2"><a class="reference internal" href="overview.html#how-it-works">How It Works</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#pretraining-objective">Pretraining Objective</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#disentangled-attention-mask">Disentangled Attention Mask</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#architecture">Architecture</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-backends">Attention Backends</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#attention-masking-strategy">Attention Masking Strategy</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#variable-length-sequence-support">Variable-Length Sequence Support</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#special-tokens">Special Tokens</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#tokenizers">Tokenizers</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#dataset-classes">Dataset Classes</a></li>
-<li class="toctree-l3"><a class="reference internal" href="overview.html#training-optimizations">Training Optimizations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overview.html#config-parameters-specific-to-dbert">Config Parameters Specific to dBERT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="overview.html#data-flow">Data Flow</a></li>
 </ul>
 </li>
@@ -88,7 +88,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#trainer-strategy">trainer.strategy</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#hardware-recommendations">Hardware Recommendations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#model-sizing-guide">Model Sizing Guide</a></li>
 </ul>
 </li>
@@ -231,7 +230,7 @@
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">Step 2: Configuration</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/mbert/configuration.md.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/dbert/configuration.md.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -253,33 +252,33 @@
 <span class="w">  </span><span class="nt">comments</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
 
 <span class="nt">dataset</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">input_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/shm/training_data.h5ad</span><span class="w">  </span><span class="c1"># .h5ad or .pkl file from Step 1</span>
+<span class="w">  </span><span class="nt">input_file</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/dev/shm/training_data.h5ad</span><span class="w">  </span><span class="c1"># .h5ad file from Step 1</span>
 <span class="w">  </span><span class="nt">priors_file</span><span class="p">:</span><span class="w">                              </span><span class="c1"># Optional, leave empty if unused</span>
 <span class="w">  </span><span class="nt">num_workers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">23</span><span class="w">           </span><span class="c1"># Data-loading workers (num_cpus - 1)</span>
 <span class="w">  </span><span class="nt">batch_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1184</span><span class="w">          </span><span class="c1"># Samples per batch per GPU</span>
-<span class="w">  </span><span class="nt">context_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w">      </span><span class="c1"># Features sampled per training step</span>
-<span class="w">  </span><span class="nt">masking_fraction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.3</span><span class="w">     </span><span class="c1"># Fraction of features to mask</span>
+<span class="w">  </span><span class="nt">context_window</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">22</span><span class="w">        </span><span class="c1"># Features sampled per training step</span>
+<span class="w">  </span><span class="nt">masking_fraction</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.15</span><span class="w">    </span><span class="c1"># Fraction of features to mask</span>
 <span class="w">  </span><span class="nt">filter_zeros</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span><span class="w">       </span><span class="c1"># Skip zero-valued features</span>
 <span class="w">  </span><span class="nt">shuffle</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">True</span>
 
 <span class="nt">model</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">modalities</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">             </span><span class="c1"># Number of data modalities</span>
 <span class="w">  </span><span class="nt">vocab_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span><span class="w">            </span><span class="c1"># Must be &gt;= tokenizer.vocab_size</span>
-<span class="w">  </span><span class="nt">hidden_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">256</span><span class="w">          </span><span class="c1"># Embedding dimension</span>
-<span class="w">  </span><span class="nt">intermediate_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1024</span><span class="w">   </span><span class="c1"># Feed-forward hidden size (typically 4 × hidden_size)</span>
-<span class="w">  </span><span class="nt">num_attention_heads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">    </span><span class="c1"># Attention heads</span>
-<span class="w">  </span><span class="nt">num_hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">      </span><span class="c1"># Transformer layers</span>
-<span class="w">  </span><span class="nt">use_scgpt_mask</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">     </span><span class="c1"># true: scGPT attention masking, false: full bidirectional</span>
-<span class="w">  </span><span class="nt">attention_backend</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;sdpa&#39;</span><span class="w"> </span><span class="c1"># &#39;sdpa&#39; (default) or &#39;fa2&#39; (flash_attn varlen)</span>
-<span class="w">  </span><span class="nt">enable_flash_attention</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">  </span><span class="c1"># Legacy flag, ignored when using custom SDPA layers</span>
+<span class="w">  </span><span class="nt">hidden_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">128</span><span class="w">          </span><span class="c1"># Embedding dimension</span>
+<span class="w">  </span><span class="nt">intermediate_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">512</span><span class="w">    </span><span class="c1"># Feed-forward hidden size</span>
+<span class="w">  </span><span class="nt">num_attention_heads</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">    </span><span class="c1"># Attention heads</span>
+<span class="w">  </span><span class="nt">num_hidden_layers</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">      </span><span class="c1"># Transformer layers</span>
+<span class="w">  </span><span class="nt">mask1_ratio</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.25</span><span class="w">         </span><span class="c1"># Fraction of masked tokens isolated (dBERT-specific)</span>
+<span class="w">  </span><span class="nt">mask1_warmup_epochs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span><span class="w">    </span><span class="c1"># Epochs to anneal mask1_ratio from 0 (0 = disabled)</span>
+<span class="w">  </span><span class="nt">gated_attention</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">    </span><span class="c1"># Per-head sigmoid gate after SDPA (experimental)</span>
 <span class="w">  </span><span class="nt">dropout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span>
 <span class="w">  </span><span class="nt">learning_rate</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0e-5</span>
-<span class="w">  </span><span class="nt">optimizer</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;torch.optim.AdamW&#39;</span><span class="w">  </span><span class="c1"># &#39;torch.optim.Adam|torch.optim.AdamW|FusedAdam|DeepSpeedCPUAdam&#39;</span>
+<span class="w">  </span><span class="nt">optimizer</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;torch.optim.Adam&#39;</span>
 <span class="w">  </span><span class="nt">pad_token_id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0</span>
 
 <span class="nt">trainer</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">epochs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
-<span class="w">  </span><span class="nt">log_every_n_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">25</span>
+<span class="w">  </span><span class="nt">log_every_n_steps</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">  </span><span class="nt">deterministic</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 <span class="w">  </span><span class="nt">devices</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w">                </span><span class="c1"># Number of GPUs</span>
 <span class="w">  </span><span class="nt">accelerator</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;cuda&#39;</span>
@@ -290,9 +289,9 @@
 <span class="w">  </span><span class="nt">accumulate_grad_batches</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 <span class="w">  </span><span class="nt">from_checkpoint</span><span class="p">:</span><span class="w">          </span><span class="c1"># Leave empty to start fresh</span>
 <span class="w">  </span><span class="nt">strategy</span><span class="p">:</span>
-<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ddp</span><span class="w">               </span><span class="c1"># &#39;ddp&#39; for data parallelism, &#39;deepspeed&#39; for ZeRO sharding</span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deepspeed</span>
 <span class="w">    </span><span class="nt">params</span><span class="p">:</span>
-<span class="w">      </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w">              </span><span class="c1"># Only used with deepspeed</span>
+<span class="w">      </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
 <span class="w">      </span><span class="nt">offload_optimizer</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 <span class="w">      </span><span class="nt">offload_parameters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">False</span>
 </pre></div>
@@ -337,7 +336,7 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">input_file</span></code></p></td>
-<td><p>Path to the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> or <code class="docutils literal notranslate"><span class="pre">.pkl</span></code> file created in <a class="reference internal" href="build-dataset.html"><span class="doc">Step 1: Build the Dataset</span></a>.</p></td>
+<td><p>Path to the <code class="docutils literal notranslate"><span class="pre">.h5ad</span></code> file created in <a class="reference internal" href="build-dataset.html"><span class="doc">Step 1: Build the Dataset</span></a>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_workers</span></code></p></td>
 <td><p>Number of CPU processes for data loading. Set to <code class="docutils literal notranslate"><span class="pre">num_cpus</span> <span class="pre">-</span> <span class="pre">1</span></code>.</p></td>
@@ -346,10 +345,10 @@
 <td><p>Samples per batch <strong>per GPU</strong>. Reduce if you get OOM errors.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">context_window</span></code></p></td>
-<td><p>How many features the model sees per training step. Set to <code class="docutils literal notranslate"><span class="pre">null</span></code> for variable-length (requires <code class="docutils literal notranslate"><span class="pre">collate_variable_length</span></code>).</p></td>
+<td><p>How many features the model sees per training step.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">masking_fraction</span></code></p></td>
-<td><p>Fraction of context-window features to mask. 0.15–0.30 is typical.</p></td>
+<td><p>Fraction of context-window features to mask. 0.15 is standard.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">filter_zeros</span></code></p></td>
 <td><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, zero-valued features are excluded from sampling.</p></td>
@@ -373,7 +372,7 @@
 <td><p>Embedding dimension. Must be divisible by <code class="docutils literal notranslate"><span class="pre">num_attention_heads</span></code>.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">intermediate_size</span></code></p></td>
-<td><p>Feed-forward network hidden size. Typically <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">×</span> <span class="pre">hidden_size</span></code>.</p></td>
+<td><p>Feed-forward network hidden size. Typically <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">x</span> <span class="pre">hidden_size</span></code>.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_attention_heads</span></code></p></td>
 <td><p>Number of attention heads per layer.</p></td>
@@ -381,20 +380,23 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">num_hidden_layers</span></code></p></td>
 <td><p>Depth of the transformer encoder.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">use_scgpt_mask</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code>: scGPT attention masking (blocks masked-to-masked attention). <code class="docutils literal notranslate"><span class="pre">false</span></code>: full bidirectional (recommended for speed).</p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mask1_ratio</span></code></p></td>
+<td><p><strong>dBERT-specific.</strong> Fraction of masked tokens that are isolated (identity-only prediction). Set to <code class="docutils literal notranslate"><span class="pre">0.25</span></code> for the recommended default. Set to <code class="docutils literal notranslate"><span class="pre">0.0</span></code> for scGPT-style masking, <code class="docutils literal notranslate"><span class="pre">-1.0</span></code> for standard BERT.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">attention_backend</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">'sdpa'</span></code>: PyTorch native SDPA (works everywhere). <code class="docutils literal notranslate"><span class="pre">'fa2'</span></code>: Flash Attention 2 varlen (Ampere/Hopper GPUs, requires <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">flash-attn</span></code>).</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mask1_warmup_epochs</span></code></p></td>
+<td><p><strong>dBERT-specific.</strong> If &gt; 0, linearly ramp <code class="docutils literal notranslate"><span class="pre">mask1_ratio</span></code> from 0 to target over this many epochs. Default 0 (no annealing).</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dropout</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gated_attention</span></code></p></td>
+<td><p><strong>dBERT-specific.</strong> If <code class="docutils literal notranslate"><span class="pre">true</span></code>, applies a per-head sigmoid gate after SDPA (Qiu et al., 2025). Experimental; no benefit observed at small scale.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dropout</span></code></p></td>
 <td><p>Dropout rate applied in attention and feed-forward layers.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">learning_rate</span></code></p></td>
 <td><p>Initial learning rate.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">torch.optim.AdamW</span></code> (recommended), <code class="docutils literal notranslate"><span class="pre">FusedAdam</span></code> (with DeepSpeed), or <code class="docutils literal notranslate"><span class="pre">DeepSpeedCPUAdam</span></code> (CPU-offloaded).</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">optimizer</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">torch.optim.Adam</span></code>, <code class="docutils literal notranslate"><span class="pre">torch.optim.AdamW</span></code>, <code class="docutils literal notranslate"><span class="pre">DeepSpeedCPUAdam</span></code>, or <code class="docutils literal notranslate"><span class="pre">FusedAdam</span></code>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -417,19 +419,16 @@
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">precision</span></code></p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">bf16-mixed</span></code> (recommended), <code class="docutils literal notranslate"><span class="pre">16-mixed</span></code>, or <code class="docutils literal notranslate"><span class="pre">32</span></code>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">log_every_n_steps</span></code></p></td>
-<td><p>How often to log metrics. 25-50 is reasonable; 1 adds overhead.</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">num_nodes</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">num_nodes</span></code></p></td>
 <td><p>Number of compute nodes for multi-node training.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">save_every_n_epochs</span></code></p></td>
 <td><p>Checkpoint save frequency.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">accumulate_grad_batches</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">accumulate_grad_batches</span></code></p></td>
 <td><p>Accumulate gradients over N batches before updating.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">from_checkpoint</span></code></p></td>
 <td><p>Path to a checkpoint to resume training from. Leave empty to start fresh.</p></td>
 </tr>
 </tbody>
@@ -445,71 +444,20 @@
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">name</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code> (recommended when model fits in GPU memory) or <code class="docutils literal notranslate"><span class="pre">deepspeed</span></code> (for ZeRO sharding).</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">deepspeed</span></code> (recommended) or any PyTorch Lightning strategy name.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">stage</span></code></p></td>
-<td><p>DeepSpeed ZeRO stage. <strong>Stage 1</strong>: shards optimizer states. <strong>Stage 2</strong>: also shards gradients. <strong>Stage 3</strong>: also shards parameters.</p></td>
+<td><p>DeepSpeed ZeRO stage. <strong>Stage 2</strong>: shards optimizer states and gradients. <strong>Stage 3</strong>: also shards model parameters.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">offload_optimizer</span></code></p></td>
 <td><p>Move optimizer states to CPU RAM. Slower, but saves GPU memory.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">offload_parameters</span></code></p></td>
-<td><p>Move model parameters to CPU RAM (stage 3 only).</p></td>
+<td><p>Move model parameters to CPU RAM. Even slower, but enables very large models.</p></td>
 </tr>
 </tbody>
 </table>
 </section>
-</section>
-<section id="hardware-recommendations">
-<h2>Hardware Recommendations<a class="headerlink" href="#hardware-recommendations" title="Link to this heading"></a></h2>
-<table class="docutils align-default">
-<thead>
-<tr class="row-odd"><th class="head"><p>Hardware</p></th>
-<th class="head"><p>Strategy</p></th>
-<th class="head"><p>attention_backend</p></th>
-<th class="head"><p>use_scgpt_mask</p></th>
-<th class="head"><p>Notes</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p>1× GPU (any)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">sdpa</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-<td><p>No multi-GPU overhead</p></td>
-</tr>
-<tr class="row-odd"><td><p>8× A10 (24GB)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">fa2</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-<td><p>FA2 supported on Ampere; model fits in 24GB</p></td>
-</tr>
-<tr class="row-even"><td><p>8× A100 (80GB)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">fa2</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-<td><p>Largest batches; FA2 native</p></td>
-</tr>
-<tr class="row-odd"><td><p>8× H100</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">ddp</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">fa2</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-<td><p>Fastest; FA2 + Hopper optimizations</p></td>
-</tr>
-<tr class="row-even"><td><p>1× Blackwell (GB10)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">sdpa</span></code></p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-<td><p>FA2 not yet supported; SDPA flash works</p></td>
-</tr>
-<tr class="row-odd"><td><p>Limited GPU memory</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">deepspeed</span></code> (stage 2)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">sdpa</span></code></p></td>
-<td><p>either</p></td>
-<td><p>Shard optimizer + gradients</p></td>
-</tr>
-</tbody>
-</table>
 </section>
 <section id="model-sizing-guide">
 <h2>Model Sizing Guide<a class="headerlink" href="#model-sizing-guide" title="Link to this heading"></a></h2>
