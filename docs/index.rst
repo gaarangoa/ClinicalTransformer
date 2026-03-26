@@ -11,6 +11,17 @@ Clinical Transformer is a framework for training and deploying transformer-based
 
 .. toctree::
    :maxdepth: 2
+   :caption: dBERT Tutorial
+
+   dbert/overview
+   dbert/build-dataset
+   dbert/configuration
+   dbert/training
+   dbert/release-model
+   dbert/inference
+
+.. toctree::
+   :maxdepth: 2
    :caption: vnBERT Tutorial
 
    vnbert/overview
